@@ -9,6 +9,7 @@ highFrequency
 	//}
 	trEventSetHandler(13, "CustomContent");
 	trEventSetHandler(14, "SkinTimeEnd");
+	trEventSetHandler(15, "RoundEnd");
 	xsDisableSelf();
 }
 

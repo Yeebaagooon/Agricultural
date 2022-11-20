@@ -151,7 +151,7 @@ highFrequency
 		}
 	}
 	trMessageSetText("Move to a villager to choose your skin (cosmetic only). If all players delete the counter ends.", 8000);
-	trCounterAddTime("CDSkin", 15, 0, "<color={PlayerColor(1)}>Time remaining", 14);
+	trCounterAddTime("CDSkin", 15-(14*QuickStart), 0, "<color={PlayerColor(1)}>Time remaining", 14);
 	xsEnableRule("SkinChange");
 	xsEnableRule("SkinEarlyEnd");
 }

@@ -38,8 +38,6 @@ xGetInt(dPlayerData, xDrillPower)
 */
 
 
-
-
 rule initialise_spy_database
 active
 highFrequency
