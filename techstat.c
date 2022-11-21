@@ -45,6 +45,7 @@ highFrequency
 		modifyProtounitAbsolute("Villager Chinese", p, 1, 10);
 		modifyProtounitAbsolute("Villager Atlantean Hero", p, 1, 10);
 		modifyProtounitAbsolute("Villager Atlantean", p, 1, 10);
+		trModifyProtounit("Vision Revealer", p, 6, 100);
 	}
 	xsDisableSelf();
 }

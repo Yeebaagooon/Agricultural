@@ -70,7 +70,7 @@ highFrequency
 	xsEnableRule("load1");
 	xsDisableSelf();
 	//HOTKEYS
-	//map("q", "game", "uiSetSpecialPower(220) uiSpecialPowerAtPointer");
+	map("q", "game", "uiSetSpecialPower(220) uiSpecialPowerAtPointer");
 	if(cNumberNonGaiaPlayers <= 5){
 		MapSize = 48;
 	}
@@ -80,6 +80,7 @@ highFrequency
 	else{
 		MapSize = 72;
 	}
+	MapCentre = xsVectorSet(MapSize/2-1,0,MapSize/2-1);
 }
 
 rule load1
@@ -98,7 +99,7 @@ highFrequency
 		trQuestVarSet("PlayerID2", trQuestVarGet("PlayerID2")+1);}
 	trQuestVarSet("PlayerID", trQuestVarGet("PlayerID")+1);}
 	
-	for(p=1 ; < cNumberNonGaiaPlayers){
+	for(p=1 ; <= cNumberNonGaiaPlayers){
 		trPlayerSetDiplomacy(0, p, "Enemy");
 	}
 	trTechSetStatus(0, 304, 4);

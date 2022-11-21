@@ -39,6 +39,8 @@ inactive
 		trVectorQuestVarSet("dir", rotationMatrix(trVectorQuestVarGet("dir"), baseCos, baseSin));
 		trUnitSelectClear();
 		trUnitSelectByQV("P"+p+"Farmer");
+		xSetPointer(dPlayerData, p);
+		xSetInt(dPlayerData, xUnitID, 1*trQuestVarGet("P"+p+"Farmer"));
 		switch(1*trQuestVarGet("P"+p+"Skin"))
 		{
 			case 0:

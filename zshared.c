@@ -703,7 +703,8 @@ bool xSetInt(int id = 0, int data = 0, int val = 0, int index = -1) {
 	if (aiPlanGetUserVariableInt(id,xMetadata,data - xVarNames + mVariableTypes) != mInt) {
 		string type = datatypeName(aiPlanGetUserVariableInt(id,xMetadata,data - xVarNames + mVariableTypes));
 		string name = aiPlanGetUserVariableString(id,xVarNames,data - xVarNames);
-		debugLog("xSetInt: " + aiPlanGetName(id) + " variable " + name + " is not an int! Type: " + type);
+		//debugLog("xSetInt: " + aiPlanGetName(id) + " variable " + name + " is not an int! Type: " + type);
+		debugLog("xSetInt: " + id + " variable " + data + " is not an int! Type: " + type);
 		return(false); // if we are trying to set the wrong datatype, stop
 	}
 	if (index == -1) {
