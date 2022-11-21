@@ -20,6 +20,7 @@ int RoundTime = 120;
 int BankCrates = 0;
 int RelicsAllowed = 0;
 int MissilesAllowed = 0;
+int ArrowsAllowed = 0;
 
 
 int dCrates = 0;
@@ -41,6 +42,13 @@ int xMissileDir = 0;
 int xMissileCentre = 0;
 int xMissilePrev = 0;
 
+int dArrows = 0;
+int xDirection = 0;
+int xArrowClock = 0;
+int xArrowSFX = 0;
+int xArrowBuilding = 0;
+int xVectorDir = 0;
+
 vector MapCentre = vector(0,0,0);
 
 
@@ -49,8 +57,8 @@ active
 highFrequency
 {
 	dPlayerData = xInitDatabase("playerData");
-	xUnitID = xInitAddInt(dPlayerData, "farmer ID", 0);
-	xSpyID = xInitAddInt(dPlayerData, "Spy id", 0);
+	xUnitID = xInitAddInt(dPlayerData, "farmer ID", -1);
+	xSpyID = xInitAddInt(dPlayerData, "Spy id", -1);
 	xOldAnim = xInitAddInt(dPlayerData, "Anim id", 0);
 	xTarget = xInitAddInt(dPlayerData, "target id", 0);
 	xMissileCount = xInitAddInt(dPlayerData, "missile count", 0);
@@ -59,7 +67,7 @@ highFrequency
 		xAddDatabaseBlock(dPlayerData, true);
 	}
 	dCrates = xInitDatabase("Crates");
-	xUnitID = xInitAddInt(dCrates, "crate ID", 0);
+	xUnitID = xInitAddInt(dCrates, "crate ID", -1);
 	xPosX = xInitAddInt(dCrates, "X Pos", 0);
 	xPosZ = xInitAddInt(dCrates, "Z Pos", 0);
 	xTimeIn = xInitAddInt(dCrates, "Timer in", 0);
@@ -67,7 +75,7 @@ highFrequency
 	//Using same int over different DBs only works if they are in the same order
 	
 	dRelics = xInitDatabase("Relics");
-	xUnitID = xInitAddInt(dRelics, "relic ID", 0);
+	xUnitID = xInitAddInt(dRelics, "relic ID", -1);
 	xPosX = xInitAddInt(dRelics, "X Pos", 0);
 	xPosZ = xInitAddInt(dRelics, "Z Pos", 0);
 	xTimeIn = xInitAddInt(dRelics, "Timer in", 0);
@@ -75,7 +83,7 @@ highFrequency
 	xRelicSFX = xInitAddInt(dRelics, "SFX ID", 0);
 	
 	dMissileBox = xInitDatabase("Missilebox");
-	xUnitID = xInitAddInt(dMissileBox, "relic ID", 0);
+	xUnitID = xInitAddInt(dMissileBox, "relic ID", -1);
 	xPosX = xInitAddInt(dMissileBox, "X Pos", 0);
 	xPosZ = xInitAddInt(dMissileBox, "Z Pos", 0);
 	xTimeIn = xInitAddInt(dMissileBox, "Timer in", 0);
@@ -83,12 +91,24 @@ highFrequency
 	xMissileSFX = xInitAddInt(dMissileBox, "SFX ID", 0);
 	
 	dMissiles = xInitDatabase("Missiles DB");
-	xUnitID = xInitAddInt(dMissiles, "missile unit id", 0);
+	xUnitID = xInitAddInt(dMissiles, "missile unit id", -1);
 	xOwner = xInitAddInt(dMissiles, "missile owner", 0);
 	xMissilePos = xInitAddVector(dMissiles, "position", vector(0,0,0));
 	xMissileDir = xInitAddVector(dMissiles, "direction", vector(0,0,0));
 	xMissileCentre = xInitAddVector(dMissiles, "centre", vector(0,0,0));
 	xMissilePrev = xInitAddVector(dMissiles, "prev", vector(0,0,0));
+	
+	dArrows = xInitDatabase("Arrow DB");
+	xUnitID = xInitAddInt(dArrows, "ID", -1);
+	xPosX = xInitAddInt(dArrows, "X Pos", 0);
+	xPosZ = xInitAddInt(dArrows, "Z Pos", 0);
+	xTimeIn = xInitAddInt(dArrows, "Timer in", 0);
+	xTimeOut = xInitAddInt(dArrows, "Timer out", 0);
+	xArrowSFX = xInitAddInt(dArrows, "Unit SFX", 0);
+	xArrowClock = xInitAddBool(dArrows, "Clock", true);
+	xDirection = xInitAddInt(dArrows, "current dir", 0);
+	xArrowBuilding = xInitAddInt(dArrows, "SFX2", 0);
+	xVectorDir = xInitAddVector(dArrows, "dir", vector(0,0,0));
 }
 
 bool rayCollision(vector start = vector(0,0,0), vector dir = vector(1,0,0),
