@@ -1,7 +1,19 @@
 /*
 IDEAS
 
--Flag for farm ownership to easily see who has what
+UNLOCK SKINS
+Eitri = 1 win
+Brokk = 5 wins
+Athena = 10 wins
+
+Ox cart = +250 points
+FPH = Get 47 points at once
+Bear =
+
+Yeeb
+Zeno
+Nick
+Nottud
 
 */
 
@@ -9,9 +21,12 @@ IDEAS
 
 //---Controls
 //\Yeebaagooon\Agricultural Madness\Test sound.mp3
-int QuickStart = 1;
-string MapVersion = "Test Version";
+int QuickStart = 0;
+int MapVersion = 0;
 string MapName = "Agricultural Madness";
+string displayz = "";
+string farmicon = "";
+int MultiplayerOverride = 1;
 
 int MapSize = 0;
 int XMax = 0;
@@ -66,6 +81,9 @@ int xFlagOwner = 0;
 int tie1 = -1;
 int tie2 = -1;
 int tie3 = -1;
+int xCineSeen = 0;
+int xVersionControl = 0;
+int xPersonalBest = 0;
 
 vector MapCentre = vector(0,0,0);
 
@@ -80,6 +98,9 @@ highFrequency
 	xOldAnim = xInitAddInt(dPlayerData, "Anim id", 0);
 	xTarget = xInitAddInt(dPlayerData, "target id", 0);
 	xMissileCount = xInitAddInt(dPlayerData, "missile count", 0);
+	xCineSeen = xInitAddInt(dPlayerData, "seen the cine", 0);
+	xVersionControl = xInitAddInt(dPlayerData, "version", 0);
+	xPersonalBest = xInitAddInt(dPlayerData, "pb score", 0);
 	xsDisableSelf();
 	for(p=1; <= cNumberNonGaiaPlayers) {
 		xAddDatabaseBlock(dPlayerData, true);
@@ -184,7 +205,6 @@ void DoMissile(){
 		//hit effect
 		xUnitSelect(dMissiles, xUnitID);
 		trUnitDestroy();
-		trChatSend(0, "Boom");
 		boomID = trGetNextUnitScenarioNameNumber();
 		UnitCreate(0, "Cinematic Block", xsVectorGetX(pos), xsVectorGetZ(pos), 0);
 		if(1*trQuestVarGet("Round") == 3){

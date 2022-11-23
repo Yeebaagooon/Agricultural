@@ -14,6 +14,8 @@ void ProcessFlags(int count = 1) {
 		}
 		if(xGetInt(dFlags, xFlagOwner) != owner){
 			xSetInt(dFlags, xFlagOwner, owner);
+			xUnitSelect(dFlags, xUnitID);
+			trUnitDestroy();
 			xSetInt(dFlags, xUnitID, 1*trGetNextUnitScenarioNameNumber());
 			UnitCreate(owner, "Dwarf", 1*xGetInt(dFlags,xFlagX)*6-3, 1*xGetInt(dFlags,xFlagZ)*6-3, 0);
 			xUnitSelect(dFlags, xUnitID);
@@ -25,6 +27,9 @@ void ProcessFlags(int count = 1) {
 		}
 	}
 }
+
+//if (owner != old owner) { delete flag }
+//if (owner != 0 and flag is dead) { spawn a new flag)
 
 
 

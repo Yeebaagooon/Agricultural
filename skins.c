@@ -72,10 +72,12 @@ inactive
 		trUnitSelectByQV("P"+p+"Farmer");
 		trSetSelectedScale(2,2,2);
 	}
+	trCameraCut(vector(-63.781834,123.743729,-63.781834), vector(0.500000,-0.707107,0.500000), vector(0.500000,0.707107,0.500000), vector(0.707107,0.000000,-0.707107));
 	int a = trCurrentPlayer();
 	trUnitSelectClear();
 	trUnitSelectByQV("P"+a+"Farmer");
 	trUnitHighlight(3, true);
+	uiLookAtUnit(kbGetBlockID(""+1*trQuestVarGet("P"+a+"Farmer")));
 	trQuestVarSet("Round", 1*trQuestVarGet("Round")+1);
 	trOverlayText("Round " + 1*trQuestVarGet("Round") , 5.0, 608, 300, 1000);
 	xsEnableRule("RoundStart");
@@ -128,6 +130,7 @@ inactive
 		trUnitSelectByQV("Skin"+n+"");
 		trUnitOverrideAnimation(9,0,true,true,-1,0);
 		xsEnableRule("SkinChooserDeploy");
+		trCameraCut(vector(-63.781834,123.743729,-63.781834), vector(0.500000,-0.707107,0.500000), vector(0.500000,0.707107,0.500000), vector(0.707107,0.000000,-0.707107));
 	}
 }
 
@@ -255,16 +258,4 @@ highFrequency
 	playSound("ageadvance.wav");
 	trUIFadeToColor(0,0,0,800,199,true);
 	xsEnableRule("CineChoice");
-}
-
-rule CineChoice
-inactive
-highFrequency
-{
-	if (trTime() > cActivationTime + 1) {
-		xsDisableSelf();
-		trUIFadeToColor(0,0,0,800,100,false);
-		trPaintTerrain(0,0,MapSize,MapSize,0,0,true);
-		xsEnableRule("PaintTerrain");
-	}
 }

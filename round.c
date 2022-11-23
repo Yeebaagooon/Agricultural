@@ -24,7 +24,7 @@ inactive
 			case 1:
 			//Normal
 			{
-				RoundTime = 120-(QuickStart*18);
+				RoundTime = 120-(QuickStart*118);
 				BankCrates = cNumberNonGaiaPlayers/2+2;
 				RelicsAllowed = xsMax(1,cNumberNonGaiaPlayers/3);
 				MissilesAllowed = 2;
@@ -33,7 +33,7 @@ inactive
 			case 2:
 			//Sign powerup
 			{
-				RoundTime = 150;
+				RoundTime = 150-(QuickStart*148);
 				BankCrates = cNumberNonGaiaPlayers/2+1;
 				RelicsAllowed = xsMax(1,cNumberNonGaiaPlayers/3);
 				MissilesAllowed = 2;
@@ -42,7 +42,7 @@ inactive
 			case 3:
 			//Missiles hit things
 			{
-				RoundTime = 180;
+				RoundTime = 180-(QuickStart*150);
 				BankCrates = xsMax(1,cNumberNonGaiaPlayers/2);
 				RelicsAllowed = xsMax(1,cNumberNonGaiaPlayers/3);
 				MissilesAllowed = xsMax(1,cNumberNonGaiaPlayers/4);
@@ -54,6 +54,7 @@ inactive
 		xResetDatabase(dCrates);
 		xResetDatabase(dRelics);
 		xResetDatabase(dMissileBox);
+		xResetDatabase(dArrows);
 		for(n=1; <= BankCrates) {
 			trQuestVarSetFromRand("Random", 3500, 12000);
 			xAddDatabaseBlock(dCrates, true);
@@ -100,6 +101,7 @@ void RoundEnd (int p = 0){
 	unitTransform("Torch", "Rocket");
 	unitTransform("Outpost", "Rocket");
 	unitTransform("Shrine", "Rocket");
+	unitTransform("Vision Revealer", "Rocket");
 	unitTransform("Tsunami Range Indicator", "Rocket");
 	xResetDatabase(dCrates);
 	xResetDatabase(dRelics);
@@ -198,10 +200,15 @@ highFrequency
 		xsDisableSelf();
 		trLetterBox(true);
 		int p = trCurrentPlayer();
-		characterDialog("Game end! Your total score is " + 1*trQuestVarGet("P"+p+"Points"), "Your personal best is x", "icons/special e son of osiris icon 64");
+		xSetPointer(dPlayerData, p);
+		if(xGetInt(dPlayerData, xPersonalBest) < 1*trQuestVarGet("P"+p+"Points")){
+			xSetInt(dPlayerData, xPersonalBest, 1*trQuestVarGet("P"+p+"Points"));
+		}
+		characterDialog("Game end! Your total score is " + 1*trQuestVarGet("P"+p+"Points"), "Your personal best is " + xGetInt(dPlayerData, xPersonalBest), "icons/special e son of osiris icon 64");
 		xsEnableRule("EndC01");
 		unitTransform("Farm", "Rocket");
 		unitTransform("Flag", "Rocket");
+		saveAllData();
 	}
 }
 
@@ -222,7 +229,6 @@ inactive
 highFrequency
 {
 	for(p = 1; <= cNumberNonGaiaPlayers){
-		xSetPointer(dPlayerData, p);
 		trQuestVarSet("P"+p+"Place",1);
 	}
 	for(p = 1; <= cNumberNonGaiaPlayers){

@@ -10,6 +10,7 @@ highFrequency
 	trEventSetHandler(13, "CustomContent");
 	trEventSetHandler(14, "SkinTimeEnd");
 	trEventSetHandler(15, "RoundEnd");
+	trEventSetHandler(16, "Intro_Cine_10");
 	xsDisableSelf();
 }
 
@@ -22,13 +23,11 @@ runImmediately
 	trUIFadeToColor(0, 0, 0, 0, 10000, false);
 	trFadeOutAllSounds(0.1);
 	trFadeOutMusic(0.1);
+	xsDisableRule("BasicVC1");
+	xsDisableRule("BasicVC2");
 	if(QuickStart == 0){
 	}
 	trBlockAllSounds(true);
-	trArmyDispatch("0,0", "Cinematic Block", 1, 0, 0, 0, 0, false);
-	for(p = 1; <= cNumberNonGaiaPlayers){
-		deployLocHeading(0, p*2, "Victory Marker", p, 180);
-	}
 	trSetFogAndBlackmap(false, false);
 	%
 	for(p=1; <= cNumberNonGaiaPlayers) {
@@ -55,6 +54,7 @@ highFrequency
 	xsDisableRule("BasicVC2");
 	//start fade to black
 	//trUIFadeToColor(1,0,0,0,0,true);
+	/*
 	trShowImageDialog("world a farm cabbage04", MapName + " by Yeebaagooon");
 	gadgetUnreal("ShowImageBox-BordersTop");
 	gadgetUnreal("ShowImageBox-BordersBottom");
@@ -66,8 +66,9 @@ highFrequency
 	gadgetUnreal("ShowImageBox-BordersRightTop");
 	gadgetUnreal("ShowImageBox-CloseButton");
 	pause(0);
+	*/
 	characterDialog("Initialising map", " ", "icons\special e son of osiris icon 64");
-	xsEnableRule("load1");
+	xsEnableRule("setup_data");
 	xsDisableSelf();
 	//HOTKEYS
 	map("q", "game", "uiSetSpecialPower(220) uiSpecialPowerAtPointer");
@@ -83,11 +84,163 @@ highFrequency
 	MapCentre = xsVectorSet(MapSize/2-1,0,MapSize/2-1);
 }
 
+rule setup_data
+inactive
+highFrequency
+{
+	/*
+	trQuestVarSetFromRand("Music", 1, 11);
+	switch(1*trQuestVarGet("Music"))
+	{
+		case 1:
+		{
+			playSound("music\quiet\(fine layers of) slaysenflite (mellow mix).mp3");
+		}
+		case 2:
+		{
+			playSound("music\quiet\adult swim (mellow mix).mp3");
+		}
+		case 3:
+		{
+			playSound("music\quiet\behold the great science fi (mellow mix).mp3");
+		}
+		case 4:
+		{
+			playSound("music\quiet\chocolate outline (mellow mix).mp3");
+		}
+		case 5:
+		{
+			playSound("music\quiet\eat your potatoes (mellow mix).mp3");
+		}
+		case 6:
+		{
+			playSound("music\quiet\flavor cats (in the comfort zone) (mellow mix).mp3");
+		}
+		case 7:
+		{
+			playSound("music\quiet\hoping for real betterness (mellow mix).mp3");
+		}
+		case 8:
+		{
+			playSound("music\quiet\in a pile of its own good (mellow mix).mp3");
+		}
+		case 9:
+		{
+			playSound("music\quiet\never mind the slacks and bashers (mellow mix).mp3");
+		}
+		case 10:
+		{
+			playSound("music\quiet\suture self (mellow mix).mp3");
+		}
+		case 11:
+		{
+			playSound("music\quiet\the ballad of ace lebaron (mellow mix).mp3");
+		}
+	}
+	*/
+	NEXT_TRIGGER_NAME = "load1"; // the next trigger to run after data load is complete
+	/*
+	Add data to slots here
+	
+	EXAMPLE
+	name | slot | maximum value
+	addSavedDataQV("cow", 1, 10);
+	addSavedDataDB(dPlayerData, xPlayerGold, 0, 1000);
+	*/
+	
+	/*
+	Slot 0
+	Total size: 1
+	*/
+	addSavedDataDB(dPlayerData, xCineSeen , 0, 2);
+	addSavedDataDB(dPlayerData, xPersonalBest , 0, 99999);
+	//addLocalDataQV("example", 0, 1000); // the QV "example" can have an integer value from 0-999. It is stored in the first slot
+	
+	/*
+	Slot 1
+	Total size: 1000
+	*/
+	addLocalDataQV("VersionMessage", 1, 100);
+	
+	/*
+	Slot 2
+	Total size: 1,000,000
+	*/
+	
+	/*
+	Slot 3
+	Total size: 1000
+	*/
+	
+	/*
+	Slot 4
+	Total size: 0
+	*/
+	
+	/*
+	Slot 5
+	Total size: 0
+	*/
+	
+	/*
+	Slot 6
+	Total size: 0
+	*/
+	
+	/*
+	Slot 7
+	Total size: 0
+	*/
+	
+	/*
+	Slot 8
+	Total size: 0
+	*/
+	
+	/*
+	Slot 9
+	Total size: 0
+	*/
+	
+	/*
+	Slot 10
+	Total size: 0
+	*/
+	
+	
+	/*
+	Slot 11
+	Total size: 0
+	*/
+	
+	/*
+	Slot 12
+	Total size: 0
+	*/
+	
+	/*
+	Slot 13
+	Total size: 0
+	*/
+	
+	/*
+	Slot 14
+	Total size: 0
+	*/
+	
+	/*
+	Slot 15
+	Total size: 0
+	*/
+	addSavedDataDB(dPlayerData, xVersionControl, 15, 100);
+	xsDisableSelf();
+}
+
 rule load1
 inactive
 highFrequency
 {
-	characterDialog("Loading map.", ""+MapVersion+"", "icons\special e son of osiris icon 64");
+	characterDialog("Loading map.", "Version "+MapVersion+"", "icons\special e son of osiris icon 64");
 	xsEnableRule("load2");
 	trBlockAllSounds(false);
 	xsDisableSelf();
@@ -109,7 +262,7 @@ rule load2
 inactive
 highFrequency
 {
-	characterDialog("Loading map..", ""+MapVersion+"", "icons\special e son of osiris icon 64");
+	characterDialog("Loading map..", "Version "+MapVersion+"", "icons\special e son of osiris icon 64");
 	xsEnableRule("load3");
 	xsEnableRule("Stats");
 	xsEnableRule("Technologies");
@@ -121,7 +274,7 @@ inactive
 highFrequency
 {
 	if((trTime()-cActivationTime) >= 1){
-		characterDialog("Loading map...", ""+MapVersion+"", "icons\special e son of osiris icon 64");
+		characterDialog("Loading map...", "Version "+MapVersion+"", "icons\special e son of osiris icon 64");
 		for(p = 1; <= cNumberNonGaiaPlayers){
 			trPlayerGrantResources(p, "Food", -10000.0);
 			trPlayerGrantResources(p, "Wood", -10000.0);
@@ -162,6 +315,15 @@ highFrequency
 		//startNPCDialog(1);
 		xsEnableRule("PaintSkinArea");
 		//xsEnableRule("CustomContentChat");
+		//VERSION UPDATES
+		int a = trCurrentPlayer();
+		if(1*trQuestVarGet("VersionMessage") == 0){
+			uiMessageBox("TEST VERSION DO NOT HOST");
+			trQuestVarSet("VersionMessage", 0);
+			xSetPointer(dPlayerData, a);
+			xSetInt(dPlayerData, xVersionControl, MapVersion);
+		}
+		saveAllData();
 	}
 }
 
