@@ -1,3 +1,33 @@
+void ProcessFlags(int count = 1) {
+	xsSetContextPlayer(0);
+	int owner = 0;
+	for (x=xsMin(count, xGetDatabaseCount(dFlags)); > 0) {
+		xDatabaseNext(dFlags);
+		owner = kbUnitGetOwner(kbGetBlockID(""+1*trQuestVarGet("FarmX"+xGetInt(dFlags,xFlagX)+"Z"+xGetInt(dFlags,xFlagZ)+"")));
+		if(owner == 0){
+			if(xGetInt(dFlags, xUnitID) != 0){
+				xSetInt(dFlags, xFlagOwner, owner);
+				xUnitSelect(dFlags, xUnitID);
+				trUnitDestroy();
+				break;
+			}
+		}
+		if(xGetInt(dFlags, xFlagOwner) != owner){
+			xSetInt(dFlags, xFlagOwner, owner);
+			xSetInt(dFlags, xUnitID, 1*trGetNextUnitScenarioNameNumber());
+			UnitCreate(owner, "Dwarf", 1*xGetInt(dFlags,xFlagX)*6-3, 1*xGetInt(dFlags,xFlagZ)*6-3, 0);
+			xUnitSelect(dFlags, xUnitID);
+			trUnitChangeProtoUnit("Spy Eye");
+			xUnitSelect(dFlags, xUnitID);
+			trMutateSelected(kbGetProtoUnitID("Flag"));
+			xUnitSelect(dFlags, xUnitID);
+			trUnitSetAnimationPath("0,1,0,0,0,0");
+		}
+	}
+}
+
+
+
 void ProcessCrates(int count = 1) {
 	int temp = 0;
 	int TempX = 0;
@@ -324,14 +354,14 @@ void ProcessRelics(int count = 1) {
 			}
 			trQuestVarSet("RelicEffect", 0);
 			for(p=1; <= cNumberNonGaiaPlayers) {
-				if(trCountUnitsInArea(""+xGetInt(dRelics, xUnitID),p,"All",4) == 1){
+				if(trCountUnitsInArea(""+xGetInt(dRelics, xUnitID),p,"Unit",4) == 1){
 					//Player Bank
 					xUnitSelect(dRelics, xUnitID);
 					trUnitChangeProtoUnit("Farm");
 					xUnitSelect(dRelics, xRelicSFX);
 					trUnitChangeProtoUnit("Olympus Temple SFX");
 					extra = trPlayerUnitCountSpecific(p, "Farm");
-					trQuestVarSetFromRand("Random", 5000, 12000);
+					trQuestVarSetFromRand("Random", 12000, 23000);
 					xSetInt(dRelics, xTimeIn, trTimeMS()+1*trQuestVarGet("Random"));
 					//RELIC EFFECT HERE
 					trQuestVarSetFromRand("RelicEffect", 1, 8);
@@ -486,7 +516,7 @@ void ProcessMissiles(int count = 1) {
 				trUnitChangeProtoUnit("Cinematic Block");
 			}
 			for(p=1; <= cNumberNonGaiaPlayers) {
-				if(trCountUnitsInArea(""+xGetInt(dMissileBox, xUnitID),p,"All",4) == 1){
+				if(trCountUnitsInArea(""+xGetInt(dMissileBox, xUnitID),p,"Unit",4) == 1){
 					//Player Bank
 					xUnitSelect(dMissileBox, xUnitID);
 					trUnitChangeProtoUnit("Arkantos God Out");
@@ -498,11 +528,15 @@ void ProcessMissiles(int count = 1) {
 					xSetPointer(dPlayerData, p);
 					xSetInt(dPlayerData, xMissileCount, xGetInt(dPlayerData, xMissileCount)+1);
 					trTechGodPower(p, "Vision", 1);
+					trQuestVarModify("P"+p+"MissileMsg", "+", 1);
 					if(trCurrentPlayer() == p){
 						playSound("lightningstrike3.wav");
 						trClearCounterDisplay();
 						trSetCounterDisplay("Use 'Q' to fire a missile to your cursor");
 						trSetCounterDisplay("Missile count: " + trGetGPData(p,1,0));
+						if(1*trQuestVarGet("P"+p+"MissileMsg") == 1){
+							trMessageSetText("To use a missile press 'Q' and it will fire to your cursor.", 6000);
+						}
 					}
 				}
 			}
@@ -520,6 +554,7 @@ inactive
 	ProcessCrates(BankCrates);
 	ProcessRelics(RelicsAllowed);
 	ProcessMissiles(MissilesAllowed);
+	ProcessFlags(8);
 	if(ArrowsAllowed != 0){
 		ProcessArrows(ArrowsAllowed);
 	}
@@ -528,6 +563,11 @@ inactive
 		DoMissile();
 	}
 	for(p=1; <= cNumberNonGaiaPlayers) {
+		trPlayerGrantResources(p, "Food", -1000);
+		trPlayerGrantResources(p, "Wood", -1000);
+		trPlayerGrantResources(p, "Gold", -1000);
+		trPlayerGrantResources(p, "Favor", -1000);
+		trPlayerGrantResources(p, "Food", 1*trPlayerUnitCountSpecific(p, "Farm"));
 		if(trPlayerGetPopulation(p) > 99){
 			yFindLatestReverse("Temp", "Vision Revealer", p);
 			vector pos = kbGetBlockPosition(""+1*trQuestVarGet("P"+p+"Farmer"), true);

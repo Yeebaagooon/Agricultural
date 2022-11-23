@@ -9,6 +9,11 @@ inactive
 			paintShopSquare(x*3-2,z*3-2, "black");
 			trQuestVarSet("FarmX"+x+"Z"+z+"", trGetNextUnitScenarioNameNumber());
 			UnitCreate(0, "Cinematic Block", x*6-4, z*6-4, 0);
+			xAddDatabaseBlock(dFlags, true);
+			xSetInt(dFlags, xUnitID, 0);
+			xSetInt(dFlags, xFlagX, x);
+			xSetInt(dFlags, xFlagZ, z);
+			xSetInt(dFlags, xFlagOwner, 0);
 		}
 	}
 	for(x=1 ; <= MapSize/6){

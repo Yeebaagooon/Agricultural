@@ -1,3 +1,12 @@
+/*
+IDEAS
+
+-Flag for farm ownership to easily see who has what
+
+*/
+
+
+
 //---Controls
 //\Yeebaagooon\Agricultural Madness\Test sound.mp3
 int QuickStart = 1;
@@ -49,6 +58,15 @@ int xArrowSFX = 0;
 int xArrowBuilding = 0;
 int xVectorDir = 0;
 
+int dFlags = 0;
+int xFlagX = 0;
+int xFlagZ = 0;
+int xFlagOwner = 0;
+
+int tie1 = -1;
+int tie2 = -1;
+int tie3 = -1;
+
 vector MapCentre = vector(0,0,0);
 
 
@@ -73,6 +91,12 @@ highFrequency
 	xTimeIn = xInitAddInt(dCrates, "Timer in", 0);
 	xTimeOut = xInitAddInt(dCrates, "Timer out", 0);
 	//Using same int over different DBs only works if they are in the same order
+	
+	dFlags = xInitDatabase("Flags");
+	xUnitID = xInitAddInt(dFlags, "unitid", 0);
+	xFlagX = xInitAddInt(dFlags, "x", 0);
+	xFlagZ = xInitAddInt(dFlags, "z", 0);
+	xFlagOwner = xInitAddInt(dFlags, "p", 0);
 	
 	dRelics = xInitDatabase("Relics");
 	xUnitID = xInitAddInt(dRelics, "relic ID", -1);
@@ -135,6 +159,7 @@ void DoMissile(){
 	vector prev = vector(0,0,0);
 	prev = xGetVector(dMissiles, xMissilePrev);
 	bool hit = false;
+	int playerhit = 0;
 	int boomID = 0;
 	pos = xGetVector(dMissiles, xMissilePos); // retrieve current pos
 	pos = pos + xGetVector(dMissiles, xMissileDir) * timediff; // calculate new pos with physics
@@ -151,6 +176,7 @@ void DoMissile(){
 		//2 is raw dist, 4 is squared
 		if(rayCollision(prev,dir,dist+2,4)){
 			hit = true;
+			playerhit = xGetPointer(dPlayerData);
 			break;
 		}
 	}
@@ -161,9 +187,24 @@ void DoMissile(){
 		trChatSend(0, "Boom");
 		boomID = trGetNextUnitScenarioNameNumber();
 		UnitCreate(0, "Cinematic Block", xsVectorGetX(pos), xsVectorGetZ(pos), 0);
-		trUnitSelectClear();
-		trUnitSelect(""+boomID);
-		trUnitChangeProtoUnit("Meteor Impact Ground");
+		if(1*trQuestVarGet("Round") == 3){
+			trUnitSelectClear();
+			trUnitSelect(""+boomID);
+			trUnitChangeInArea(playerhit, 1*xGetInt(dMissiles, xOwner), "Farm", "Farm", MapSize*6);
+			trUnitSelectClear();
+			trUnitSelect(""+boomID);
+			trUnitChangeProtoUnit("Implode Sphere Effect");
+			trUnitSelectClear();
+			trUnitSelect(""+boomID);
+			trDamageUnitPercent(100);
+			playSound("pigout.wav");
+		}
+		else{
+			trUnitSelectClear();
+			trUnitSelect(""+boomID);
+			trUnitChangeProtoUnit("Meteor Impact Ground");
+		}
+		playSound("implode explode.wav");
 		//trTechGodPower(0, "Tremor", 1);
 		trTechInvokeGodPower(0, "Tremor", pos);
 		//FREE DB LAST

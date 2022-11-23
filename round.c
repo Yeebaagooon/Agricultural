@@ -3,6 +3,7 @@ highFrequency
 inactive
 {
 	if (trTime() > cActivationTime + 3) {
+		int points = 0;
 		trClearCounterDisplay();
 		trOverlayText("GO!" , 2.0, 608, 300, 1000);
 		for(p=1; <= cNumberNonGaiaPlayers) {
@@ -10,6 +11,8 @@ inactive
 			trUnitSelectByQV("P"+p+"Farmer");
 			trUnitConvert(p);
 			trPlayerKillAllGodPowers(p);
+			points = 1*trQuestVarGet("P"+p+"Points");
+			trSetCivilizationNameOverride(p, "Points: " + points);
 		}
 		xsDisableSelf();
 		OverlayTextPlayerColor(trCurrentPlayer());
@@ -21,9 +24,9 @@ inactive
 			case 1:
 			//Normal
 			{
-				RoundTime = 120-(QuickStart*118);
+				RoundTime = 120-(QuickStart*18);
 				BankCrates = cNumberNonGaiaPlayers/2+2;
-				RelicsAllowed = cNumberNonGaiaPlayers/3;
+				RelicsAllowed = xsMax(1,cNumberNonGaiaPlayers/3);
 				MissilesAllowed = 2;
 				ArrowsAllowed = 0;
 			}
@@ -32,18 +35,19 @@ inactive
 			{
 				RoundTime = 150;
 				BankCrates = cNumberNonGaiaPlayers/2+1;
-				RelicsAllowed = cNumberNonGaiaPlayers/3;
+				RelicsAllowed = xsMax(1,cNumberNonGaiaPlayers/3);
 				MissilesAllowed = 2;
-				ArrowsAllowed = cNumberNonGaiaPlayers/4;
+				ArrowsAllowed = xsMax(1,cNumberNonGaiaPlayers/4);
 			}
 			case 3:
 			//Missiles hit things
 			{
 				RoundTime = 180;
-				BankCrates = cNumberNonGaiaPlayers/2;
-				RelicsAllowed = cNumberNonGaiaPlayers/3;
-				MissilesAllowed = 1;
-				ArrowsAllowed = cNumberNonGaiaPlayers/4;
+				BankCrates = xsMax(1,cNumberNonGaiaPlayers/2);
+				RelicsAllowed = xsMax(1,cNumberNonGaiaPlayers/3);
+				MissilesAllowed = xsMax(1,cNumberNonGaiaPlayers/4);
+				ArrowsAllowed =xsMax(1, cNumberNonGaiaPlayers/4);
+				trMessageSetText("Missiles will now steal farms when they hit a player!", 6000);
 			}
 		}
 		//ALL DATA
@@ -89,12 +93,14 @@ void RoundEnd (int p = 0){
 	for(x=xGetDatabaseCount(dRelics); >0) {
 		xDatabaseNext(dRelics);
 		xUnitSelect(dRelics, xRelicSFX);
-		trUnitChangeProtoUnit("Cinematic Block");
+		trUnitChangeProtoUnit("Rocket");
 	}
-	unitTransform("Tower Mirror", "Cinematic Block");
-	unitTransform("Crate", "Cinematic Block");
-	unitTransform("Torch", "Cinematic Block");
-	unitTransform("Outpost", "Cinematic Block");
+	unitTransform("Tower Mirror", "Rocket");
+	unitTransform("Crate", "Rocket");
+	unitTransform("Torch", "Rocket");
+	unitTransform("Outpost", "Rocket");
+	unitTransform("Shrine", "Rocket");
+	unitTransform("Tsunami Range Indicator", "Rocket");
 	xResetDatabase(dCrates);
 	xResetDatabase(dRelics);
 	//xResetDatabase(dMissileBox);
@@ -115,11 +121,22 @@ void RoundEnd (int p = 0){
 	}
 	playSound("cinematics\15_in\gong.wav");
 	trUIFadeToColor(0,0,0,1000,600,true);
-	xsEnableRule("Scoreboard");
+	if(1*trQuestVarGet("Round") < 3){
+		xsEnableRule("Scoreboard");
+	}
+	else{
+		xsEnableRule("RoundsEnd");
+	}
 	trOverlayTextColour(255, 125, 0);
 	trOverlayText(".",0.1,1,1,1);
 	trClearCounterDisplay();
 	trChangeTerrainHeight(0,0,MapSize,MapSize,3,false);
+	for (x=xGetDatabaseCount(dFlags); > 0) {
+		xDatabaseNext(dFlags);
+		xUnitSelect(dFlags, xUnitID);
+		trUnitDestroy();
+		xSetInt(dFlags, xUnitID, 0);
+	}
 }
 
 void displayScores(){
@@ -171,4 +188,85 @@ highFrequency
 		trUIFadeToColor(0,0,0,1000,200,false);
 		xsEnableRule("PaintTerrain");
 	}
+}
+
+rule RoundsEnd
+inactive
+highFrequency
+{
+	if (trTime() > cActivationTime + 2) {
+		xsDisableSelf();
+		trLetterBox(true);
+		int p = trCurrentPlayer();
+		characterDialog("Game end! Your total score is " + 1*trQuestVarGet("P"+p+"Points"), "Your personal best is x", "icons/special e son of osiris icon 64");
+		xsEnableRule("EndC01");
+		unitTransform("Farm", "Rocket");
+		unitTransform("Flag", "Rocket");
+	}
+}
+
+rule EndC01
+inactive
+highFrequency
+{
+	if (trTime() > cActivationTime + 4) {
+		xsDisableSelf();
+		trLetterBox(false);
+		trUIFadeToColor(0,0,0,1000,200,false);
+		xsEnableRule("ProfitChat");
+	}
+}
+
+rule ProfitChat
+inactive
+highFrequency
+{
+	for(p = 1; <= cNumberNonGaiaPlayers){
+		xSetPointer(dPlayerData, p);
+		trQuestVarSet("P"+p+"Place",1);
+	}
+	for(p = 1; <= cNumberNonGaiaPlayers){
+		for(x = 1; <= cNumberNonGaiaPlayers){
+			if(1*trQuestVarGet("P"+p+"Points") < 1*trQuestVarGet("P"+x+"Points")){
+				trQuestVarModify("P"+p+"Place", "+", 1);
+			}
+		}
+	}
+	trChatSend(0, "<color=1,0.5,0><u>Scores:</u></color>");
+	for(x = 1; <= cNumberNonGaiaPlayers){
+		for(p = 1; <= cNumberNonGaiaPlayers){
+			if(1*trQuestVarGet("P"+p+"Place") == x){
+				if(x == 1){
+					trChatSend(0, "<color={PlayerColor("+p+")}><icon=(20)(icons/star)> {Playername("+p+")} - "+1*trQuestVarGet("P"+p+"Points")+"");
+				}
+				else{
+					trChatSend(0, "<color={PlayerColor("+p+")}>{Playername("+p+")} - "+1*trQuestVarGet("P"+p+"Points")+"");
+				}
+			}
+		}
+	}
+	for(p = 1; <= cNumberNonGaiaPlayers){
+		if(1*trQuestVarGet("P"+p+"Place") == 1){
+			tie1 = tie1 + 1;
+		}
+		if(1*trQuestVarGet("P"+p+"Place") == 2){
+			tie2 = tie2 + 1;
+		}
+		if(1*trQuestVarGet("P"+p+"Place") == 3){
+			tie3 = tie3 + 1;
+		}
+	}
+	if(tie1 > 0){
+		debugLog("Tie for first");
+	}
+	if(tie2 > 0){
+		debugLog("Tie for second");
+	}
+	if(tie3 > 0){
+		debugLog("Tie for third");
+	}
+	if(tie3 < 0){
+		debugLog("No third");
+	}
+	xsDisableSelf();
 }

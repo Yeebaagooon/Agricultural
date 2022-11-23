@@ -46,6 +46,12 @@ highFrequency
 		modifyProtounitAbsolute("Villager Atlantean Hero", p, 1, 10);
 		modifyProtounitAbsolute("Villager Atlantean", p, 1, 10);
 		trModifyProtounit("Vision Revealer", p, 6, 100);
+		trModifyProtounit("Villager Greek", p, 22, 1000);
+		trModifyProtounit("Villager Egyptian", p, 22, 1000);
+		trModifyProtounit("Villager Norse", p, 22, 1000);
+		trModifyProtounit("Villager Chinese", p, 22, 1000);
+		trModifyProtounit("Villager Atlantean Hero", p, 22, 1000);
+		trModifyProtounit("Villager Atlantean", p, 22, 1000);
 	}
 	xsDisableSelf();
 }
