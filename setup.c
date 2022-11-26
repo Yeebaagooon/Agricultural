@@ -72,6 +72,7 @@ highFrequency
 	xsDisableSelf();
 	//HOTKEYS
 	map("q", "game", "uiSetSpecialPower(220) uiSpecialPowerAtPointer");
+	map("space", "game", "uiSetSpecialPower(220) uiSpecialPowerAtPointer");
 	if(cNumberNonGaiaPlayers <= 5){
 		MapSize = 48;
 	}
@@ -233,6 +234,7 @@ highFrequency
 	Total size: 0
 	*/
 	addSavedDataDB(dPlayerData, xVersionControl, 15, 100);
+	addSavedDataDB(dPlayerData, xSkin, 15, 100);
 	xsDisableSelf();
 }
 
@@ -254,6 +256,7 @@ highFrequency
 	
 	for(p=1 ; <= cNumberNonGaiaPlayers){
 		trPlayerSetDiplomacy(0, p, "Enemy");
+		trTechSetStatus(p, 304, 4);
 	}
 	trTechSetStatus(0, 304, 4);
 }
@@ -282,7 +285,7 @@ highFrequency
 			trPlayerGrantResources(p, "Favor", -10000.0);
 			trPlayerKillAllGodPowers(p);
 			//this does custom content
-			//trSoundPlayFN("\Yeebaagooon\Agricultural Madness\test sound.mp3", "1", 13, "","");
+			trSoundPlayFN("\Yeebaagooon\Agricultural Madness\test sound.mp3", "1", 13, "","");
 		}
 		xsEnableRule("load4");
 		xsDisableSelf();
@@ -314,7 +317,7 @@ highFrequency
 		gadgetReal("ShowImageBox-CloseButton");
 		//startNPCDialog(1);
 		xsEnableRule("PaintSkinArea");
-		//xsEnableRule("CustomContentChat");
+		xsEnableRule("CustomContentChat");
 		//VERSION UPDATES
 		int a = trCurrentPlayer();
 		if(1*trQuestVarGet("VersionMessage") == 0){

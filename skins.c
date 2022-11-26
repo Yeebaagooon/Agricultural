@@ -1,3 +1,152 @@
+rule Animations
+highFrequency
+inactive
+{
+	int anim = 0;
+	for(p=1 ; < cNumberNonGaiaPlayers){
+		xSetPointer(dPlayerData, p);
+		if(xGetInt(dPlayerData, xSkin) <= 4){
+			break;
+		}
+		if(xGetInt(dPlayerData, xSkin) > 4){
+			anim = 0;
+			anim = kbUnitGetAnimationActionType(kbGetBlockID(""+1*trQuestVarGet("P"+p+"Farmer")+""));
+			xSetPointer(dPlayerData, p);
+			if((xGetInt(dPlayerData, xOldAnim) == anim) || (xGetInt(dPlayerData, xOldAnim) == -10)){
+				break;
+				//Stop if no anim change
+			}
+			if((xGetInt(dPlayerData, xSkin) == 5) || (xGetInt(dPlayerData, xSkin) == 6)){
+				xSetInt(dPlayerData, xOldAnim, anim);
+				//Walk
+				if((anim == 10) || (anim == 11)){
+					trUnitSelectClear();
+					trUnitSelect(""+xGetInt(dPlayerData, xSpyID));
+					trUnitOverrideAnimation(15, 0, true, true, -1, 0);
+				}
+				//Gather
+				if((anim == 5)){
+					trUnitSelectClear();
+					trUnitSelect(""+xGetInt(dPlayerData, xSpyID));
+					trUnitOverrideAnimation(9, 0, true, true, -1, 0);
+				}
+				//Idle
+				if((anim == 9)){
+					trUnitSelectClear();
+					trUnitSelect(""+xGetInt(dPlayerData, xSpyID));
+					trUnitOverrideAnimation(2, 0, true, true, -1, 0);
+				}
+				//Flail
+				if((anim == 29)){
+					trUnitSelectClear();
+					trUnitSelect(""+xGetInt(dPlayerData, xSpyID));
+					trUnitOverrideAnimation(24, 0, true, true, -1, 0);
+				}
+			}
+			if(xGetInt(dPlayerData, xSkin) == 46){
+				xSetInt(dPlayerData, xOldAnim, anim);
+				//Walk
+				if((anim == 10) || (anim == 11)){
+					trUnitSelectClear();
+					trUnitSelect(""+xGetInt(dPlayerData, xSpyID));
+					trUnitOverrideAnimation(15, 0, true, true, -1, 0);
+				}
+				//Gather
+				if((anim == 5)){
+					trUnitSelectClear();
+					trUnitSelect(""+xGetInt(dPlayerData, xSpyID));
+					trUnitOverrideAnimation(26, 0, true, true, -1, 0);
+				}
+				//Idle
+				if((anim == 9)){
+					trUnitSelectClear();
+					trUnitSelect(""+xGetInt(dPlayerData, xSpyID));
+					trUnitOverrideAnimation(2, 0, true, true, -1, 0);
+				}
+				//Flail
+				if((anim == 29)){
+					trUnitSelectClear();
+					trUnitSelect(""+xGetInt(dPlayerData, xSpyID));
+					trUnitOverrideAnimation(24, 0, true, true, -1, 0);
+				}
+			}
+			if(xGetInt(dPlayerData, xSkin) == 47){
+				xSetInt(dPlayerData, xOldAnim, anim);
+				//Walk
+				if((anim == 10) || (anim == 11)){
+					trUnitSelectClear();
+					trUnitSelect(""+xGetInt(dPlayerData, xSpyID));
+					trUnitOverrideAnimation(15, 0, true, true, -1, 0);
+				}
+				//Gather
+				if((anim == 5)){
+					trUnitSelectClear();
+					trUnitSelect(""+xGetInt(dPlayerData, xSpyID));
+					trUnitOverrideAnimation(25, 0, true, true, -1, 0);
+				}
+				//Idle
+				if((anim == 9)){
+					trUnitSelectClear();
+					trUnitSelect(""+xGetInt(dPlayerData, xSpyID));
+					trUnitOverrideAnimation(2, 0, true, true, -1, 0);
+				}
+				//Flail
+				if((anim == 29)){
+					trUnitSelectClear();
+					trUnitSelect(""+xGetInt(dPlayerData, xSpyID));
+					trUnitOverrideAnimation(24, 0, true, true, -1, 0);
+				}
+			}
+		}
+	}
+}
+
+string SkinProto(int id = 0) {
+	string msg = "WTF That's not a skin!";
+	switch(id)
+	{
+		case 5:
+		{
+			msg = "Brokk";
+		}
+		case 6:
+		{
+			msg = "Eitri";
+		}
+		case 46:
+		{
+			msg = "Minotaur";
+		}
+		case 47:
+		{
+			msg = "Pharaoh of Osiris XP";
+		}
+	}
+	return(msg);
+}
+
+rule ConvertSpies
+highFrequency
+inactive
+{
+	xsDisableSelf();
+	for(p=1 ; < cNumberNonGaiaPlayers){
+		xSetPointer(dPlayerData, p);
+		if(xGetInt(dPlayerData, xSkin) > 4){
+			xUnitSelect(dPlayerData, xSpyID);
+			trUnitChangeProtoUnit("Villager Greek");
+			xUnitSelect(dPlayerData, xSpyID);
+			trUnitConvert(p);
+			xUnitSelect(dPlayerData, xSpyID);
+			trUnitChangeProtoUnit("Spy Eye");
+			xUnitSelect(dPlayerData, xSpyID);
+			trMutateSelected(kbGetProtoUnitID(""+SkinProto(xGetInt(dPlayerData, xSkin))));
+			xUnitSelect(dPlayerData, xSpyID);
+			trSetSelectedScale(2,2,2);
+		}
+	}
+}
+
 rule PaintTerrain
 highFrequency
 inactive
@@ -40,13 +189,13 @@ inactive
 		if(heading < 0){
 			heading = heading+360;
 		}
-		UnitCreate(0, "Cinematic Block", trVectorQuestVarGetX("base"), trVectorQuestVarGetZ("base"), heading);
+		UnitCreate(p, "Cinematic Block", trVectorQuestVarGetX("base"), trVectorQuestVarGetZ("base"), heading);
 		trVectorQuestVarSet("dir", rotationMatrix(trVectorQuestVarGet("dir"), baseCos, baseSin));
 		trUnitSelectClear();
 		trUnitSelectByQV("P"+p+"Farmer");
 		xSetPointer(dPlayerData, p);
 		xSetInt(dPlayerData, xUnitID, 1*trQuestVarGet("P"+p+"Farmer"));
-		switch(1*trQuestVarGet("P"+p+"Skin"))
+		switch(xGetInt(dPlayerData, xSkin))
 		{
 			case 0:
 			{
@@ -69,8 +218,19 @@ inactive
 				trUnitChangeProtoUnit("Villager Chinese");
 			}
 		}
+		if(xGetInt(dPlayerData, xSkin) > 4){
+			trUnitChangeProtoUnit("Villager Egyptian");
+		}
 		trUnitSelectByQV("P"+p+"Farmer");
-		trSetSelectedScale(2,2,2);
+		if(xGetInt(dPlayerData, xSkin) > 4){
+			trSetSelectedScale(0,2,0);
+			spyEffect(1*trQuestVarGet("P"+p+"Farmer"), kbGetProtoUnitID(""+SkinProto(xGetInt(dPlayerData, xSkin))), xsVectorSet(dPlayerData,xSpyID,p), vector(2,2,2));
+		}
+		else{
+			trSetSelectedScale(2,2,2);
+			trUnitSelectByQV("P"+p+"Farmer");
+			trUnitConvert(0);
+		}
 	}
 	trCameraCut(vector(-63.781834,123.743729,-63.781834), vector(0.500000,-0.707107,0.500000), vector(0.500000,0.707107,0.500000), vector(0.707107,0.000000,-0.707107));
 	int a = trCurrentPlayer();
@@ -81,6 +241,22 @@ inactive
 	trQuestVarSet("Round", 1*trQuestVarGet("Round")+1);
 	trOverlayText("Round " + 1*trQuestVarGet("Round") , 5.0, 608, 300, 1000);
 	xsEnableRule("RoundStart");
+	xsEnableRule("Animations");
+	trDelayedRuleActivation("HideSpies");
+}
+
+rule HideSpies
+highFrequency
+inactive
+{
+	for(p=1; <= cNumberNonGaiaPlayers) {
+		xSetPointer(dPlayerData, p);
+		if(xGetInt(dPlayerData, xSkin) > 4){
+			trUnitSelectByQV("P"+p+"Farmer");
+			trUnitChangeProtoUnit("Cinematic Block");
+		}
+	}
+	xsDisableSelf();
 }
 
 rule PaintSkinArea
@@ -131,6 +307,8 @@ inactive
 		trUnitOverrideAnimation(9,0,true,true,-1,0);
 		xsEnableRule("SkinChooserDeploy");
 		trCameraCut(vector(-63.781834,123.743729,-63.781834), vector(0.500000,-0.707107,0.500000), vector(0.500000,0.707107,0.500000), vector(0.707107,0.000000,-0.707107));
+		xSetPointer(dPlayerData, 1);
+		xSetInt(dPlayerData, xSkin, SkinOverride);
 	}
 }
 
@@ -154,6 +332,10 @@ highFrequency
 		trUnitSelectClear();
 		trUnitSelectByQV("P"+p+"SkinChooser");
 		trUnitChangeProtoUnit("Villager Atlantean Hero");
+		xSetPointer(dPlayerData, p);
+		if(xGetInt(dPlayerData, xSkin) <= 4){
+			xSetInt(dPlayerData, xSkin, 0);
+		}
 		if(p == trCurrentPlayer()){
 			trUnitSelectClear();
 			trUnitSelectByQV("P"+p+"SkinChooser");
@@ -164,6 +346,15 @@ highFrequency
 	trCounterAddTime("CDSkin", 15-(14*QuickStart), 0, "<color={PlayerColor(1)}>Time remaining", 14);
 	xsEnableRule("SkinChange");
 	xsEnableRule("SkinEarlyEnd");
+	for(b=1; <= cNumberNonGaiaPlayers) {
+		xSetPointer(dPlayerData, b);
+		if(xGetInt(dPlayerData, xSkin) > 4){
+			trUnitSelectClear();
+			trUnitSelectByQV("P"+b+"SkinChooser");
+			trUnitChangeProtoUnit("Poison SFX");
+			ColouredChatToPlayer(b, "1,0.5,0", "Your skin choice has been loaded.");
+		}
+	}
 }
 
 rule SkinChange
@@ -173,10 +364,11 @@ minInterval 1
 	for(p=1; <= cNumberNonGaiaPlayers) {
 		trUnitSelectClear();
 		trUnitSelectByQV("P"+p+"SkinChooser");
+		xSetPointer(dPlayerData, p);
 		for(n=1; <= 4) {
 			if(trUnitDistanceToUnit(""+1*trQuestVarGet("Skin"+n+"")) < 3){
-				if(1*trQuestVarGet("P"+p+"Skin") != n){
-					trQuestVarSet("P"+p+"Skin", n);
+				if(xGetInt(dPlayerData, xSkin) != n){
+					xSetInt(dPlayerData, xSkin, n);
 					switch(n)
 					{
 						case 1:

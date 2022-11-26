@@ -30,7 +30,7 @@ import sys
 FILENAME = 'Agricultural Madness TEST.xs'
 rmsFunc = ''
 rmsMain = 'main.c'
-files = ['zshared.c', 'voids.c', 'globals.c', 'intsstrings.c', 'data.c', 'databases.c', 'text.c', 'cineopening.c', 'setup.c', 'techstat.c', 'skins.c', 'round.c', 'processing.c']
+files = ['zshared.c', 'voids.c', 'globals.c', 'intsstrings.c', 'data.c', 'databases.c', 'text.c', 'cineopening.c', 'setup.c', 'techstat.c', 'skins.c', 'round.c', 'processing.c', 'ending.c']
 
 #########################################
 ####### CODE BELOW (DO NOT TOUCH) #######

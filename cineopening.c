@@ -11,6 +11,9 @@ highFrequency
 			xSetPointer(dPlayerData, p);
 			CineVotes = CineVotes+xGetInt(dPlayerData, xCineSeen);
 		}
+		if(QuickStart == 1){
+			CineVotes = cNumberNonGaiaPlayers;
+		}
 		if(CineVotes == cNumberNonGaiaPlayers){
 			xsEnableRule("PaintTerrain");
 		}

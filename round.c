@@ -7,6 +7,14 @@ inactive
 		trClearCounterDisplay();
 		trOverlayText("GO!" , 2.0, 608, 300, 1000);
 		for(p=1; <= cNumberNonGaiaPlayers) {
+			xSetPointer(dPlayerData, p);
+			if(xGetInt(dPlayerData, xSkin) > 4){
+				trUnitSelectClear();
+				trUnitSelectByQV("P"+p+"Farmer");
+				trUnitChangeProtoUnit("Villager Egyptian");
+				trUnitSelectByQV("P"+p+"Farmer");
+				trSetSelectedScale(0,2,0);
+			}
 			trUnitSelectClear();
 			trUnitSelectByQV("P"+p+"Farmer");
 			trUnitConvert(p);
@@ -19,6 +27,39 @@ inactive
 		trOverlayText(".",0.1,1,1,1);
 		playSound("cinematics\15_in\gong.wav");
 		//ROUND DATA
+		trQuestVarSetFromRand("Music", 1, 6);
+		if(1*trQuestVarGet("CustomContent") == 0){
+			switch(1*trQuestVarGet("Music"))
+			{
+				case 1:
+				{
+					playSound("music\fight\i wish i could throw shapes.mp3");
+				}
+				case 2:
+				{
+					playSound("music\fight\li'l drips.mp3");
+				}
+				case 3:
+				{
+					playSound("music\fight\meatier shower.mp3");
+				}
+				case 4:
+				{
+					playSound("music\fight\oi, that pops!!!.mp3");
+				}
+				case 5:
+				{
+					playSound("music\fight\rot loaf.mp3");
+				}
+				case 6:
+				{
+					playSound("music\fight\the fire brigade.mp3");
+				}
+			}
+		}
+		if(QuickStart == 1){
+			trQuestVarSet("Round", 3);
+		}
 		switch(1*trQuestVarGet("Round"))
 		{
 			case 1:
@@ -29,6 +70,7 @@ inactive
 				RelicsAllowed = xsMax(1,cNumberNonGaiaPlayers/3);
 				MissilesAllowed = 2;
 				ArrowsAllowed = 0;
+				playSound("\Yeebaagooon\Agricultural Madness\Round1Music.mp3");
 			}
 			case 2:
 			//Sign powerup
@@ -38,6 +80,7 @@ inactive
 				RelicsAllowed = xsMax(1,cNumberNonGaiaPlayers/3);
 				MissilesAllowed = 2;
 				ArrowsAllowed = xsMax(1,cNumberNonGaiaPlayers/4);
+				playSound("\Yeebaagooon\Agricultural Madness\Round2Music.mp3");
 			}
 			case 3:
 			//Missiles hit things
@@ -47,7 +90,8 @@ inactive
 				RelicsAllowed = xsMax(1,cNumberNonGaiaPlayers/3);
 				MissilesAllowed = xsMax(1,cNumberNonGaiaPlayers/4);
 				ArrowsAllowed =xsMax(1, cNumberNonGaiaPlayers/4);
-				trMessageSetText("Missiles will now steal farms when they hit a player!", 6000);
+				uiMessageBox("Missiles will now steal farms when they hit a player!");
+				playSound("\Yeebaagooon\Agricultural Madness\Round3Music.mp3");
 			}
 		}
 		//ALL DATA
@@ -83,6 +127,7 @@ inactive
 		}
 		xsEnableRule("CrateProcessing");
 		xsEnableRule("StopDeletes");
+		xsEnableRule("ConvertSpies");
 		trCounterAddTime("CDRoundTimer", RoundTime, 0, "<color={PlayerColor(2)}>Time remaining", 15);
 	}
 }
@@ -105,6 +150,8 @@ void RoundEnd (int p = 0){
 	unitTransform("Tsunami Range Indicator", "Rocket");
 	xResetDatabase(dCrates);
 	xResetDatabase(dRelics);
+	trFadeOutMusic(0.1);
+	trFadeOutAllSounds(0.1);
 	//xResetDatabase(dMissileBox);
 	for(x=1 ; <= MapSize/6){
 		for(z=1 ; <= MapSize/6){
@@ -120,6 +167,9 @@ void RoundEnd (int p = 0){
 		xSetPointer(dPlayerData, p);
 		xSetInt(dPlayerData, xMissileCount, 0);
 		trPlayerKillAllGodPowers(p);
+		trUnitSelectClear();
+		xUnitSelect(dPlayerData, xSpyID);
+		trUnitChangeProtoUnit("Cinematic Block");
 	}
 	playSound("cinematics\15_in\gong.wav");
 	trUIFadeToColor(0,0,0,1000,600,true);
@@ -210,69 +260,4 @@ highFrequency
 		unitTransform("Flag", "Rocket");
 		saveAllData();
 	}
-}
-
-rule EndC01
-inactive
-highFrequency
-{
-	if (trTime() > cActivationTime + 4) {
-		xsDisableSelf();
-		trLetterBox(false);
-		trUIFadeToColor(0,0,0,1000,200,false);
-		xsEnableRule("ProfitChat");
-	}
-}
-
-rule ProfitChat
-inactive
-highFrequency
-{
-	for(p = 1; <= cNumberNonGaiaPlayers){
-		trQuestVarSet("P"+p+"Place",1);
-	}
-	for(p = 1; <= cNumberNonGaiaPlayers){
-		for(x = 1; <= cNumberNonGaiaPlayers){
-			if(1*trQuestVarGet("P"+p+"Points") < 1*trQuestVarGet("P"+x+"Points")){
-				trQuestVarModify("P"+p+"Place", "+", 1);
-			}
-		}
-	}
-	trChatSend(0, "<color=1,0.5,0><u>Scores:</u></color>");
-	for(x = 1; <= cNumberNonGaiaPlayers){
-		for(p = 1; <= cNumberNonGaiaPlayers){
-			if(1*trQuestVarGet("P"+p+"Place") == x){
-				if(x == 1){
-					trChatSend(0, "<color={PlayerColor("+p+")}><icon=(20)(icons/star)> {Playername("+p+")} - "+1*trQuestVarGet("P"+p+"Points")+"");
-				}
-				else{
-					trChatSend(0, "<color={PlayerColor("+p+")}>{Playername("+p+")} - "+1*trQuestVarGet("P"+p+"Points")+"");
-				}
-			}
-		}
-	}
-	for(p = 1; <= cNumberNonGaiaPlayers){
-		if(1*trQuestVarGet("P"+p+"Place") == 1){
-			tie1 = tie1 + 1;
-		}
-		if(1*trQuestVarGet("P"+p+"Place") == 2){
-			tie2 = tie2 + 1;
-		}
-		if(1*trQuestVarGet("P"+p+"Place") == 3){
-			tie3 = tie3 + 1;
-		}
-	}
-	if(tie1 > 0){
-		debugLog("Tie for first");
-	}
-	if(tie2 > 0){
-		debugLog("Tie for second");
-	}
-	if(tie3 > 0){
-		debugLog("Tie for third");
-	}
-	if(tie3 < 0){
-		debugLog("No third");
-	}
-	xsDisableSelf();
 }

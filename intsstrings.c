@@ -15,18 +15,22 @@ Zeno
 Nick
 Nottud
 
+Port reselctmyself()
+missile r3 as uibox
+
 */
 
 
 
 //---Controls
 //\Yeebaagooon\Agricultural Madness\Test sound.mp3
-int QuickStart = 0;
+int QuickStart = 1;
 int MapVersion = 0;
 string MapName = "Agricultural Madness";
 string displayz = "";
 string farmicon = "";
 int MultiplayerOverride = 1;
+int SkinOverride = 47;
 
 int MapSize = 0;
 int XMax = 0;
@@ -53,6 +57,7 @@ int xPosX = 0;
 int xPosZ = 0;
 int xTimeIn = 0;
 int xTimeOut = 0;
+int xSkin = 0;
 
 int dRelics = 0;
 int xRelicSFX = 0;
@@ -101,6 +106,8 @@ highFrequency
 	xCineSeen = xInitAddInt(dPlayerData, "seen the cine", 0);
 	xVersionControl = xInitAddInt(dPlayerData, "version", 0);
 	xPersonalBest = xInitAddInt(dPlayerData, "pb score", 0);
+	xSkin = xInitAddInt(dPlayerData, "skin id", 0);
+	xOldAnim = xInitAddInt(dPlayerData, "anim", 0);
 	xsDisableSelf();
 	for(p=1; <= cNumberNonGaiaPlayers) {
 		xAddDatabaseBlock(dPlayerData, true);

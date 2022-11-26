@@ -1323,6 +1323,10 @@ void ColouredChat(string colour = "1,1,1", string chats = ""){
 	trChatSend(0, "<color="+colour+">"+chats+"</color>");
 }
 
+void ColouredChatToPlayer(int p = 0, string colour = "1,1,1", string chats = ""){
+	trChatSendToPlayer(0, p, "<color="+colour+">"+chats+"</color>");
+}
+
 void ColouredIconChatToPlayer(int p = 1, string colour = "1,1,1", string icon = "", string chats = ""){
 	trChatSendToPlayer(0, p, "<color=" + colour + "><icon=(20)(" + icon + ")> " + chats + "</color>");
 }

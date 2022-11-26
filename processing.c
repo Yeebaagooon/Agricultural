@@ -559,7 +559,7 @@ inactive
 	ProcessCrates(BankCrates);
 	ProcessRelics(RelicsAllowed);
 	ProcessMissiles(MissilesAllowed);
-	ProcessFlags(8);
+	ProcessFlags(MapSize/6);
 	if(ArrowsAllowed != 0){
 		ProcessArrows(ArrowsAllowed);
 	}
@@ -577,6 +577,7 @@ inactive
 			yFindLatestReverse("Temp", "Vision Revealer", p);
 			vector pos = kbGetBlockPosition(""+1*trQuestVarGet("P"+p+"Farmer"), true);
 			xAddDatabaseBlock(dMissiles, true);
+			//unitTransform("Vision Revealer", "Rocket");
 			xSetInt(dMissiles, xUnitID, trGetNextUnitScenarioNameNumber());
 			xSetInt(dMissiles, xOwner, p);
 			xSetVector(dMissiles, xMissilePos, pos);
