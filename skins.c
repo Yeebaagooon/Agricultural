@@ -3,7 +3,7 @@ highFrequency
 inactive
 {
 	int anim = 0;
-	for(p=1 ; < cNumberNonGaiaPlayers){
+	for(p=1 ; <= cNumberNonGaiaPlayers){
 		xSetPointer(dPlayerData, p);
 		if(xGetInt(dPlayerData, xSkin) <= 4){
 			break;
@@ -16,6 +16,8 @@ inactive
 				break;
 				//Stop if no anim change
 			}
+			//DEBUG = IT NEVER GOES TO POINT TO P2
+			/*
 			if((xGetInt(dPlayerData, xSkin) == 5) || (xGetInt(dPlayerData, xSkin) == 6)){
 				xSetInt(dPlayerData, xOldAnim, anim);
 				//Walk
@@ -69,7 +71,7 @@ inactive
 					trUnitSelect(""+xGetInt(dPlayerData, xSpyID));
 					trUnitOverrideAnimation(24, 0, true, true, -1, 0);
 				}
-			}
+			}*/
 			if(xGetInt(dPlayerData, xSkin) == 47){
 				xSetInt(dPlayerData, xOldAnim, anim);
 				//Walk
@@ -105,13 +107,33 @@ string SkinProto(int id = 0) {
 	string msg = "WTF That's not a skin!";
 	switch(id)
 	{
+		case 0:
+		{
+			msg = "Villager Atlantean";
+		}
+		case 1:
+		{
+			msg = "Villager Greek";
+		}
+		case 2:
+		{
+			msg = "Villager Egyptian";
+		}
+		case 3:
+		{
+			msg = "Villager Norse";
+		}
+		case 4:
+		{
+			msg = "Villager Chinese";
+		}
 		case 5:
 		{
-			msg = "Brokk";
+			msg = "Eitri";
 		}
 		case 6:
 		{
-			msg = "Eitri";
+			msg = "Brokk";
 		}
 		case 46:
 		{
@@ -129,8 +151,7 @@ rule ConvertSpies
 highFrequency
 inactive
 {
-	xsDisableSelf();
-	for(p=1 ; < cNumberNonGaiaPlayers){
+	for(p=1 ; <= cNumberNonGaiaPlayers){
 		xSetPointer(dPlayerData, p);
 		if(xGetInt(dPlayerData, xSkin) > 4){
 			xUnitSelect(dPlayerData, xSpyID);
@@ -145,6 +166,7 @@ inactive
 			trSetSelectedScale(2,2,2);
 		}
 	}
+	xsDisableSelf();
 }
 
 rule PaintTerrain
@@ -165,6 +187,7 @@ inactive
 			xSetInt(dFlags, xFlagOwner, 0);
 		}
 	}
+	trBlockAllSounds(true);
 	for(x=1 ; <= MapSize/6){
 		for(z=1 ; <= MapSize/6){
 			trUnitSelectClear();
@@ -172,6 +195,7 @@ inactive
 			trUnitChangeProtoUnit("Farm");
 		}
 	}
+	trUnblockAllSounds();
 	XMax = MapSize/6;
 	ZMax = MapSize/6;
 	trVectorQuestVarSet("dir", xsVectorSet(MapSize*-0.3, 0, MapSize*-0.3));
@@ -243,6 +267,12 @@ inactive
 	xsEnableRule("RoundStart");
 	xsEnableRule("Animations");
 	trDelayedRuleActivation("HideSpies");
+	if(1*trQuestVarGet("Round") == 2){
+		ColouredIconChat("1,0.5,0", "world a tsunami range indicator", "Arrow shrines convert entire rows of farms!");
+	}
+	if(1*trQuestVarGet("Round") == 3){
+		uiMessageBox("Missiles will now steal farms when they hit a player!");
+	}
 }
 
 rule HideSpies

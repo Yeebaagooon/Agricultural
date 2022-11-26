@@ -28,6 +28,7 @@ highFrequency
 			else{
 				characterDialog("Yeebaagooon", "We've got some new players today so I need to go through the cinematic with them.", "icons/special e son of osiris icon 64");
 			}
+			playSound();
 			trQuestVarSet("Yeeb", trGetNextUnitScenarioNameNumber());
 			UnitCreate(0, "Cinematic Block", MapSize/2+1, MapSize/2+1, 180);
 			trQuestVarSet("YeebEgg", trGetNextUnitScenarioNameNumber());

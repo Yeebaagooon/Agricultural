@@ -19,7 +19,11 @@ int deployLoc(float posX = 0.0, float PosZ = 0.0, string unit = "", int p = 0){
 }
 
 void playSound(string soundName = ""){
-	trSoundPlayPaused(""+soundName+"", "1", -1, "", "");
+	trSoundPlayFN(""+soundName+"", "1", -1, "","");
+}
+
+void playSoundFire(string soundName = "", int fire = -1){
+	trSoundPlayFN(""+soundName+"", "1", fire, "","");
 }
 
 int deployLocRandomHeading(float posX = 0.0, float PosZ = 0.0, string unit = "", int p = 0){

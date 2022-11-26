@@ -17,7 +17,7 @@ Nottud
 
 Port reselctmyself()
 missile r3 as uibox
-
+if (trGetScenarioUserData(8, "Ascension MMORPG.xs") > 140785919) { }
 */
 
 
@@ -31,6 +31,11 @@ string displayz = "";
 string farmicon = "";
 int MultiplayerOverride = 1;
 int SkinOverride = 47;
+
+int ThirdPlacePlayer = 0;
+int SecondPlacePlayer = 0;
+int FirstPlacePlayer = 0;
+int TiePlayer = 0;
 
 int MapSize = 0;
 int XMax = 0;

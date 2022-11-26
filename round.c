@@ -1,9 +1,42 @@
+void Music(int p =0){
+	if(1*trQuestVarGet("CustomContent") == 0){
+		switch(1*trQuestVarGet("Music"))
+		{
+			case 6:
+			{
+				playSound("music\fight\i wish i could throw shapes.mp3");
+			}
+			case 1:
+			{
+				playSound("music\fight\li'l drips.mp3");
+			}
+			case 2:
+			{
+				playSound("music\fight\meatier shower.mp3");
+			}
+			case 3:
+			{
+				playSound("music\fight\oi, that pops!!!.mp3");
+			}
+			case 4:
+			{
+				playSound("music\fight\rot loaf.mp3");
+			}
+			case 5:
+			{
+				playSound("music\fight\the fire brigade.mp3");
+			}
+		}
+	}
+}
+
 rule RoundStart
 highFrequency
 inactive
 {
 	if (trTime() > cActivationTime + 3) {
 		int points = 0;
+		trChangeTerrainHeight(0,0,MapSize,MapSize,3,false);
 		trClearCounterDisplay();
 		trOverlayText("GO!" , 2.0, 608, 300, 1000);
 		for(p=1; <= cNumberNonGaiaPlayers) {
@@ -21,6 +54,12 @@ inactive
 			trPlayerKillAllGodPowers(p);
 			points = 1*trQuestVarGet("P"+p+"Points");
 			trSetCivilizationNameOverride(p, "Points: " + points);
+			modifyProtounitAbsolute("Villager Greek", p, 1, 6);
+			modifyProtounitAbsolute("Villager Egyptian", p, 1, 6);
+			modifyProtounitAbsolute("Villager Norse", p, 1, 6);
+			modifyProtounitAbsolute("Villager Chinese", p, 1, 6);
+			modifyProtounitAbsolute("Villager Atlantean Hero", p, 1, 6);
+			modifyProtounitAbsolute("Villager Atlantean", p, 1, 6);
 		}
 		xsDisableSelf();
 		OverlayTextPlayerColor(trCurrentPlayer());
@@ -33,27 +72,27 @@ inactive
 			{
 				case 1:
 				{
-					playSound("music\fight\i wish i could throw shapes.mp3");
+					playSoundFire("music\fight\i wish i could throw shapes.mp3", 17);
 				}
 				case 2:
 				{
-					playSound("music\fight\li'l drips.mp3");
+					playSoundFire("music\fight\li'l drips.mp3", 17);
 				}
 				case 3:
 				{
-					playSound("music\fight\meatier shower.mp3");
+					playSoundFire("music\fight\meatier shower.mp3", 17);
 				}
 				case 4:
 				{
-					playSound("music\fight\oi, that pops!!!.mp3");
+					playSoundFire("music\fight\oi, that pops!!!.mp3", 17);
 				}
 				case 5:
 				{
-					playSound("music\fight\rot loaf.mp3");
+					playSoundFire("music\fight\rot loaf.mp3", 17);
 				}
 				case 6:
 				{
-					playSound("music\fight\the fire brigade.mp3");
+					playSoundFire("music\fight\the fire brigade.mp3", 17);
 				}
 			}
 		}
@@ -85,12 +124,11 @@ inactive
 			case 3:
 			//Missiles hit things
 			{
-				RoundTime = 180-(QuickStart*150);
+				RoundTime = 180-(QuickStart*120);
 				BankCrates = xsMax(1,cNumberNonGaiaPlayers/2);
 				RelicsAllowed = xsMax(1,cNumberNonGaiaPlayers/3);
 				MissilesAllowed = xsMax(1,cNumberNonGaiaPlayers/4);
 				ArrowsAllowed =xsMax(1, cNumberNonGaiaPlayers/4);
-				uiMessageBox("Missiles will now steal farms when they hit a player!");
 				playSound("\Yeebaagooon\Agricultural Madness\Round3Music.mp3");
 			}
 		}
@@ -128,9 +166,22 @@ inactive
 		xsEnableRule("CrateProcessing");
 		xsEnableRule("StopDeletes");
 		xsEnableRule("ConvertSpies");
+		xsEnableRule("TimeWarn10");
 		trCounterAddTime("CDRoundTimer", RoundTime, 0, "<color={PlayerColor(2)}>Time remaining", 15);
 	}
 }
+
+rule TimeWarn10
+highFrequency
+inactive
+{
+	if (trTime() > (cActivationTime + RoundTime - 12)) {
+		playSound("attackwarning.wav");
+		trChatSend(0, "<color=1,0,0>10 SECONDS REMAINING!</color>");
+		xsDisableSelf();
+	}
+}
+
 
 void RoundEnd (int p = 0){
 	xsSetContextPlayer(0);

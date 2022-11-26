@@ -4,26 +4,27 @@ void ProcessFlags(int count = 1) {
 	for (x=xsMin(count, xGetDatabaseCount(dFlags)); > 0) {
 		xDatabaseNext(dFlags);
 		owner = kbUnitGetOwner(kbGetBlockID(""+1*trQuestVarGet("FarmX"+xGetInt(dFlags,xFlagX)+"Z"+xGetInt(dFlags,xFlagZ)+"")));
-		if(owner == 0){
+		if(owner != xGetInt(dFlags, xFlagOwner)){
 			if(xGetInt(dFlags, xUnitID) != 0){
-				xSetInt(dFlags, xFlagOwner, owner);
 				xUnitSelect(dFlags, xUnitID);
 				trUnitDestroy();
-				break;
+				//break;
 			}
-		}
-		if(xGetInt(dFlags, xFlagOwner) != owner){
 			xSetInt(dFlags, xFlagOwner, owner);
-			xUnitSelect(dFlags, xUnitID);
-			trUnitDestroy();
-			xSetInt(dFlags, xUnitID, 1*trGetNextUnitScenarioNameNumber());
-			UnitCreate(owner, "Dwarf", 1*xGetInt(dFlags,xFlagX)*6-3, 1*xGetInt(dFlags,xFlagZ)*6-3, 0);
-			xUnitSelect(dFlags, xUnitID);
-			trUnitChangeProtoUnit("Spy Eye");
-			xUnitSelect(dFlags, xUnitID);
-			trMutateSelected(kbGetProtoUnitID("Flag"));
-			xUnitSelect(dFlags, xUnitID);
-			trUnitSetAnimationPath("0,1,0,0,0,0");
+		}
+		if(owner != 0){
+			xSetInt(dFlags, xFlagOwner, owner);
+			if(kbGetBlockID(""+xGetInt(dFlags, xUnitID)) < 0){
+				xSetInt(dFlags, xUnitID, 1*trGetNextUnitScenarioNameNumber());
+				UnitCreate(owner, "Dwarf", 1*xGetInt(dFlags,xFlagX)*6-3, 1*xGetInt(dFlags,xFlagZ)*6-3, 0);
+				xUnitSelect(dFlags, xUnitID);
+				trUnitChangeProtoUnit("Spy Eye");
+				xUnitSelect(dFlags, xUnitID);
+				trMutateSelected(kbGetProtoUnitID("Flag"));
+				xUnitSelect(dFlags, xUnitID);
+				trUnitSetAnimationPath("0,1,0,0,0,0");
+				xSetInt(dFlags, xFlagOwner, owner);
+			}
 		}
 	}
 }
@@ -393,7 +394,7 @@ void ProcessRelics(int count = 1) {
 						case 3:
 						//Double bank current
 						{
-							extra = trPlayerUnitCountSpecific(p, "Farm")*2;
+							extra = xsMax(trPlayerUnitCountSpecific(p, "Farm")*2, trPlayerUnitCountSpecific(p, "Farm")+4);
 							trQuestVarSet("P"+p+"Points", 1*trQuestVarGet("P"+p+"Points")+extra);
 							points = 1*trQuestVarGet("P"+p+"Points");
 							trSetCivilizationNameOverride(p, "Points: " + points);
@@ -408,7 +409,7 @@ void ProcessRelics(int count = 1) {
 						case 4:
 						//bank current but keep
 						{
-							extra = trPlayerUnitCountSpecific(p, "Farm");
+							extra = xsMax(3,trPlayerUnitCountSpecific(p, "Farm"));
 							trQuestVarSet("P"+p+"Points", 1*trQuestVarGet("P"+p+"Points")+extra);
 							points = 1*trQuestVarGet("P"+p+"Points");
 							trSetCivilizationNameOverride(p, "Points: " + points);
@@ -559,7 +560,7 @@ inactive
 	ProcessCrates(BankCrates);
 	ProcessRelics(RelicsAllowed);
 	ProcessMissiles(MissilesAllowed);
-	ProcessFlags(MapSize/6);
+	ProcessFlags(XMax*ZMax);
 	if(ArrowsAllowed != 0){
 		ProcessArrows(ArrowsAllowed);
 	}

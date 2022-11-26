@@ -11,6 +11,7 @@ highFrequency
 	trEventSetHandler(14, "SkinTimeEnd");
 	trEventSetHandler(15, "RoundEnd");
 	trEventSetHandler(16, "Intro_Cine_10");
+	trEventSetHandler(17, "MusicGo");
 	xsDisableSelf();
 }
 
@@ -29,11 +30,6 @@ runImmediately
 	}
 	trBlockAllSounds(true);
 	trSetFogAndBlackmap(false, false);
-	%
-	for(p=1; <= cNumberNonGaiaPlayers) {
-		code("trStringQuestVarSet(\"p"+p+"name\", \""+rmGetPlayerName(p)+"\");");
-	}
-	%
 	xsDisableSelf();
 }
 
@@ -327,6 +323,11 @@ highFrequency
 			xSetInt(dPlayerData, xVersionControl, MapVersion);
 		}
 		saveAllData();
+		%
+		for(p=1; <= cNumberNonGaiaPlayers) {
+			code("trStringQuestVarSet(\"p"+p+"name\", \""+rmGetPlayerName(p)+"\");");
+		}
+		%
 	}
 }
 
