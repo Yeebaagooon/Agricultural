@@ -12,6 +12,11 @@ highFrequency
 	trEventSetHandler(15, "RoundEnd");
 	trEventSetHandler(16, "Intro_Cine_10");
 	trEventSetHandler(17, "MusicGo");
+	trEventSetHandler(18, "GoToMainMenu");
+	trEventSetHandler(19, "SPHelp");
+	for(x = 0; <= 48){
+		trEventSetHandler(20+x, "ChooseASkin");
+	}
 	xsDisableSelf();
 }
 
@@ -77,6 +82,9 @@ highFrequency
 	}
 	else{
 		MapSize = 72;
+	}
+	if(cNumberNonGaiaPlayers == 1){
+		MapSize = 202;
 	}
 	MapCentre = xsVectorSet(MapSize/2-1,0,MapSize/2-1);
 }
@@ -159,10 +167,13 @@ highFrequency
 	*/
 	addLocalDataQV("VersionMessage", 1, 100);
 	
-	/*
-	Slot 2
-	Total size: 1,000,000
-	*/
+	
+	//Slot 2
+	addSavedDataDB(dPlayerData, xWins , 2, 50);
+	addSavedDataDB(dPlayerData, xSDWins , 2, 10);
+	addSavedDataDB(dPlayerData, xMaxBank , 2, 100);
+	
+	
 	
 	/*
 	Slot 3
@@ -231,6 +242,7 @@ highFrequency
 	*/
 	addSavedDataDB(dPlayerData, xVersionControl, 15, 100);
 	addSavedDataDB(dPlayerData, xSkin, 15, 100);
+	addSavedDataDB(dPlayerData, xSeenSP, 15, 2);
 	xsDisableSelf();
 }
 
@@ -255,6 +267,7 @@ highFrequency
 		trTechSetStatus(p, 304, 4);
 	}
 	trTechSetStatus(0, 304, 4);
+	xsEnableRule("Skin_DB");
 }
 
 rule load2
@@ -294,6 +307,7 @@ highFrequency
 {
 	if((trTime()-cActivationTime) >= 1){
 		//fade out when loaded
+		trSetObscuredUnits(false);
 		trUnblockAllSounds();
 		trLetterBox(false);
 		trUIFadeToColor(0,0,0,1000,1,false);
@@ -312,7 +326,12 @@ highFrequency
 		gadgetReal("ShowImageBox-BordersRightTop");
 		gadgetReal("ShowImageBox-CloseButton");
 		//startNPCDialog(1);
-		xsEnableRule("PaintSkinArea");
+		if((aiIsMultiplayer() == true) || (MultiplayerOverride == 1)){
+			xsEnableRule("PaintSkinArea");
+		}
+		else if((aiIsMultiplayer() == false) && (MultiplayerOverride == 0)){
+			xsEnableRule("StartSP");
+		}
 		xsEnableRule("CustomContentChat");
 		//VERSION UPDATES
 		int a = trCurrentPlayer();

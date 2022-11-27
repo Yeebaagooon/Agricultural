@@ -1,12 +1,15 @@
 rmSetStatusText("",0.01);
-if(cNumberNonGaiaPlayers <= 5){
+if((cNumberNonGaiaPlayers <= 5) && (cNumberNonGaiaPlayers != 1)){
 	rmSetMapSize(48,48);
 }
-else if(cNumberNonGaiaPlayers <= 10){
+else if((cNumberNonGaiaPlayers <= 10) && (cNumberNonGaiaPlayers != 1)){
 	rmSetMapSize(60,60);
 }
-else{
+else if((cNumberNonGaiaPlayers > 10) && (cNumberNonGaiaPlayers != 1)){
 	rmSetMapSize(72,72);
+}
+else if(cNumberNonGaiaPlayers == 1){
+	rmSetMapSize(204,66);
 }
 rmSetSeaLevel(0);
 rmSetSeaType("greek river");

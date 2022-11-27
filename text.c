@@ -23,16 +23,12 @@ int npcDiag(int npc = 0, int dialog = 0) {
 			{
 				case 1:
 				{
-					trShowImageDialog("icons\special e son of osiris icon 64", "Hello!");
+					uiMessageBox("Launching this map in singleplayer requires no AI players.");
 				}
 				case 2:
 				{
-					trShowImageDialog("sfx a spy", "Test");
-				}
-				case 3:
-				{
-					trShowImageDialog("icons\infantry g hoplite icon 64", "Success!");
 					dialog = 0;
+					trShowChoiceDialog("Do you know how to do this?", "Yes", 18, "No", 19);
 				}
 			}
 		}
@@ -42,9 +38,23 @@ int npcDiag(int npc = 0, int dialog = 0) {
 			{
 				case 1:
 				{
-					uiMessageBox("Welcome to Zoo Quest. Here's a quick tutorial before we begin.");
-					dialog = 0;
+					uiMessageBox("On the random map screen you will see a 'Customize Opponents' button.");
 				}
+				case 2:
+				{
+					uiMessageBox("Click this and make sure all slots are set to 'Closed'.");
+				}
+				case 3:
+				{
+					uiMessageBox("Then press ok and relaunch this map.");
+				}
+				case 4:
+				{
+					dialog = 0;
+					modeEnter("Campaign");
+					modeEnter("Pregame");
+				}
+				
 			}
 		}
 		case 3:
@@ -53,11 +63,13 @@ int npcDiag(int npc = 0, int dialog = 0) {
 			{
 				case 1:
 				{
-					p = trCurrentPlayer();
-					if(1*trQuestVarGet("P"+p+"FirstJump") == 0){
-						uiMessageBox("Press 'Q' to jump - you will always jump forward.");
-					}
+					uiMessageBox("In singeplayer mode you can select skins to use online.");
 					dialog = 0;
+				}
+				case 2:
+				{
+					dialog = 0;
+					trShowChoiceDialog("Do you know how to do this?", "Yes", 18, "No", 19);
 				}
 			}
 		}

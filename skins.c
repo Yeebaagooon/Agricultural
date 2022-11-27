@@ -1,3 +1,82 @@
+void NewSkin(string protounitname = "", int required = 0, int anim = 1){
+	xAddDatabaseBlock(dSkin, true);
+	xSetInt(dSkin, xUnitID, 0);
+	xSetInt(dSkin, xSkinUnlocked, 0);
+	xSetInt(dSkin, xGatherAnim, anim);
+	xSetString(dSkin, xSkinName, protounitname);
+	xSetInt(dSkin, xSkinRequirement, required);
+	trModifyProtounit(protounitname, 0, 55, 4);
+	trModifyProtounit(protounitname, 0, 1, -40);
+}
+//Extra variable, anim for farm (attack as default)
+
+
+rule Skin_DB
+highFrequency
+inactive
+{
+	//DEFAULT SKINS
+	NewSkin("Villager Atlantean", 0);
+	NewSkin("Villager Greek", 0);
+	NewSkin("Villager Egyptian", 0);
+	NewSkin("Villager Norse", 0);
+	NewSkin("Villager Chinese", 0);
+	//WIN SKINS
+	NewSkin("Eitri", 1, 9);
+	trQuestVarSet("WinSkin", 1*xGetPointer(dSkin));
+	NewSkin("Brokk", 2, 9);
+	NewSkin("Kastor", 3);
+	NewSkin("Sphinx", 4);
+	NewSkin("Valkyrie", 5);
+	NewSkin("Rhinocerous", 6);
+	NewSkin("Colossus", 7);
+	NewSkin("Shade XP", 8);
+	NewSkin("Automaton SPC", 9);
+	NewSkin("Malagius", 10);
+	NewSkin("Fire Giant", 12);
+	NewSkin("Crowned Crane", 14);
+	NewSkin("Carcinos", 16);
+	NewSkin("Fishing Ship Atlantean", 18);
+	NewSkin("Bear", 20);
+	NewSkin("Pharaoh", 22);
+	NewSkin("Kastor", 24);
+	NewSkin("Azure Dragon", 26);
+	NewSkin("Amanra", 28);
+	NewSkin("Bella", 30);
+	NewSkin("Titan Gaia", 35);
+	NewSkin("Titan Kronos", 40);
+	NewSkin("Titan Prometheus", 45);
+	NewSkin("Flying Purple Hippo", 50);
+	//POINT SKINS
+	NewSkin("Chicken", 25, 3);
+	trQuestVarSet("PointSkin", 1*xGetPointer(dSkin));
+	NewSkin("Mountain Giant", 30);
+	NewSkin("Hero of Ragnarok", 35);
+	NewSkin("Argus", 40);
+	NewSkin("Servant", 45);
+	NewSkin("Setna", 50);
+	NewSkin("Oracle Hero", 55);
+	NewSkin("Titan Atlantean", 60);
+	NewSkin("Nidhogg", 65);
+	NewSkin("Earth Dragon", 80);
+	NewSkin("Arkantos God", 100);
+	//PB SKINS
+	NewSkin("Hero Greek Bellerophon", 200);
+	trQuestVarSet("PBSkin", 1*xGetPointer(dSkin));
+	NewSkin("Forkboy", 300);
+	NewSkin("Guardian XP", 400);
+	//OTHER SKINS
+	NewSkin("Athena", 0);
+	trQuestVarSet("ExtraSkin", 1*xGetPointer(dSkin));
+	NewSkin("Fire Siphon", 0);
+	NewSkin("Gargarensis", 0);
+	NewSkin("Minotaur", 0);
+	NewSkin("Pharaoh of Osiris XP", 0, 25);
+	NewSkin("Hoplite", 0);
+	//END = 48
+	xsDisableSelf();
+}
+
 rule Animations
 highFrequency
 inactive
@@ -16,88 +95,31 @@ inactive
 				break;
 				//Stop if no anim change
 			}
-			//DEBUG = IT NEVER GOES TO POINT TO P2
-			/*
-			if((xGetInt(dPlayerData, xSkin) == 5) || (xGetInt(dPlayerData, xSkin) == 6)){
-				xSetInt(dPlayerData, xOldAnim, anim);
-				//Walk
-				if((anim == 10) || (anim == 11)){
-					trUnitSelectClear();
-					trUnitSelect(""+xGetInt(dPlayerData, xSpyID));
-					trUnitOverrideAnimation(15, 0, true, true, -1, 0);
-				}
-				//Gather
-				if((anim == 5)){
-					trUnitSelectClear();
-					trUnitSelect(""+xGetInt(dPlayerData, xSpyID));
-					trUnitOverrideAnimation(9, 0, true, true, -1, 0);
-				}
-				//Idle
-				if((anim == 9)){
-					trUnitSelectClear();
-					trUnitSelect(""+xGetInt(dPlayerData, xSpyID));
-					trUnitOverrideAnimation(2, 0, true, true, -1, 0);
-				}
-				//Flail
-				if((anim == 29)){
-					trUnitSelectClear();
-					trUnitSelect(""+xGetInt(dPlayerData, xSpyID));
-					trUnitOverrideAnimation(24, 0, true, true, -1, 0);
-				}
+			//NO NEED FOR THIS, USE DATAbase
+			xSetInt(dPlayerData, xOldAnim, anim);
+			//Walk
+			if((anim == 10) || (anim == 11)){
+				trUnitSelectClear();
+				trUnitSelect(""+xGetInt(dPlayerData, xSpyID));
+				trUnitOverrideAnimation(15, 0, true, true, -1, 0);
 			}
-			if(xGetInt(dPlayerData, xSkin) == 46){
-				xSetInt(dPlayerData, xOldAnim, anim);
-				//Walk
-				if((anim == 10) || (anim == 11)){
-					trUnitSelectClear();
-					trUnitSelect(""+xGetInt(dPlayerData, xSpyID));
-					trUnitOverrideAnimation(15, 0, true, true, -1, 0);
-				}
-				//Gather
-				if((anim == 5)){
-					trUnitSelectClear();
-					trUnitSelect(""+xGetInt(dPlayerData, xSpyID));
-					trUnitOverrideAnimation(26, 0, true, true, -1, 0);
-				}
-				//Idle
-				if((anim == 9)){
-					trUnitSelectClear();
-					trUnitSelect(""+xGetInt(dPlayerData, xSpyID));
-					trUnitOverrideAnimation(2, 0, true, true, -1, 0);
-				}
-				//Flail
-				if((anim == 29)){
-					trUnitSelectClear();
-					trUnitSelect(""+xGetInt(dPlayerData, xSpyID));
-					trUnitOverrideAnimation(24, 0, true, true, -1, 0);
-				}
-			}*/
-			if(xGetInt(dPlayerData, xSkin) == 47){
-				xSetInt(dPlayerData, xOldAnim, anim);
-				//Walk
-				if((anim == 10) || (anim == 11)){
-					trUnitSelectClear();
-					trUnitSelect(""+xGetInt(dPlayerData, xSpyID));
-					trUnitOverrideAnimation(15, 0, true, true, -1, 0);
-				}
-				//Gather
-				if((anim == 5)){
-					trUnitSelectClear();
-					trUnitSelect(""+xGetInt(dPlayerData, xSpyID));
-					trUnitOverrideAnimation(25, 0, true, true, -1, 0);
-				}
-				//Idle
-				if((anim == 9)){
-					trUnitSelectClear();
-					trUnitSelect(""+xGetInt(dPlayerData, xSpyID));
-					trUnitOverrideAnimation(2, 0, true, true, -1, 0);
-				}
-				//Flail
-				if((anim == 29)){
-					trUnitSelectClear();
-					trUnitSelect(""+xGetInt(dPlayerData, xSpyID));
-					trUnitOverrideAnimation(24, 0, true, true, -1, 0);
-				}
+			//Gather
+			if((anim == 5)){
+				trUnitSelectClear();
+				trUnitSelect(""+xGetInt(dPlayerData, xSpyID));
+				trUnitOverrideAnimation(xGetInt(dSkin, xGatherAnim, xGetInt(dPlayerData, xSkin)), 0, true, true, -1, 0);
+			}
+			//Idle
+			if((anim == 9)){
+				trUnitSelectClear();
+				trUnitSelect(""+xGetInt(dPlayerData, xSpyID));
+				trUnitOverrideAnimation(2, 0, true, true, -1, 0);
+			}
+			//Flail
+			if((anim == 29)){
+				trUnitSelectClear();
+				trUnitSelect(""+xGetInt(dPlayerData, xSpyID));
+				trUnitOverrideAnimation(24, 0, true, true, -1, 0);
 			}
 		}
 	}
@@ -105,45 +127,8 @@ inactive
 
 string SkinProto(int id = 0) {
 	string msg = "WTF That's not a skin!";
-	switch(id)
-	{
-		case 0:
-		{
-			msg = "Villager Atlantean";
-		}
-		case 1:
-		{
-			msg = "Villager Greek";
-		}
-		case 2:
-		{
-			msg = "Villager Egyptian";
-		}
-		case 3:
-		{
-			msg = "Villager Norse";
-		}
-		case 4:
-		{
-			msg = "Villager Chinese";
-		}
-		case 5:
-		{
-			msg = "Eitri";
-		}
-		case 6:
-		{
-			msg = "Brokk";
-		}
-		case 46:
-		{
-			msg = "Minotaur";
-		}
-		case 47:
-		{
-			msg = "Pharaoh of Osiris XP";
-		}
-	}
+	msg = xGetString(dSkin, xSkinName, xGetInt(dPlayerData, xSkin));
+	//Sekret sekret 3rd param of index
 	return(msg);
 }
 
@@ -175,27 +160,30 @@ inactive
 {
 	//if (trTime() > cActivationTime + 1) {
 	xsDisableSelf();
-	for(x=1 ; <= MapSize/6){
-		for(z=1 ; <= MapSize/6){
-			paintShopSquare(x*3-2,z*3-2, "black");
-			trQuestVarSet("FarmX"+x+"Z"+z+"", trGetNextUnitScenarioNameNumber());
-			UnitCreate(0, "Cinematic Block", x*6-4, z*6-4, 0);
-			xAddDatabaseBlock(dFlags, true);
-			xSetInt(dFlags, xUnitID, 0);
-			xSetInt(dFlags, xFlagX, x);
-			xSetInt(dFlags, xFlagZ, z);
-			xSetInt(dFlags, xFlagOwner, 0);
+	trQuestVarSet("Round", 1*trQuestVarGet("Round")+1);
+	if(1*trQuestVarGet("Round") != 4){
+		for(x=1 ; <= MapSize/6){
+			for(z=1 ; <= MapSize/6){
+				paintShopSquare(x*3-2,z*3-2, "black");
+				trQuestVarSet("FarmX"+x+"Z"+z+"", trGetNextUnitScenarioNameNumber());
+				UnitCreate(0, "Cinematic Block", x*6-4, z*6-4, 0);
+				xAddDatabaseBlock(dFlags, true);
+				xSetInt(dFlags, xUnitID, 0);
+				xSetInt(dFlags, xFlagX, x);
+				xSetInt(dFlags, xFlagZ, z);
+				xSetInt(dFlags, xFlagOwner, 0);
+			}
 		}
-	}
-	trBlockAllSounds(true);
-	for(x=1 ; <= MapSize/6){
-		for(z=1 ; <= MapSize/6){
-			trUnitSelectClear();
-			trUnitSelectByQV("FarmX"+x+"Z"+z+"");
-			trUnitChangeProtoUnit("Farm");
+		trBlockAllSounds(true);
+		for(x=1 ; <= MapSize/6){
+			for(z=1 ; <= MapSize/6){
+				trUnitSelectClear();
+				trUnitSelectByQV("FarmX"+x+"Z"+z+"");
+				trUnitChangeProtoUnit("Farm");
+			}
 		}
+		trUnblockAllSounds();
 	}
-	trUnblockAllSounds();
 	XMax = MapSize/6;
 	ZMax = MapSize/6;
 	trVectorQuestVarSet("dir", xsVectorSet(MapSize*-0.3, 0, MapSize*-0.3));
@@ -255,6 +243,36 @@ inactive
 			trUnitSelectByQV("P"+p+"Farmer");
 			trUnitConvert(0);
 		}
+		//Sudden death detsroy players who aren't playing
+		if(1*trQuestVarGet("Round") == 4){
+			if(1*trQuestVarGet("P"+p+"Place") != 1){
+				trUnitSelectByQV("P"+p+"Farmer");
+				trUnitDestroy();
+			}
+			trPaintTerrain(0,0,MapSize,MapSize,5,4);
+			trQuestVarSet("QVEarth", trGetNextUnitScenarioNameNumber());
+			UnitCreate(0, "Cinematic Block", MapSize/2, MapSize/2, 0);
+			trUnitSelectByQV("QVEarth");
+			trUnitChangeProtoUnit("Spy Eye");
+			trUnitSelectByQV("QVEarth");
+			trMutateSelected(kbGetProtoUnitID("Earth"));
+			trUnitSelectByQV("QVEarth");
+			trSetSelectedScale(4.7,-0.1,4.7);
+			trUnitSelectByQV("QVEarth");
+			trUnitHighlight(1000, false);
+			xAddDatabaseBlock(dDestroy, true);
+			xSetInt(dDestroy, xUnitID,1*trQuestVarGet("QVEarth"));
+			for(x=0 ; < MapSize){
+				trQuestVarSetFromRand("TempX", 0, MapSize, false);
+				trQuestVarSetFromRand("TempZ", 0, MapSize, false);
+				trQuestVarSet("TempUnit", trGetNextUnitScenarioNameNumber());
+				trArmyDispatch("0,0", "Victory Marker", 1, 1*trQuestVarGet("TempX"),0,1*trQuestVarGet("TempZ"),0,false);
+				trUnitSelectByQV("TempUnit");
+				trUnitChangeProtoUnit("Armor Glow Small");
+				xAddDatabaseBlock(dDestroy, true);
+				xSetInt(dDestroy, xUnitID,1*trQuestVarGet("TempUnit"));
+			}
+		}
 	}
 	trCameraCut(vector(-63.781834,123.743729,-63.781834), vector(0.500000,-0.707107,0.500000), vector(0.500000,0.707107,0.500000), vector(0.707107,0.000000,-0.707107));
 	int a = trCurrentPlayer();
@@ -262,7 +280,6 @@ inactive
 	trUnitSelectByQV("P"+a+"Farmer");
 	trUnitHighlight(3, true);
 	uiLookAtUnit(kbGetBlockID(""+1*trQuestVarGet("P"+a+"Farmer")));
-	trQuestVarSet("Round", 1*trQuestVarGet("Round")+1);
 	trOverlayText("Round " + 1*trQuestVarGet("Round") , 5.0, 608, 300, 1000);
 	xsEnableRule("RoundStart");
 	xsEnableRule("Animations");
@@ -337,8 +354,6 @@ inactive
 		trUnitOverrideAnimation(9,0,true,true,-1,0);
 		xsEnableRule("SkinChooserDeploy");
 		trCameraCut(vector(-63.781834,123.743729,-63.781834), vector(0.500000,-0.707107,0.500000), vector(0.500000,0.707107,0.500000), vector(0.707107,0.000000,-0.707107));
-		xSetPointer(dPlayerData, 1);
-		xSetInt(dPlayerData, xSkin, SkinOverride);
 	}
 }
 
@@ -363,7 +378,7 @@ highFrequency
 		trUnitSelectByQV("P"+p+"SkinChooser");
 		trUnitChangeProtoUnit("Villager Atlantean Hero");
 		xSetPointer(dPlayerData, p);
-		if(xGetInt(dPlayerData, xSkin) <= 4){
+		if(xGetInt(dPlayerData, xSkin) <= 5){
 			xSetInt(dPlayerData, xSkin, 0);
 		}
 		if(p == trCurrentPlayer()){
@@ -372,19 +387,35 @@ highFrequency
 			trUnitHighlight(30, true);
 		}
 	}
-	trMessageSetText("Move to a villager to choose your skin (cosmetic only). If all players delete the counter ends.", 8000);
-	trCounterAddTime("CDSkin", 15-(14*QuickStart), 0, "<color={PlayerColor(1)}>Time remaining", 14);
+	trMessageSetText("Move to a villager to choose your skin (cosmetic only). If all players delete the counter ends.", 10000);
+	trCounterAddTime("CDSkin", 20-(10*QuickStart), 0, "<color={PlayerColor(1)}>Time remaining", 14);
 	xsEnableRule("SkinChange");
 	xsEnableRule("SkinEarlyEnd");
+	xsEnableRule("SkinKillCPU");
 	for(b=1; <= cNumberNonGaiaPlayers) {
 		xSetPointer(dPlayerData, b);
-		if(xGetInt(dPlayerData, xSkin) > 4){
+		if(xGetInt(dPlayerData, xSkin) > 5){
 			trUnitSelectClear();
 			trUnitSelectByQV("P"+b+"SkinChooser");
 			trUnitChangeProtoUnit("Poison SFX");
 			ColouredChatToPlayer(b, "1,0.5,0", "Your skin choice has been loaded.");
 		}
 	}
+}
+
+rule SkinKillCPU
+inactive
+highFrequency
+{
+	for(p=1; <= cNumberNonGaiaPlayers) {
+		xSetPointer(dPlayerData, p);
+		if((kbIsPlayerHuman(p) == false) || (kbIsPlayerResigned(p) == true)){
+			trUnitSelectByQV("P"+p+"SkinChooser");
+			trUnitChangeProtoUnit("Einheriar Boost SFX");
+			xSetInt(dPlayerData, xCineSeen, 1);
+		}
+	}
+	xsDisableSelf();
 }
 
 rule SkinChange

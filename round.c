@@ -41,7 +41,7 @@ inactive
 		trOverlayText("GO!" , 2.0, 608, 300, 1000);
 		for(p=1; <= cNumberNonGaiaPlayers) {
 			xSetPointer(dPlayerData, p);
-			if(xGetInt(dPlayerData, xSkin) > 4){
+			if(xGetInt(dPlayerData, xSkin) > 5){
 				trUnitSelectClear();
 				trUnitSelectByQV("P"+p+"Farmer");
 				trUnitChangeProtoUnit("Villager Egyptian");
@@ -96,7 +96,8 @@ inactive
 				}
 			}
 		}
-		if(QuickStart == 1){
+		//RELEASE
+		if((QuickStart == 1) && (1*trQuestVarGet("Round") < 3)){
 			trQuestVarSet("Round", 3);
 		}
 		switch(1*trQuestVarGet("Round"))
@@ -124,12 +125,21 @@ inactive
 			case 3:
 			//Missiles hit things
 			{
-				RoundTime = 180-(QuickStart*120);
+				RoundTime = 180-(QuickStart*178);
 				BankCrates = xsMax(1,cNumberNonGaiaPlayers/2);
 				RelicsAllowed = xsMax(1,cNumberNonGaiaPlayers/3);
 				MissilesAllowed = xsMax(1,cNumberNonGaiaPlayers/4);
 				ArrowsAllowed =xsMax(1, cNumberNonGaiaPlayers/4);
 				playSound("\Yeebaagooon\Agricultural Madness\Round3Music.mp3");
+			}
+			case 4:
+			//Sudden Death
+			{
+				RoundTime = 260;
+				BankCrates = 0;
+				RelicsAllowed = 0;
+				MissilesAllowed = 3;
+				ArrowsAllowed = 0;
 			}
 		}
 		//ALL DATA
@@ -166,9 +176,93 @@ inactive
 		xsEnableRule("CrateProcessing");
 		xsEnableRule("StopDeletes");
 		xsEnableRule("ConvertSpies");
-		xsEnableRule("TimeWarn10");
-		trCounterAddTime("CDRoundTimer", RoundTime, 0, "<color={PlayerColor(2)}>Time remaining", 15);
+		//RELEASE
+		//trDelayedRuleActivation("KillCPU");
+		if(1*trQuestVarGet("Round") != 4){
+			trCounterAddTime("CDRoundTimer", RoundTime, 0, "<color={PlayerColor(2)}>Time remaining", 15);
+			xsEnableRule("TimeWarn10");
+		}
+		else{
+			//R4 stuff
+			xsEnableRule("R4End");
+			trUnitSelectByQV("QVEarth");
+			trUnitHighlight(1000, false);
+		}
 	}
+}
+
+rule R4End
+minInterval 3
+inactive
+{
+	if(1*trQuestVarGet("SuddenDeaths") == tie1){
+		xsDisableSelf();
+		for(p=1; <= cNumberNonGaiaPlayers) {
+			trUnitSelectByQV("P"+p+"Farmer");
+			if(trUnitAlive() == true){
+				trQuestVarModify("P"+p+"Points", "+", 1);
+			}
+		}
+		trUnitSelectClear();
+		for(p = 1 ; <= cNumberNonGaiaPlayers){
+			trUnitSelectClear();
+			trUnitSelectByQV("P"+p+"Farmer");
+			trUnitChangeProtoUnit("Hero Death");
+			xSetPointer(dPlayerData, p);
+			xSetInt(dPlayerData, xMissileCount, 0);
+			trPlayerKillAllGodPowers(p);
+			trUnitSelectClear();
+			xUnitSelect(dPlayerData, xSpyID);
+			trUnitChangeProtoUnit("Cinematic Block");
+		}
+		xsEnableRule("RoundsEnd");
+		trUIFadeToColor(0,0,0,1000,600,true);
+		trSetLighting("default", 1);
+		unitTransform("armor glow small", "Rocket");
+		trFadeOutMusic(2);
+		trFadeOutAllSounds(2);
+		xsSetContextPlayer(0);
+		xsDisableSelf();
+		xsDisableRule("CrateProcessing");
+		for(x=xGetDatabaseCount(dRelics); >0) {
+			xDatabaseNext(dRelics);
+			xUnitSelect(dRelics, xRelicSFX);
+			trUnitChangeProtoUnit("Rocket");
+		}
+		unitTransform("Tower Mirror", "Rocket");
+		unitTransform("Crate", "Rocket");
+		unitTransform("Torch", "Rocket");
+		unitTransform("Outpost", "Rocket");
+		unitTransform("Shrine", "Rocket");
+		unitTransform("Vision Revealer", "Rocket");
+		unitTransform("Tsunami Range Indicator", "Rocket");
+		xResetDatabase(dCrates);
+		xResetDatabase(dRelics);
+		for (x=xGetDatabaseCount(dDestroy); > 0) {
+			xDatabaseNext(dDestroy);
+			xUnitSelect(dDestroy, xUnitID);
+			trUnitDestroy();
+			xFreeDatabaseBlock();
+		}
+		for(x=1 ; <= MapSize/6){
+			for(z=1 ; <= MapSize/6){
+				paintShopSquare(x*3-2,z*3-2, "black");
+			}
+		}
+	}
+}
+
+rule KillCPU
+highFrequency
+inactive
+{
+	for(p=1; <= cNumberNonGaiaPlayers) {
+		if((kbIsPlayerHuman(p) == false) || (kbIsPlayerResigned(p) == true)){
+			trUnitSelectByQV("P"+p+"Farmer");
+			trUnitChangeProtoUnit("Einheriar Boost SFX");
+		}
+	}
+	xsDisableSelf();
 }
 
 rule TimeWarn10

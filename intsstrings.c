@@ -1,19 +1,7 @@
 /*
 IDEAS
+Search //Release
 
-UNLOCK SKINS
-Eitri = 1 win
-Brokk = 5 wins
-Athena = 10 wins
-
-Ox cart = +250 points
-FPH = Get 47 points at once
-Bear =
-
-Yeeb
-Zeno
-Nick
-Nottud
 
 Port reselctmyself()
 missile r3 as uibox
@@ -24,13 +12,12 @@ if (trGetScenarioUserData(8, "Ascension MMORPG.xs") > 140785919) { }
 
 //---Controls
 //\Yeebaagooon\Agricultural Madness\Test sound.mp3
-int QuickStart = 1;
+int QuickStart = 0;
 int MapVersion = 0;
 string MapName = "Agricultural Madness";
 string displayz = "";
 string farmicon = "";
-int MultiplayerOverride = 1;
-int SkinOverride = 47;
+int MultiplayerOverride = 0;
 
 int ThirdPlacePlayer = 0;
 int SecondPlacePlayer = 0;
@@ -63,6 +50,8 @@ int xPosZ = 0;
 int xTimeIn = 0;
 int xTimeOut = 0;
 int xSkin = 0;
+int xSkinNumber = 0;
+int xSkinRequirement = 0;
 
 int dRelics = 0;
 int xRelicSFX = 0;
@@ -75,6 +64,10 @@ int xMissilePos = 0;
 int xMissileDir = 0;
 int xMissileCentre = 0;
 int xMissilePrev = 0;
+int xWins = 0;
+int xSDWins = 0;
+int xMaxBank = 0;
+int xSeenSP = 0;
 
 int dArrows = 0;
 int xDirection = 0;
@@ -88,6 +81,12 @@ int xFlagX = 0;
 int xFlagZ = 0;
 int xFlagOwner = 0;
 
+int dSkin = 0;
+int xSkinID = 0;
+int xSkinName = 0;
+int xSkinUnlocked = 0;
+int xGatherAnim = 0;
+
 int tie1 = -1;
 int tie2 = -1;
 int tie3 = -1;
@@ -96,6 +95,8 @@ int xVersionControl = 0;
 int xPersonalBest = 0;
 
 vector MapCentre = vector(0,0,0);
+
+int dDestroy = 0;
 
 
 rule setup_first_databases
@@ -113,6 +114,10 @@ highFrequency
 	xPersonalBest = xInitAddInt(dPlayerData, "pb score", 0);
 	xSkin = xInitAddInt(dPlayerData, "skin id", 0);
 	xOldAnim = xInitAddInt(dPlayerData, "anim", 0);
+	xWins = xInitAddInt(dPlayerData, "total wins", 0);
+	xSDWins = xInitAddInt(dPlayerData, "SD wins", 0);
+	xMaxBank = xInitAddInt(dPlayerData, "Max points in one go", 0);
+	xSeenSP = xInitAddInt(dPlayerData, "Seen SP", 0);
 	xsDisableSelf();
 	for(p=1; <= cNumberNonGaiaPlayers) {
 		xAddDatabaseBlock(dPlayerData, true);
@@ -124,6 +129,17 @@ highFrequency
 	xTimeIn = xInitAddInt(dCrates, "Timer in", 0);
 	xTimeOut = xInitAddInt(dCrates, "Timer out", 0);
 	//Using same int over different DBs only works if they are in the same order
+	
+	dDestroy = xInitDatabase("DestroyDB");
+	xUnitID = xInitAddInt(dDestroy, "unitid", 0);
+	
+	dSkin = xInitDatabase("SkinsDB");
+	xUnitID = xInitAddInt(dSkin, "unitid", 0);
+	xSkinNumber = xInitAddInt(dSkin, "skinid", 0);
+	xSkinRequirement = xInitAddInt(dSkin, "skin unlock", 0);
+	xSkinName = xInitAddString(dSkin, "Skin protoname", " ");
+	xSkinUnlocked = xInitAddInt(dSkin, "unlocked", 0);
+	xGatherAnim = xInitAddInt(dSkin, "farm anim", 1);
 	
 	dFlags = xInitDatabase("Flags");
 	xUnitID = xInitAddInt(dFlags, "unitid", 0);
@@ -219,6 +235,7 @@ void DoMissile(){
 		trUnitDestroy();
 		boomID = trGetNextUnitScenarioNameNumber();
 		UnitCreate(0, "Cinematic Block", xsVectorGetX(pos), xsVectorGetZ(pos), 0);
+		trTechInvokeGodPower(0, "Tremor", pos);
 		if(1*trQuestVarGet("Round") == 3){
 			trUnitSelectClear();
 			trUnitSelect(""+boomID);
@@ -231,6 +248,19 @@ void DoMissile(){
 			trDamageUnitPercent(100);
 			playSound("pigout.wav");
 		}
+		else if(1*trQuestVarGet("Round") == 4){
+			trUnitSelectClear();
+			trUnitSelect(""+boomID);
+			trUnitChangeProtoUnit("Implode Sphere Effect");
+			trUnitSelectClear();
+			trUnitSelect(""+boomID);
+			trDamageUnitPercent(100);
+			playSound("implode explode.wav");
+			trUnitSelectByQV("P"+playerhit+"Farmer");
+			trDamageUnitPercent(100);
+			trQuestVarModify("SuddenDeaths", "+", 1);
+			trPlayerKillAllGodPowers(playerhit);
+		}
 		else{
 			trUnitSelectClear();
 			trUnitSelect(""+boomID);
@@ -238,7 +268,6 @@ void DoMissile(){
 		}
 		playSound("implode explode.wav");
 		//trTechGodPower(0, "Tremor", 1);
-		trTechInvokeGodPower(0, "Tremor", pos);
 		//FREE DB LAST
 		xFreeDatabaseBlock(dMissiles);
 	}

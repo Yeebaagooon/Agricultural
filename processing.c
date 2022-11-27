@@ -557,13 +557,15 @@ inactive
 {
 	timediff = 0.001 * (trTimeMS() - timelast); // calculate timediff
 	timelast = trTimeMS();
-	ProcessCrates(BankCrates);
-	ProcessRelics(RelicsAllowed);
-	ProcessMissiles(MissilesAllowed);
-	ProcessFlags(XMax*ZMax);
+	if(1*trQuestVarGet("Round") != 4){
+		ProcessCrates(BankCrates);
+		ProcessRelics(RelicsAllowed);
+		ProcessFlags(XMax*ZMax);
+	}
 	if(ArrowsAllowed != 0){
 		ProcessArrows(ArrowsAllowed);
 	}
+	ProcessMissiles(MissilesAllowed);
 	unitTransform("Vision SFX", "Cinematic Block");
 	for (x=xGetDatabaseCount(dMissiles); > 0) {
 		DoMissile();
@@ -606,18 +608,20 @@ rule StopDeletes
 minInterval 1
 inactive
 {
-	for(x=1; <= XMax) {
-		for(z=1; <= ZMax) {
-			//check
-			trUnitSelectClear();
-			trUnitSelectByQV("FarmX"+x+"Z"+z+"");
-			if (trUnitDead()) {
-				//rebuild
-				trQuestVarSet("FarmX"+x+"Z"+z+"", trGetNextUnitScenarioNameNumber());
-				UnitCreate(0, "Cinematic Block", x*6-4, z*6-4, 0);
+	if(1*trQuestVarGet("Round") != 4){
+		for(x=1; <= XMax) {
+			for(z=1; <= ZMax) {
+				//check
 				trUnitSelectClear();
 				trUnitSelectByQV("FarmX"+x+"Z"+z+"");
-				trUnitChangeProtoUnit("Farm");
+				if (trUnitDead()) {
+					//rebuild
+					trQuestVarSet("FarmX"+x+"Z"+z+"", trGetNextUnitScenarioNameNumber());
+					UnitCreate(0, "Cinematic Block", x*6-4, z*6-4, 0);
+					trUnitSelectClear();
+					trUnitSelectByQV("FarmX"+x+"Z"+z+"");
+					trUnitChangeProtoUnit("Farm");
+				}
 			}
 		}
 	}

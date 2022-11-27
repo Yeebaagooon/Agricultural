@@ -31,12 +31,20 @@ highFrequency
 			trUnitSelectByQV("ThirdPlace");
 			trMutateSelected(kbGetProtoUnitID("Cinematic Block"));
 			FloatingUnit("Hoplite", 7,12,8 ,180, 1,1,1);
+			xAddDatabaseBlock(dDestroy, true);
+			xSetInt(dDestroy, xUnitID, 1*trQuestVarGet("QVRelic"));
+			xAddDatabaseBlock(dDestroy, true);
+			xSetInt(dDestroy, xUnitID, 1*trQuestVarGet("QVHero"));
 			trUnitSelectByQV("QVRelic");
 			trUnitConvert(TiePlayer);
 			trUnitSelectByQV("QVRelic");
 			xSetPointer(dPlayerData, TiePlayer);
 			trMutateSelected(kbGetProtoUnitID(""+SkinProto(xGetInt(dPlayerData, xSkin))));
 			FloatingUnit("Hoplite", 9,12,8 ,180, 1,1,1);
+			xAddDatabaseBlock(dDestroy, true);
+			xSetInt(dDestroy, xUnitID, 1*trQuestVarGet("QVRelic"));
+			xAddDatabaseBlock(dDestroy, true);
+			xSetInt(dDestroy, xUnitID, 1*trQuestVarGet("QVHero"));
 			trUnitSelectByQV("QVRelic");
 			trUnitConvert(ThirdPlacePlayer);
 			trUnitSelectByQV("QVRelic");
@@ -56,7 +64,12 @@ highFrequency
 		xSetPointer(dPlayerData, ThirdPlacePlayer);
 		trMutateSelected(kbGetProtoUnitID(""+SkinProto(xGetInt(dPlayerData, xSkin))));
 	}
-	xsEnableRule("FireSecond");
+	if(tie1 > 0){
+		xsEnableRule("SuddenDeathActive");
+	}
+	else{
+		xsEnableRule("FireSecond");
+	}
 }
 
 rule FireSecond
@@ -205,6 +218,7 @@ highFrequency
 			}
 		}
 	}
+	saveAllData();
 }
 
 rule EndGame_MP_02
@@ -243,6 +257,9 @@ rule ProfitChat
 inactive
 highFrequency
 {
+	tie1 = -1;
+	tie2 = -1;
+	tie3 = -1;
 	for(p = 1; <= cNumberNonGaiaPlayers){
 		trQuestVarSet("P"+p+"Place",1);
 	}
@@ -305,7 +322,12 @@ highFrequency
 	}
 	else{
 		xsEnableRule("BuildSecond");
-		xsEnableRule("EndCSecond");
+		if(tie1 > 0){
+			xsEnableRule("SDNoDelay");
+		}
+		else{
+			xsEnableRule("EndCSecond");
+		}
 	}
 }
 
@@ -328,20 +350,34 @@ highFrequency
 			trUnitSelectClear();
 			trUnitSelect(""+temp);
 			trSetSelectedScale(1,1.5,1);
+			xAddDatabaseBlock(dDestroy, true);
+			xSetInt(dDestroy, xUnitID, temp);
 		}
 	}
 	FloatingUnitAnimIdle("Wall Connector", 8,11.5,8 ,0, 2.8,0.1,2.8);
+	xAddDatabaseBlock(dDestroy, true);
+	xSetInt(dDestroy, xUnitID, 1*trQuestVarGet("QVRelic"));
+	xAddDatabaseBlock(dDestroy, true);
+	xSetInt(dDestroy, xUnitID, 1*trQuestVarGet("QVHero"));
 	trUnitSelectClear();
 	trUnitSelectByQV("QVHero");
 	trUnitSelectByQV("QVRelic");
 	trUnitSetAnimationPath("1,2,0,0,0,0");
 	FloatingUnitAnimIdle("Columns", 8,12,10 ,180, 5,1,1);
+	xAddDatabaseBlock(dDestroy, true);
+	xSetInt(dDestroy, xUnitID, 1*trQuestVarGet("QVRelic"));
+	xAddDatabaseBlock(dDestroy, true);
+	xSetInt(dDestroy, xUnitID, 1*trQuestVarGet("QVHero"));
 	trUnitSelectClear();
 	trUnitSelectByQV("QVHero");
 	trUnitSelectByQV("QVRelic");
 	trUnitSetAnimationPath("1,0,0,0,0,0");
 	//Main unit
 	FloatingUnitAnimIdle("Hoplite", 8,12,8 ,180, 1,1,1);
+	xAddDatabaseBlock(dDestroy, true);
+	xSetInt(dDestroy, xUnitID, 1*trQuestVarGet("QVRelic"));
+	xAddDatabaseBlock(dDestroy, true);
+	xSetInt(dDestroy, xUnitID, 1*trQuestVarGet("QVHero"));
 	trQuestVarSet("ThirdPlace", 1*trQuestVarGet("QVRelic"));
 }
 
@@ -364,30 +400,52 @@ highFrequency
 			trUnitSelectClear();
 			trUnitSelect(""+temp);
 			trSetSelectedScale(2,3,2);
+			xAddDatabaseBlock(dDestroy, true);
+			xSetInt(dDestroy, xUnitID, temp);
 		}
 		FloatingUnitAnimIdle("Torch", x*4+36,13,5.5 ,180, 1,1,1);
+		xAddDatabaseBlock(dDestroy, true);
+		xSetInt(dDestroy, xUnitID, 1*trQuestVarGet("QVRelic"));
+		xAddDatabaseBlock(dDestroy, true);
+		xSetInt(dDestroy, xUnitID, 1*trQuestVarGet("QVHero"));
 		trUnitSelectClear();
 		trUnitSelectByQV("QVHero");
 		trUnitSelectByQV("QVRelic");
 		trUnitSetAnimationPath("2,1,0,0,0,0");
 		FloatingUnitAnimIdle("Torch", x*4+36,13,9 ,180, 1,1,1);
+		xAddDatabaseBlock(dDestroy, true);
+		xSetInt(dDestroy, xUnitID, 1*trQuestVarGet("QVRelic"));
+		xAddDatabaseBlock(dDestroy, true);
+		xSetInt(dDestroy, xUnitID, 1*trQuestVarGet("QVHero"));
 		trUnitSelectClear();
 		trUnitSelectByQV("QVHero");
 		trUnitSelectByQV("QVRelic");
 		trUnitSetAnimationPath("2,0,0,0,0,0");
 	}
 	FloatingUnitAnimIdle("Wall Connector", 42,14,8 ,0, 2.8,0.1,2.8);
+	xAddDatabaseBlock(dDestroy, true);
+	xSetInt(dDestroy, xUnitID, 1*trQuestVarGet("QVRelic"));
+	xAddDatabaseBlock(dDestroy, true);
+	xSetInt(dDestroy, xUnitID, 1*trQuestVarGet("QVHero"));
 	trUnitSelectClear();
 	trUnitSelectByQV("QVHero");
 	trUnitSelectByQV("QVRelic");
 	trUnitSetAnimationPath("2,1,0,0,0,0");
 	FloatingUnitAnimIdle("Columns", 42,14.5,10 ,180, 5,1,1);
+	xAddDatabaseBlock(dDestroy, true);
+	xSetInt(dDestroy, xUnitID, 1*trQuestVarGet("QVRelic"));
+	xAddDatabaseBlock(dDestroy, true);
+	xSetInt(dDestroy, xUnitID, 1*trQuestVarGet("QVHero"));
 	trUnitSelectClear();
 	trUnitSelectByQV("QVHero");
 	trUnitSelectByQV("QVRelic");
 	trUnitSetAnimationPath("2,0,0,0,0,0");
 	//Main unit
 	FloatingUnitAnimIdle("Hoplite", 42,14.5,8 ,180, 1,1,1);
+	xAddDatabaseBlock(dDestroy, true);
+	xSetInt(dDestroy, xUnitID, 1*trQuestVarGet("QVRelic"));
+	xAddDatabaseBlock(dDestroy, true);
+	xSetInt(dDestroy, xUnitID, 1*trQuestVarGet("QVHero"));
 	trQuestVarSet("SecondPlace", 1*trQuestVarGet("QVRelic"));
 }
 
@@ -407,27 +465,61 @@ highFrequency
 			trUnitSelectClear();
 			trUnitSelect(""+temp);
 			trUnitSetAnimationPath("0,2,0,0,0,0");
+			xAddDatabaseBlock(dDestroy, true);
+			xSetInt(dDestroy, xUnitID, temp);
 		}
 	}
 	for(x=1 ; <= 2){
 		for(z=1 ; <= 2){
 			FloatingUnitAnimIdle("Wall Connector", x*4+18,7.5,z*4+2 ,0, 1,1,1);
+			xAddDatabaseBlock(dDestroy, true);
+			xSetInt(dDestroy, xUnitID, 1*trQuestVarGet("QVRelic"));
+			xAddDatabaseBlock(dDestroy, true);
+			xSetInt(dDestroy, xUnitID, 1*trQuestVarGet("QVHero"));
 			trUnitSelectClear();
 			trUnitSelectByQV("QVHero");
 			trUnitSelectByQV("QVRelic");
 			trUnitSetAnimationPath("0,3,0,0,0,0");
 			FloatingUnitAnimIdle("Outpost", x*4+18,7.5,z*4+2 ,0, 1,1,1);
+			xAddDatabaseBlock(dDestroy, true);
+			xSetInt(dDestroy, xUnitID, 1*trQuestVarGet("QVRelic"));
+			xAddDatabaseBlock(dDestroy, true);
+			xSetInt(dDestroy, xUnitID, 1*trQuestVarGet("QVHero"));
 			FloatingUnitAnimIdle("Columns", x*4+18,15.5,z*4+2 ,0, 1,1,1);
+			xAddDatabaseBlock(dDestroy, true);
+			xSetInt(dDestroy, xUnitID, 1*trQuestVarGet("QVRelic"));
+			xAddDatabaseBlock(dDestroy, true);
+			xSetInt(dDestroy, xUnitID, 1*trQuestVarGet("QVHero"));
 			FloatingUnitAnimIdle("Tower Mirror", x*4+18,19.5,z*4+2 ,0, 0,0,0);
+			xAddDatabaseBlock(dDestroy, true);
+			xSetInt(dDestroy, xUnitID, 1*trQuestVarGet("QVRelic"));
+			xAddDatabaseBlock(dDestroy, true);
+			xSetInt(dDestroy, xUnitID, 1*trQuestVarGet("QVHero"));
 			FloatingUnitAnimIdle("Valkyrie", x*4+18,19.5,z*4+2 ,0, 0,0,0);
+			xAddDatabaseBlock(dDestroy, true);
+			xSetInt(dDestroy, xUnitID, 1*trQuestVarGet("QVRelic"));
+			xAddDatabaseBlock(dDestroy, true);
+			xSetInt(dDestroy, xUnitID, 1*trQuestVarGet("QVHero"));
 			FloatingUnitAnimIdle("Garrison Flag Sky Passage", x*4+18,19.5,z*4+2 ,0, 0,0,0);
+			xAddDatabaseBlock(dDestroy, true);
+			xSetInt(dDestroy, xUnitID, 1*trQuestVarGet("QVRelic"));
+			xAddDatabaseBlock(dDestroy, true);
+			xSetInt(dDestroy, xUnitID, 1*trQuestVarGet("QVHero"));
 			FloatingUnitAnimIdle("Obelisk", 24,7.5,z*4+2 ,0, 1,1,1);
+			xAddDatabaseBlock(dDestroy, true);
+			xSetInt(dDestroy, xUnitID, 1*trQuestVarGet("QVRelic"));
+			xAddDatabaseBlock(dDestroy, true);
+			xSetInt(dDestroy, xUnitID, 1*trQuestVarGet("QVHero"));
 			trUnitSelectClear();
 			trUnitSelectByQV("QVHero");
 			trUnitSelectByQV("QVRelic");
 			trUnitSetAnimationPath("2,0,0,0,0,0");
 		}
 		FloatingUnitAnimIdle("Obelisk", x*4+18,7.5,8 ,0, 1,1,1);
+		xAddDatabaseBlock(dDestroy, true);
+		xSetInt(dDestroy, xUnitID, 1*trQuestVarGet("QVRelic"));
+		xAddDatabaseBlock(dDestroy, true);
+		xSetInt(dDestroy, xUnitID, 1*trQuestVarGet("QVHero"));
 		trUnitSelectClear();
 		trUnitSelectByQV("QVHero");
 		trUnitSelectByQV("QVRelic");
@@ -435,17 +527,29 @@ highFrequency
 	}
 	
 	FloatingUnitAnimIdle("Wall Connector", 24,18,8 ,0, 2.8,0.1,2.8);
+	xAddDatabaseBlock(dDestroy, true);
+	xSetInt(dDestroy, xUnitID, 1*trQuestVarGet("QVRelic"));
+	xAddDatabaseBlock(dDestroy, true);
+	xSetInt(dDestroy, xUnitID, 1*trQuestVarGet("QVHero"));
 	trUnitSelectClear();
 	trUnitSelectByQV("QVHero");
 	trUnitSelectByQV("QVRelic");
 	trUnitSetAnimationPath("0,1,0,0,0,0");
 	FloatingUnitAnimIdle("Columns", 24,18.5,10 ,180, 5,1,1);
+	xAddDatabaseBlock(dDestroy, true);
+	xSetInt(dDestroy, xUnitID, 1*trQuestVarGet("QVRelic"));
+	xAddDatabaseBlock(dDestroy, true);
+	xSetInt(dDestroy, xUnitID, 1*trQuestVarGet("QVHero"));
 	trUnitSelectClear();
 	trUnitSelectByQV("QVHero");
 	trUnitSelectByQV("QVRelic");
 	trUnitSetAnimationPath("0,0,0,0,0,0");
 	//Main unit
 	FloatingUnitAnimIdle("Hoplite", 24,18.5,8 ,180, 1,1,1);
+	xAddDatabaseBlock(dDestroy, true);
+	xSetInt(dDestroy, xUnitID, 1*trQuestVarGet("QVRelic"));
+	xAddDatabaseBlock(dDestroy, true);
+	xSetInt(dDestroy, xUnitID, 1*trQuestVarGet("QVHero"));
 	trQuestVarSet("FirstPlace", 1*trQuestVarGet("QVRelic"));
 	
 }
@@ -458,3 +562,113 @@ trCameraCut(vector(23.701241,30.623808,-88.526428), vector(0.003350,-0.167604,0.
 2     trCameraCut(vector(40.951347,21.263809,-26.724661), vector(0.003350,-0.167604,0.985849), vector(0.000570,0.985855,0.167603), vector(0.999994,0.000000,-0.003398));
 1    trCameraCut(vector(23.205647,24.203808,-27.564360), vector(0.003350,-0.167604,0.985849), vector(0.000570,0.985854,0.167603), vector(0.999994,-0.000000,-0.003398));
 */
+
+rule SDNoDelay
+inactive
+highFrequency
+{
+	xsDisableSelf();
+	trCameraCut(vector(23.205647,24.203808,-27.564360), vector(0.003350,-0.167604,0.985849), vector(0.000570,0.985854,0.167603), vector(0.999994,-0.000000,-0.003398));
+	characterDialog("Yeebaagooon", "On no! It looks like we have a tie for first place.", "icons/special e son of osiris icon 64");
+	trUnitSelectByQV("FirstPlace");
+	trMutateSelected(kbGetProtoUnitID("Pharaoh of Osiris XP"));
+	trFadeOutAllSounds(1);
+	trFadeOutMusic(1);
+	trSetLighting("Anatolia", 1);
+	playSound("cinematics\15_in\gong.wav");
+	xsEnableRule("SuddenDeath_C01");
+	playSound("\Yeebaagooon\Agricultural Madness\Round4Music.mp3");
+}
+
+rule SuddenDeathActive
+inactive
+highFrequency
+{
+	if (trTime() > cActivationTime + 4) {
+		xsDisableSelf();
+		trCameraCut(vector(23.205647,24.203808,-27.564360), vector(0.003350,-0.167604,0.985849), vector(0.000570,0.985854,0.167603), vector(0.999994,-0.000000,-0.003398));
+		characterDialog("Yeebaagooon", "On no! It looks like we have a tie for first place.", "icons/special e son of osiris icon 64");
+		trUnitSelectByQV("FirstPlace");
+		trMutateSelected(kbGetProtoUnitID("Pharaoh of Osiris XP"));
+		trFadeOutAllSounds(1);
+		trFadeOutMusic(1);
+		trSetLighting("Anatolia", 1);
+		playSound("cinematics\15_in\gong.wav");
+		xsEnableRule("SuddenDeath_C01");
+		playSound("\Yeebaagooon\Agricultural Madness\Round4Music.mp3");
+	}
+}
+
+rule SuddenDeath_C01
+inactive
+highFrequency
+{
+	if (trTime() > cActivationTime + 4) {
+		xsDisableSelf();
+		characterDialog("Yeebaagooon", "This is not allowed.", "icons/special e son of osiris icon 64");
+		trUIFadeToColor(0,0,0,1500,400,true);
+		for(p = 1; <= cNumberNonGaiaPlayers){
+			if(p != FirstPlacePlayer){
+				if(1*trQuestVarGet("P"+p+"Place") == 1){
+					TiePlayer = p;
+				}
+			}
+		}
+		xsEnableRule("SuddenDeath_C02");
+	}
+}
+
+rule SuddenDeath_C02
+inactive
+highFrequency
+{
+	if (trTime() > cActivationTime + 2) {
+		xsDisableSelf();
+		characterDialog(" ", " ", "");
+		trOverlayTextColour(255,0,0);
+		trOverlayText("ROUND 4: SUDDEN DEATH", 4, 525, 350, 1000);
+		xsEnableRule("SuddenDeath_C03");
+		int p = trCurrentPlayer();
+		if(1*trQuestVarGet("P"+p+"Place") == 1){
+			characterDialog("Sudden Death Rules", "No wall connectors, only missiles.", "icons/special e son of osiris icon 64");
+		}
+		for (x=xGetDatabaseCount(dDestroy); > 0) {
+			xDatabaseNext(dDestroy);
+			xUnitSelect(dDestroy, xUnitID);
+			trUnitDestroy();
+			xFreeDatabaseBlock();
+		}
+	}
+}
+
+rule SuddenDeath_C03
+inactive
+highFrequency
+{
+	if (trTime() > cActivationTime + 4) {
+		if(tie1 == 1){
+			trOverlayText(""+trStringQuestVarGet("p"+FirstPlacePlayer+"name") + " vs " +trStringQuestVarGet("p"+TiePlayer+"name"), 4, 555, 350, 1000);
+		}
+		else{
+			trOverlayText("MULTIPLE BELLIGERENTS", 4, 535, 350, 1000);
+		}
+		int p = trCurrentPlayer();
+		if(1*trQuestVarGet("P"+p+"Place") == 1){
+			characterDialog("Sudden Death Rules", "Hit a player with a missile to eliminate them.", "icons/special e son of osiris icon 64");
+		}
+		xsDisableSelf();
+		xsEnableRule("SuddenDeath_C04");
+	}
+}
+
+rule SuddenDeath_C04
+inactive
+highFrequency
+{
+	if (trTime() > cActivationTime + 4) {
+		xsDisableSelf();
+		trLetterBox(false);
+		trUIFadeToColor(0,0,0,1500,1,false);
+		xsEnableRule("PaintTerrain");
+	}
+}
