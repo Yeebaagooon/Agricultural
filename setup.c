@@ -169,9 +169,9 @@ highFrequency
 	
 	
 	//Slot 2
-	addSavedDataDB(dPlayerData, xWins , 2, 50);
-	addSavedDataDB(dPlayerData, xSDWins , 2, 10);
-	addSavedDataDB(dPlayerData, xMaxBank , 2, 100);
+	addSavedDataDB(dPlayerData, xWins , 2, 51);
+	addSavedDataDB(dPlayerData, xSDWins , 2, 11);
+	addSavedDataDB(dPlayerData, xMaxBank , 2, 101);
 	
 	
 	

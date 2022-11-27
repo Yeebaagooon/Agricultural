@@ -43,6 +43,8 @@ rule PaintSP
 highFrequency
 inactive
 {
+	trBlockAllSounds(true);
+	trBlockAllAmbientSounds();
 	PaintAtlantisArea(0,0,101,5,5,4);
 	xSetPointer(dPlayerData, 1);
 	xSetPointer(dSkin, 1*trQuestVarGet("WinSkin"));
@@ -81,9 +83,6 @@ inactive
 				trUnitSelectByQV("temp");
 				trUnitConvert(1);
 				spyEffect(1*trQuestVarGet("temp"), kbGetProtoUnitID("Hero Birth"), vector(0,0,0), vector(1,1,1));
-				if(xGetInt(dPlayerData, xSkin) == xGetPointer(dSkin)){
-					spyEffect(1*trQuestVarGet("temp"), kbGetProtoUnitID("Gaia Forest effect"), vector(0,0,0), vector(1,1,1));
-				}
 				trUnitSelectByQV("temp");
 				trUnitChangeProtoUnit(""+xGetString(dSkin, xSkinName));
 			}
@@ -132,9 +131,6 @@ inactive
 				trUnitSelectByQV("temp");
 				trUnitConvert(1);
 				spyEffect(1*trQuestVarGet("temp"), kbGetProtoUnitID("Hero Birth"), vector(0,0,0), vector(1,1,1));
-				if(xGetInt(dPlayerData, xSkin) == xGetPointer(dSkin)){
-					spyEffect(1*trQuestVarGet("temp"), kbGetProtoUnitID("Gaia Forest effect"), vector(0,0,0), vector(1,1,1));
-				}
 				trUnitSelectByQV("temp");
 				trUnitChangeProtoUnit(""+xGetString(dSkin, xSkinName));
 			}
@@ -171,9 +167,6 @@ inactive
 				trUnitSelectByQV("temp");
 				trUnitConvert(1);
 				spyEffect(1*trQuestVarGet("temp"), kbGetProtoUnitID("Hero Birth"), vector(0,0,0), vector(1,1,1));
-				if(xGetInt(dPlayerData, xSkin) == xGetPointer(dSkin)){
-					spyEffect(1*trQuestVarGet("temp"), kbGetProtoUnitID("Gaia Forest effect"), vector(0,0,0), vector(1,1,1));
-				}
 				trUnitSelectByQV("temp");
 				trUnitChangeProtoUnit(""+xGetString(dSkin, xSkinName));
 			}
@@ -222,6 +215,8 @@ highFrequency
 		trUnitConvert(0);
 	}
 	xsDisableSelf();
+	trUnblockAllSounds();
+	trUnBlockAllAmbientSounds();
 }
 
 void GoToMainMenu(int p = 0){
@@ -242,6 +237,8 @@ void ChooseASkin(int p = 0){
 	xSetInt(dPlayerData, xSkin, p);
 	saveAllData();
 	playSound("arrkantosleave.wav");
+	trEndGame();
+	trModeEnter("Pregame");
 }
 
 rule SelectSkinsSP

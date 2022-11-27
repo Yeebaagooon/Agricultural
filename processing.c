@@ -104,6 +104,10 @@ void ProcessCrates(int count = 1) {
 					xSetInt(dCrates, xUnitID, -1);
 					trQuestVarSetFromRand("Random", 5000, 12000);
 					xSetInt(dCrates, xTimeIn, trTimeMS()+1*trQuestVarGet("Random"));
+					xSetPointer(dPlayerData, p);
+					if(xGetInt(dPlayerData, xMaxBank) < extra){
+						xSetInt(dPlayerData, xMaxBank, extra);
+					}
 					if(trCurrentPlayer() == p){
 						if(extra == 1){
 							trOverlayText("+ " + extra + " point", 3, 615, 30, 1000);
@@ -405,6 +409,10 @@ void ProcessRelics(int count = 1) {
 							trUnitChangeInArea(0, 0, "Titan Atlantean", "Farm", MapSize*6);
 							trUnitChangeInArea(0, 0, "Titan Gate Dead", "Dwarf", MapSize*6);
 							trUnitChangeInArea(0, 0, "Dwarf", "Poison SFX", MapSize*6);
+							xSetPointer(dPlayerData, p);
+							if(xGetInt(dPlayerData, xMaxBank) < extra){
+								xSetInt(dPlayerData, xMaxBank, extra);
+							}
 						}
 						case 4:
 						//bank current but keep
@@ -415,6 +423,10 @@ void ProcessRelics(int count = 1) {
 							trSetCivilizationNameOverride(p, "Points: " + points);
 							gadgetRefresh("unitStatPanel");
 							relictext = "+ " + extra + " points!";
+							xSetPointer(dPlayerData, p);
+							if(xGetInt(dPlayerData, xMaxBank) < extra){
+								xSetInt(dPlayerData, xMaxBank, extra);
+							}
 						}
 						case 5:
 						//+5 points
@@ -425,6 +437,10 @@ void ProcessRelics(int count = 1) {
 							trSetCivilizationNameOverride(p, "Points: " + points);
 							gadgetRefresh("unitStatPanel");
 							relictext = "+ " + extra + " points!";
+							xSetPointer(dPlayerData, p);
+							if(xGetInt(dPlayerData, xMaxBank) < extra){
+								xSetInt(dPlayerData, xMaxBank, extra);
+							}
 						}
 						case 6:
 						//convert nearby
@@ -577,7 +593,7 @@ inactive
 		trPlayerGrantResources(p, "Favor", -1000);
 		trPlayerGrantResources(p, "Food", 1*trPlayerUnitCountSpecific(p, "Farm"));
 		if(trPlayerGetPopulation(p) > 99){
-			yFindLatestReverse("Temp", "Vision Revealer", p);
+			yFindLatest("Temp", "Vision Revealer", p);
 			vector pos = kbGetBlockPosition(""+1*trQuestVarGet("P"+p+"Farmer"), true);
 			xAddDatabaseBlock(dMissiles, true);
 			//unitTransform("Vision Revealer", "Rocket");

@@ -1,8 +1,9 @@
-void NewSkin(string protounitname = "", int required = 0, int anim = 1){
+void NewSkin(string protounitname = "", int required = 0, int anim = 1, vector scale = vector(2,2,2)){
 	xAddDatabaseBlock(dSkin, true);
 	xSetInt(dSkin, xUnitID, 0);
 	xSetInt(dSkin, xSkinUnlocked, 0);
 	xSetInt(dSkin, xGatherAnim, anim);
+	xSetVector(dSkin, xSkinScale, scale);
 	xSetString(dSkin, xSkinName, protounitname);
 	xSetInt(dSkin, xSkinRequirement, required);
 	trModifyProtounit(protounitname, 0, 55, 4);
@@ -26,13 +27,13 @@ inactive
 	trQuestVarSet("WinSkin", 1*xGetPointer(dSkin));
 	NewSkin("Brokk", 2, 9);
 	NewSkin("Kastor", 3);
-	NewSkin("Sphinx", 4);
-	NewSkin("Valkyrie", 5);
+	NewSkin("Sphinx", 4, 39);
+	NewSkin("Valkyrie", 5, 50,vector(1.5,1.5,1.5));
 	NewSkin("Rhinocerous", 6);
 	NewSkin("Colossus", 7);
 	NewSkin("Shade XP", 8);
 	NewSkin("Automaton SPC", 9);
-	NewSkin("Malagius", 10);
+	NewSkin("General Melagius", 10);
 	NewSkin("Fire Giant", 12);
 	NewSkin("Crowned Crane", 14);
 	NewSkin("Carcinos", 16);
@@ -43,34 +44,34 @@ inactive
 	NewSkin("Azure Dragon", 26);
 	NewSkin("Amanra", 28);
 	NewSkin("Bella", 30);
-	NewSkin("Titan Gaia", 35);
-	NewSkin("Titan Kronos", 40);
-	NewSkin("Titan Prometheus", 45);
-	NewSkin("Flying Purple Hippo", 50);
+	NewSkin("Titan Gaia", 35,1, vector(1,1,1));
+	NewSkin("Titan Kronos", 40,1, vector(1,1,1));
+	NewSkin("Titan Prometheus", 45,1, vector(1,1,1));
+	NewSkin("Flying Purple Hippo", 50,1,vector(1.5,1.5,1.5));
 	//POINT SKINS
-	NewSkin("Chicken", 25, 3);
+	NewSkin("Chicken", 25, 2, vector(4,4,4));
 	trQuestVarSet("PointSkin", 1*xGetPointer(dSkin));
-	NewSkin("Mountain Giant", 30);
-	NewSkin("Hero of Ragnarok", 35);
+	NewSkin("Mountain Giant", 30, 39);
+	NewSkin("Hero Ragnorok", 35);
 	NewSkin("Argus", 40);
-	NewSkin("Servant", 45);
-	NewSkin("Setna", 50);
-	NewSkin("Oracle Hero", 55);
-	NewSkin("Titan Atlantean", 60);
+	NewSkin("Servant", 45, 50);
+	NewSkin("Setna", 50, 50);
+	NewSkin("Oracle Hero", 55, 52);
+	NewSkin("Titan Atlantean", 60, 3, vector(1,1,1));
 	NewSkin("Nidhogg", 65);
-	NewSkin("Earth Dragon", 80);
+	NewSkin("Earth Dragon", 80, 1, vector(1,1,1));
 	NewSkin("Arkantos God", 100);
 	//PB SKINS
 	NewSkin("Hero Greek Bellerophon", 200);
 	trQuestVarSet("PBSkin", 1*xGetPointer(dSkin));
-	NewSkin("Forkboy", 300);
-	NewSkin("Guardian XP", 400);
+	NewSkin("Forkboy", 300, 1, vector(1,1,1));
+	NewSkin("Guardian XP", 400, 3, vector(1,1,1));
 	//OTHER SKINS
 	NewSkin("Athena", 0);
 	trQuestVarSet("ExtraSkin", 1*xGetPointer(dSkin));
 	NewSkin("Fire Siphon", 0);
-	NewSkin("Gargarensis", 0);
-	NewSkin("Minotaur", 0);
+	NewSkin("Gargarensis", 0, 30);
+	NewSkin("Minotaur", 0, 26);
 	NewSkin("Pharaoh of Osiris XP", 0, 25);
 	NewSkin("Hoplite", 0);
 	//END = 48
@@ -136,8 +137,10 @@ rule ConvertSpies
 highFrequency
 inactive
 {
+	vector scale = xsVectorSet(dSkin, xSkinScale, xGetInt(dPlayerData, xSkin));
 	for(p=1 ; <= cNumberNonGaiaPlayers){
 		xSetPointer(dPlayerData, p);
+		scale = xGetVector(dSkin, xSkinScale, xGetInt(dPlayerData, xSkin));
 		if(xGetInt(dPlayerData, xSkin) > 4){
 			xUnitSelect(dPlayerData, xSpyID);
 			trUnitChangeProtoUnit("Villager Greek");
@@ -148,7 +151,7 @@ inactive
 			xUnitSelect(dPlayerData, xSpyID);
 			trMutateSelected(kbGetProtoUnitID(""+SkinProto(xGetInt(dPlayerData, xSkin))));
 			xUnitSelect(dPlayerData, xSpyID);
-			trSetSelectedScale(2,2,2);
+			trSetSelectedScale(xsVectorGetX(scale),xsVectorGetY(scale),xsVectorGetZ(scale));
 		}
 	}
 	xsDisableSelf();
@@ -230,13 +233,13 @@ inactive
 				trUnitChangeProtoUnit("Villager Chinese");
 			}
 		}
-		if(xGetInt(dPlayerData, xSkin) > 4){
+		if(xGetInt(dPlayerData, xSkin) > 5){
 			trUnitChangeProtoUnit("Villager Egyptian");
 		}
 		trUnitSelectByQV("P"+p+"Farmer");
-		if(xGetInt(dPlayerData, xSkin) > 4){
+		if(xGetInt(dPlayerData, xSkin) > 5){
 			trSetSelectedScale(0,2,0);
-			spyEffect(1*trQuestVarGet("P"+p+"Farmer"), kbGetProtoUnitID(""+SkinProto(xGetInt(dPlayerData, xSkin))), xsVectorSet(dPlayerData,xSpyID,p), vector(2,2,2));
+			spyEffect(1*trQuestVarGet("P"+p+"Farmer"), kbGetProtoUnitID(""+SkinProto(xGetInt(dPlayerData, xSkin))), xsVectorSet(dPlayerData,xSpyID,p), xGetVector(dSkin, xSkinScale, xGetInt(dPlayerData, xSkin)));
 		}
 		else{
 			trSetSelectedScale(2,2,2);

@@ -201,6 +201,8 @@ inactive
 			trUnitSelectByQV("P"+p+"Farmer");
 			if(trUnitAlive() == true){
 				trQuestVarModify("P"+p+"Points", "+", 1);
+				xSetPointer(dPlayerData, p);
+				xSetInt(dPlayerData, xSDWins, xGetInt(dPlayerData, xSDWins)+1);
 			}
 		}
 		trUnitSelectClear();

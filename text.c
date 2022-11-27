@@ -64,12 +64,39 @@ int npcDiag(int npc = 0, int dialog = 0) {
 				case 1:
 				{
 					uiMessageBox("In singeplayer mode you can select skins to use online.");
-					dialog = 0;
 				}
 				case 2:
 				{
+					uiMessageBox("The first row charts your online wins.");
+				}
+				case 3:
+				{
+					uiMessageBox("You gain a pip for every win.");
+				}
+				case 4:
+				{
+					uiMessageBox("And can equip any skin with a hero birth glow.");
+				}
+				case 5:
+				{
+					uiMessageBox("The second row charts your maximum single point score.");
+				}
+				case 6:
+				{
+					uiMessageBox("This is the number of points you receive from a wall connector/relic.");
+				}
+				case 7:
+				{
+					uiMessageBox("The third row charts your personal best score.");
+				}
+				case 8:
+				{
+					uiMessageBox("The final row has some more unique conditions.");
+				}
+				case 9:
+				{
+					uiMessageBox("Click a unit to equip it or find out how to unlock it!");
 					dialog = 0;
-					trShowChoiceDialog("Do you know how to do this?", "Yes", 18, "No", 19);
 				}
 			}
 		}

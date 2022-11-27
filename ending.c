@@ -210,6 +210,8 @@ highFrequency
 				if(1*trQuestVarGet("P"+p+"Place") == x){
 					if(x == 1){
 						trChatSend(0, "<color={PlayerColor("+p+")}><icon=(20)(icons/star)> {Playername("+p+")} - "+1*trQuestVarGet("P"+p+"Points")+"");
+						xSetPointer(dPlayerData, p);
+						xSetInt(dPlayerData, xWins, xGetInt(dPlayerData, xWins)+1);
 					}
 					else{
 						trChatSend(0, "<color={PlayerColor("+p+")}>{Playername("+p+")} - "+1*trQuestVarGet("P"+p+"Points")+"");

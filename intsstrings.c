@@ -3,8 +3,8 @@ IDEAS
 Search //Release
 
 
-Port reselctmyself()
-missile r3 as uibox
+Change spy in SP for unlock, too noisy!
+
 if (trGetScenarioUserData(8, "Ascension MMORPG.xs") > 140785919) { }
 */
 
@@ -86,6 +86,7 @@ int xSkinID = 0;
 int xSkinName = 0;
 int xSkinUnlocked = 0;
 int xGatherAnim = 0;
+int xSkinScale = 0;
 
 int tie1 = -1;
 int tie2 = -1;
@@ -140,6 +141,7 @@ highFrequency
 	xSkinName = xInitAddString(dSkin, "Skin protoname", " ");
 	xSkinUnlocked = xInitAddInt(dSkin, "unlocked", 0);
 	xGatherAnim = xInitAddInt(dSkin, "farm anim", 1);
+	xSkinScale = xInitAddVector(dSkin, "scale", vector(2,2,2));
 	
 	dFlags = xInitDatabase("Flags");
 	xUnitID = xInitAddInt(dFlags, "unitid", 0);
