@@ -2,6 +2,11 @@ rule Technologies
 inactive
 highFrequency
 {
+	trTechSetStatus(0, 14, 4);
+	trTechSetStatus(0, 7, 4);
+	trTechSetStatus(0, 20, 4);
+	trTechSetStatus(0, 59, 4);
+	trTechSetStatus(0, 102, 4);
 	for(p = 1; <= cNumberNonGaiaPlayers){
 		trTechSetStatus(p, 1, 4);
 		trTechSetStatus(p, 2, 4);
@@ -18,6 +23,11 @@ highFrequency
 		trTechSetStatus(p, 30, 4);
 		trTechSetStatus(p, 350, 4);
 		trTechSetStatus(p, 27, 4);
+		trTechSetStatus(p, 14, 4);
+		trTechSetStatus(p, 7, 4);
+		trTechSetStatus(p, 20, 4);
+		trTechSetStatus(p, 59, 4);
+		trTechSetStatus(p, 102, 4);
 		for(n=930; >0) {
 			trForbidProtounit(p,kbGetProtoUnitName(n));
 		}

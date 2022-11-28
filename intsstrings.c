@@ -4,8 +4,7 @@ Search //Release
 
 
 Change spy in SP for unlock, too noisy!
-
-if (trGetScenarioUserData(8, "Ascension MMORPG.xs") > 140785919) { }
+Athena condition in data
 */
 
 

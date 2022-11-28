@@ -32,6 +32,7 @@ inactive
 		}
 		else{
 			//start
+			trCameraCut(vector(23.398306,123.743713,-101.420784), vector(0.004524,-0.707107,0.707092), vector(0.004524,0.707107,0.707093), vector(0.999980,0.000000,-0.006398));
 		}
 	}
 	else{
@@ -78,13 +79,6 @@ inactive
 			if(n <= xGetInt(dPlayerData, xWins)){
 				debugLog("Unlocked skin " + (xGetPointer(dSkin)-1));
 				xSetInt(dSkin, xSkinUnlocked, 1);
-				trUnitSelectByQV("temp");
-				trUnitChangeProtoUnit("Villager Egyptian");
-				trUnitSelectByQV("temp");
-				trUnitConvert(1);
-				spyEffect(1*trQuestVarGet("temp"), kbGetProtoUnitID("Hero Birth"), vector(0,0,0), vector(1,1,1));
-				trUnitSelectByQV("temp");
-				trUnitChangeProtoUnit(""+xGetString(dSkin, xSkinName));
 			}
 			xDatabaseNext(dSkin);
 		}
@@ -121,18 +115,9 @@ inactive
 			xSetInt(dSkin, xUnitID, 1*trQuestVarGet("temp"));
 			trUnitSelectByQV("temp");
 			trUnitChangeProtoUnit(""+xGetString(dSkin, xSkinName));
-			//trMutateSelected(kbGetProtoUnitID(""+xGetString(dSkin, xSkinName)));
-			//UNLOCK
 			if(n <= xGetInt(dPlayerData, xMaxBank)){
 				debugLog("Unlocked skin " + (xGetPointer(dSkin)-1));
 				xSetInt(dSkin, xSkinUnlocked, 1);
-				trUnitSelectByQV("temp");
-				trUnitChangeProtoUnit("Villager Egyptian");
-				trUnitSelectByQV("temp");
-				trUnitConvert(1);
-				spyEffect(1*trQuestVarGet("temp"), kbGetProtoUnitID("Hero Birth"), vector(0,0,0), vector(1,1,1));
-				trUnitSelectByQV("temp");
-				trUnitChangeProtoUnit(""+xGetString(dSkin, xSkinName));
 			}
 			xDatabaseNext(dSkin);
 		}
@@ -162,13 +147,6 @@ inactive
 			if(n*10 <= xGetInt(dPlayerData, xPersonalBest)){
 				debugLog("Unlocked skin " + (xGetPointer(dSkin)-1));
 				xSetInt(dSkin, xSkinUnlocked, 1);
-				trUnitSelectByQV("temp");
-				trUnitChangeProtoUnit("Villager Egyptian");
-				trUnitSelectByQV("temp");
-				trUnitConvert(1);
-				spyEffect(1*trQuestVarGet("temp"), kbGetProtoUnitID("Hero Birth"), vector(0,0,0), vector(1,1,1));
-				trUnitSelectByQV("temp");
-				trUnitChangeProtoUnit(""+xGetString(dSkin, xSkinName));
 			}
 			xDatabaseNext(dSkin);
 		}
@@ -199,6 +177,48 @@ inactive
 		trUnitSelectByQV("temp");
 		trUnitChangeProtoUnit(""+xGetString(dSkin, xSkinName));
 		//trMutateSelected(kbGetProtoUnitID(""+xGetString(dSkin, xSkinName)));
+		if(n == 1){
+			if(false){
+				xSetInt(dSkin, xSkinUnlocked, 1);
+				trUnitSelectByQV("temp");
+				trUnitHighlight(10000, false);
+			}
+		}
+		if(n == 2){
+			if(trGetScenarioUserData(15, "motherload") > 0){
+				xSetInt(dSkin, xSkinUnlocked, 1);
+				trUnitSelectByQV("temp");
+				trUnitHighlight(10000, false);
+			}
+		}
+		if(n == 3){
+			if(trGetScenarioUserData(0, "motherload") == 10){
+				xSetInt(dSkin, xSkinUnlocked, 1);
+				trUnitSelectByQV("temp");
+				trUnitHighlight(10000, false);
+			}
+		}
+		if(n == 4){
+			if(xGetInt(dPlayerData, xSDWins) > 0){
+				xSetInt(dSkin, xSkinUnlocked, 1);
+				trUnitSelectByQV("temp");
+				trUnitHighlight(10000, false);
+			}
+		}
+		if(n == 5){
+			if(trGetScenarioUserData(10, "motherload") == 884731){
+				xSetInt(dSkin, xSkinUnlocked, 1);
+				trUnitSelectByQV("temp");
+				trUnitHighlight(10000, false);
+			}
+		}
+		if(n == 6){
+			if(trGetScenarioUserData(8, "Ascension MMORPG") > 140785919){
+				xSetInt(dSkin, xSkinUnlocked, 1);
+				trUnitSelectByQV("temp");
+				trUnitHighlight(10000, false);
+			}
+		}
 		xDatabaseNext(dSkin);
 	}
 	trDelayedRuleActivation("SkinConvertGaia");
@@ -236,9 +256,12 @@ void ChooseASkin(int p = 0){
 	xSetPointer(dPlayerData, 1);
 	xSetInt(dPlayerData, xSkin, p);
 	saveAllData();
-	playSound("arrkantosleave.wav");
+	trSoundPlayPaused("arkantosleave.wav", "", -1, "", "");
+	trSoundPlayPaused("meteorapproach.wav", "", -1, "", "");
+	playSound("arkantosleave.wav");
 	trEndGame();
 	trModeEnter("Pregame");
+	uiMessageBox("Skin choice saved!");
 }
 
 rule SelectSkinsSP
@@ -247,14 +270,39 @@ highFrequency
 {
 	xDatabaseNext(dSkin);
 	xUnitSelect(dSkin,xUnitID);
+	int req = 0;
+	int cur = 0;
+	xSetPointer(dPlayerData, 1);
 	if (trUnitIsSelected()) {
 		uiClearSelection();
 		if(xGetInt(dSkin, xSkinUnlocked) == 0){
-			uiMessageBox("This skin is locked!");
+			if((xGetPointer(dSkin) >= 5) && (xGetPointer(dSkin) <= 28)){
+				req = xGetInt(dSkin, xSkinRequirement);
+				cur = xGetInt(dPlayerData, xWins);
+				uiMessageBox("This skin is locked! You need " + req + " wins to unlock. (Current = " + cur + ")");
+			}
+			else if((xGetPointer(dSkin) >= 29) && (xGetPointer(dSkin) <= 40)){
+				req = xGetInt(dSkin, xSkinRequirement);
+				cur = xGetInt(dPlayerData, xMaxBank);
+				uiMessageBox("This skin is locked! You need to bank " + req + " points in one go to unlock. (Current = " + cur + ")");
+			}
+			//Trouble at 39 - doesnt seem to go
+			else if((xGetPointer(dSkin) >= 41) && (xGetPointer(dSkin) <= 43)){
+				req = xGetInt(dSkin, xSkinRequirement);
+				cur = xGetInt(dPlayerData, xPersonalBest);
+				uiMessageBox("This skin is locked! You need a personal best of " + req + " points to unlock. (Current = " + cur + ")");
+			}
+			//SPECIALS
+			else if(xGetPointer(dSkin) == 44){
+				uiMessageBox("This skin is locked! You need to place in the top 3 when playing with 10+ players to unlock.");
+			}
+			else if(xGetPointer(dSkin) >= 45){
+				startNPCDialog(xGetPointer(dSkin)-40);
+			}
 		}
 		else{
 			trShowChoiceDialog("Select this skin?", "Yes", (20+(xGetPointer(dSkin))), "No", -1);
-			debugLog(""+(xGetPointer(dSkin)-1));
 		}
+		debugLog(""+(xGetPointer(dSkin)-1));
 	}
 }

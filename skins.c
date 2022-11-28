@@ -30,23 +30,28 @@ inactive
 	NewSkin("Sphinx", 4, 39);
 	NewSkin("Valkyrie", 5, 50,vector(1.5,1.5,1.5));
 	NewSkin("Rhinocerous", 6);
-	NewSkin("Colossus", 7);
-	NewSkin("Shade XP", 8);
-	NewSkin("Automaton SPC", 9);
-	NewSkin("General Melagius", 10);
-	NewSkin("Fire Giant", 12);
-	NewSkin("Crowned Crane", 14);
-	NewSkin("Carcinos", 16);
-	NewSkin("Fishing Ship Atlantean", 18);
-	NewSkin("Bear", 20);
-	NewSkin("Pharaoh", 22);
-	NewSkin("Kastor", 24);
-	NewSkin("Azure Dragon", 26);
+	NewSkin("Colossus", 7, 46,vector(1.25,1.25,1.25));
+	//shrinker
+	NewSkin("Shade XP", 8,1);
+	NewSkin("Automaton SPC", 9, 50);
+	NewSkin("General Melagius", 10, 39);
+	NewSkin("Fire Giant", 12, 6,vector(1.5,1.5,1.5));
+	//mild shrinker
+	NewSkin("Frost Giant", 14, 40, vector(1.5,1.5,1.5));
+	NewSkin("Carcinos", 16, 18 ,vector(1.5,1.5,1.5));
+	NewSkin("Fishing Ship Atlantean", 18, 30,vector(1.5,1.5,1.5));
+	NewSkin("Bear", 20, 3);
+	NewSkin("Pharaoh", 22, 33);
+	NewSkin("Kastor Adult", 24, 51);
+	NewSkin("Azure Dragon", 26, 1, vector(1,1,1));
 	NewSkin("Amanra", 28);
-	NewSkin("Bella", 30);
-	NewSkin("Titan Gaia", 35,1, vector(1,1,1));
-	NewSkin("Titan Kronos", 40,1, vector(1,1,1));
-	NewSkin("Titan Prometheus", 45,1, vector(1,1,1));
+	NewSkin("Bella", 30, 3);
+	NewSkin("Titan Gaia", 35,1, vector(0.5,0.5,0.5));
+	//huge float
+	NewSkin("Titan Kronos", 40,1, vector(0.5,0.5,0.5));
+	//huge float
+	NewSkin("Titan Prometheus", 45,1, vector(0.5,0.5,0.5));
+	//huge float
 	NewSkin("Flying Purple Hippo", 50,1,vector(1.5,1.5,1.5));
 	//POINT SKINS
 	NewSkin("Chicken", 25, 2, vector(4,4,4));
@@ -58,19 +63,21 @@ inactive
 	NewSkin("Setna", 50, 50);
 	NewSkin("Oracle Hero", 55, 52);
 	NewSkin("Titan Atlantean", 60, 3, vector(1,1,1));
-	NewSkin("Nidhogg", 65);
+	NewSkin("Nidhogg", 65, 1, vector(1,1,1));
 	NewSkin("Earth Dragon", 80, 1, vector(1,1,1));
-	NewSkin("Arkantos God", 100);
+	//no walk anim
+	NewSkin("Arkantos God", 100, 26);
 	//PB SKINS
-	NewSkin("Hero Greek Bellerophon", 200);
+	NewSkin("Hero Greek Bellerophon", 200, 3);
 	trQuestVarSet("PBSkin", 1*xGetPointer(dSkin));
 	NewSkin("Forkboy", 300, 1, vector(1,1,1));
 	NewSkin("Guardian XP", 400, 3, vector(1,1,1));
 	//OTHER SKINS
-	NewSkin("Athena", 0);
+	NewSkin("Athena", 0, 25);
 	trQuestVarSet("ExtraSkin", 1*xGetPointer(dSkin));
-	NewSkin("Fire Siphon", 0);
-	NewSkin("Gargarensis", 0, 30);
+	NewSkin("Fire Siphon", 0,1,vector(1,1,1));
+	NewSkin("Gargarensis", 0, 30, vector(1,1,1));
+	//huge float
 	NewSkin("Minotaur", 0, 26);
 	NewSkin("Pharaoh of Osiris XP", 0, 25);
 	NewSkin("Hoplite", 0);
