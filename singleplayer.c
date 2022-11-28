@@ -276,27 +276,27 @@ highFrequency
 	if (trUnitIsSelected()) {
 		uiClearSelection();
 		if(xGetInt(dSkin, xSkinUnlocked) == 0){
-			if((xGetPointer(dSkin) >= 5) && (xGetPointer(dSkin) <= 28)){
+			if((xGetPointer(dSkin) >= trQuestVarGet("WinSkin")) && (xGetPointer(dSkin) < trQuestVarGet("PointSkin"))){
 				req = xGetInt(dSkin, xSkinRequirement);
 				cur = xGetInt(dPlayerData, xWins);
 				uiMessageBox("This skin is locked! You need " + req + " wins to unlock. (Current = " + cur + ")");
 			}
-			else if((xGetPointer(dSkin) >= 29) && (xGetPointer(dSkin) <= 40)){
+			else if((xGetPointer(dSkin) >= trQuestVarGet("PointSkin")) && (xGetPointer(dSkin) < trQuestVarGet("PBSkin"))){
 				req = xGetInt(dSkin, xSkinRequirement);
 				cur = xGetInt(dPlayerData, xMaxBank);
 				uiMessageBox("This skin is locked! You need to bank " + req + " points in one go to unlock. (Current = " + cur + ")");
 			}
 			//Trouble at 39 - doesnt seem to go
-			else if((xGetPointer(dSkin) >= 41) && (xGetPointer(dSkin) <= 43)){
+			else if((xGetPointer(dSkin) >= trQuestVarGet("PBSkin")) && (xGetPointer(dSkin) < trQuestVarGet("ExtraSkin"))){
 				req = xGetInt(dSkin, xSkinRequirement);
 				cur = xGetInt(dPlayerData, xPersonalBest);
 				uiMessageBox("This skin is locked! You need a personal best of " + req + " points to unlock. (Current = " + cur + ")");
 			}
 			//SPECIALS
-			else if(xGetPointer(dSkin) == 44){
+			else if(xGetPointer(dSkin) == trQuestVarGet("ExtraSkin")){
 				uiMessageBox("This skin is locked! You need to place in the top 3 when playing with 10+ players to unlock.");
 			}
-			else if(xGetPointer(dSkin) >= 45){
+			else if(xGetPointer(dSkin) > trQuestVarGet("ExtraSkin")){
 				startNPCDialog(xGetPointer(dSkin)-40);
 			}
 		}
