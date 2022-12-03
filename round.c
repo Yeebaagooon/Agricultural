@@ -62,6 +62,7 @@ inactive
 			modifyProtounitAbsolute("Villager Atlantean", p, 1, 6);
 		}
 		xsDisableSelf();
+		trSetCivAndCulture(0,3,10);
 		OverlayTextPlayerColor(trCurrentPlayer());
 		trOverlayText(".",0.1,1,1,1);
 		playSound("cinematics\15_in\gong.wav");
@@ -96,10 +97,11 @@ inactive
 				}
 			}
 		}
-		//RELEASE
+		/*
 		if((QuickStart == 1) && (1*trQuestVarGet("Round") < 3)){
 			trQuestVarSet("Round", 3);
 		}
+		*/
 		switch(1*trQuestVarGet("Round"))
 		{
 			case 1:
@@ -115,7 +117,7 @@ inactive
 			case 2:
 			//Sign powerup
 			{
-				RoundTime = 150-(QuickStart*148);
+				RoundTime = 150-(QuickStart*1);
 				BankCrates = cNumberNonGaiaPlayers/2+1;
 				RelicsAllowed = xsMax(1,cNumberNonGaiaPlayers/3);
 				MissilesAllowed = 2;
@@ -125,7 +127,7 @@ inactive
 			case 3:
 			//Missiles hit things
 			{
-				RoundTime = 180-(QuickStart*178);
+				RoundTime = 180-(QuickStart*1);
 				BankCrates = xsMax(1,cNumberNonGaiaPlayers/2);
 				RelicsAllowed = xsMax(1,cNumberNonGaiaPlayers/3);
 				MissilesAllowed = xsMax(1,cNumberNonGaiaPlayers/4);
@@ -176,8 +178,9 @@ inactive
 		xsEnableRule("CrateProcessing");
 		xsEnableRule("StopDeletes");
 		xsEnableRule("ConvertSpies");
-		//RELEASE
-		//trDelayedRuleActivation("KillCPU");
+		if(QuickStart == 0){
+			trDelayedRuleActivation("KillCPU");
+		}
 		if(1*trQuestVarGet("Round") != 4){
 			trCounterAddTime("CDRoundTimer", RoundTime, 0, "<color={PlayerColor(2)}>Time remaining", 15);
 			xsEnableRule("TimeWarn10");

@@ -7,6 +7,9 @@ highFrequency
 	trTechSetStatus(0, 20, 4);
 	trTechSetStatus(0, 59, 4);
 	trTechSetStatus(0, 102, 4);
+	trTechSetStatus(0, 127, 4);
+	trTechSetStatus(0, 411, 4);
+	trTechSetStatus(0, 347, 4);
 	for(p = 1; <= cNumberNonGaiaPlayers){
 		trTechSetStatus(p, 1, 4);
 		trTechSetStatus(p, 2, 4);
@@ -68,6 +71,26 @@ highFrequency
 		modifyProtounitAbsolute("Villager Chinese", p, 0, 1000);
 		modifyProtounitAbsolute("Villager Atlantean Hero", p, 0, 1000);
 		modifyProtounitAbsolute("Villager Atlantean", p, 0, 1000);
+		modifyProtounitAbsolute("Villager Greek", p, 27, 0);
+		modifyProtounitAbsolute("Villager Egyptian", p, 27, 0);
+		modifyProtounitAbsolute("Villager Norse", p, 27, 0);
+		modifyProtounitAbsolute("Villager Chinese", p, 27, 0);
+		modifyProtounitAbsolute("Villager Atlantean Hero", p, 27, 0);
+		modifyProtounitAbsolute("Villager Atlantean", p, 27, 0);
+		
+		modifyProtounitAbsolute("Villager Greek", p, 28, 0);
+		modifyProtounitAbsolute("Villager Egyptian", p, 28, 0);
+		modifyProtounitAbsolute("Villager Norse", p, 28, 0);
+		modifyProtounitAbsolute("Villager Chinese", p, 28, 0);
+		modifyProtounitAbsolute("Villager Atlantean Hero", p, 28, 0);
+		modifyProtounitAbsolute("Villager Atlantean", p, 28, 0);
+		
+		modifyProtounitAbsolute("Villager Greek", p, 29, 0);
+		modifyProtounitAbsolute("Villager Egyptian", p, 29, 0);
+		modifyProtounitAbsolute("Villager Norse", p, 29, 0);
+		modifyProtounitAbsolute("Villager Chinese", p, 29, 0);
+		modifyProtounitAbsolute("Villager Atlantean Hero", p, 29, 0);
+		modifyProtounitAbsolute("Villager Atlantean", p, 29, 0);
 	}
 	xsDisableSelf();
 }

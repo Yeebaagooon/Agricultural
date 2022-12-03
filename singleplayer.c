@@ -23,6 +23,54 @@ inactive
 	xsDisableSelf();
 	trPaintTerrain(0,0,MapSize,MapSize,5,4);
 	//PaintAtlantisArea(0,0,23,23,5,4);
+	trQuestVarSetFromRand("Music", 1, 11);
+	switch(1*trQuestVarGet("Music"))
+	{
+		case 1:
+		{
+			playSound("music\quiet\(fine layers of) slaysenflite (mellow mix).mp3");
+		}
+		case 2:
+		{
+			playSound("music\quiet\adult swim (mellow mix).mp3");
+		}
+		case 3:
+		{
+			playSound("music\quiet\behold the great science fi (mellow mix).mp3");
+		}
+		case 4:
+		{
+			playSound("music\quiet\chocolate outline (mellow mix).mp3");
+		}
+		case 5:
+		{
+			playSound("music\quiet\eat your potatoes (mellow mix).mp3");
+		}
+		case 6:
+		{
+			playSound("music\quiet\flavor cats (in the comfort zone) (mellow mix).mp3");
+		}
+		case 7:
+		{
+			playSound("music\quiet\hoping for real betterness (mellow mix).mp3");
+		}
+		case 8:
+		{
+			playSound("music\quiet\in a pile of its own good (mellow mix).mp3");
+		}
+		case 9:
+		{
+			playSound("music\quiet\never mind the slacks and bashers (mellow mix).mp3");
+		}
+		case 10:
+		{
+			playSound("music\quiet\suture self (mellow mix).mp3");
+		}
+		case 11:
+		{
+			playSound("music\quiet\the ballad of ace lebaron (mellow mix).mp3");
+		}
+	}
 	xSetPointer(dPlayerData, 1);
 	if(cNumberNonGaiaPlayers == 1){
 		xsEnableRule("PaintSP");
@@ -77,8 +125,19 @@ inactive
 			trUnitChangeProtoUnit(""+xGetString(dSkin, xSkinName));
 			//UNLOCK
 			if(n <= xGetInt(dPlayerData, xWins)){
-				debugLog("Unlocked skin " + (xGetPointer(dSkin)-1));
+				//debugLog("Unlocked skin " + (xGetPointer(dSkin)-1));
 				xSetInt(dSkin, xSkinUnlocked, 1);
+			}
+			if(xGetString(dSkin, xSkinName) == "Snowman"){
+				trUnitSelectByQV("temp");
+				trUnitChangeProtoUnit("Old Man");
+				trUnitSelectByQV("temp");
+				trSetSelectedScale(1,0.6,1);
+				trQuestVarSet("temp", trGetNextUnitScenarioNameNumber());
+				UnitCreate(0, "Dwarf", n*4, 6, 180);
+				trUnitSelectByQV("temp");
+				trUnitChangeProtoUnit("Snowman");
+				
 			}
 			xDatabaseNext(dSkin);
 		}
@@ -116,12 +175,17 @@ inactive
 			trUnitSelectByQV("temp");
 			trUnitChangeProtoUnit(""+xGetString(dSkin, xSkinName));
 			if(n <= xGetInt(dPlayerData, xMaxBank)){
-				debugLog("Unlocked skin " + (xGetPointer(dSkin)-1));
+				////debugLog("Unlocked skin " + (xGetPointer(dSkin)-1));
 				xSetInt(dSkin, xSkinUnlocked, 1);
+			}
+			if(xGetString(dSkin, xSkinName) == "Chicken"){
+				trUnitSelectByQV("temp");
+				trSetSelectedScale(2,2,2);
 			}
 			xDatabaseNext(dSkin);
 		}
 	}
+	//unitTransform("Titan Gate Dead", "Heavenlight");
 	trChangeTerrainHeight(0,16,102,50,11,false);
 	//Paint PB skins
 	//n *10 = each dot worth 10 points
@@ -145,7 +209,7 @@ inactive
 			//trMutateSelected(kbGetProtoUnitID(""+xGetString(dSkin, xSkinName)));
 			//UNLOCK
 			if(n*10 <= xGetInt(dPlayerData, xPersonalBest)){
-				debugLog("Unlocked skin " + (xGetPointer(dSkin)-1));
+				////	debugLog("Unlocked skin " + (xGetPointer(dSkin)-1));
 				xSetInt(dSkin, xSkinUnlocked, 1);
 			}
 			xDatabaseNext(dSkin);
@@ -213,13 +277,28 @@ inactive
 			}
 		}
 		if(n == 6){
-			if(trGetScenarioUserData(8, "Ascension MMORPG") > 140785919){
+			if(trGetScenarioUserData(8, "Ascension MMORPG") >= 70392960){
 				xSetInt(dSkin, xSkinUnlocked, 1);
 				trUnitSelectByQV("temp");
 				trUnitHighlight(10000, false);
 			}
 		}
 		xDatabaseNext(dSkin);
+	}
+	if(xGetInt(dPlayerData, xSkin) > 1*trQuestVarGet("WinSkin")){
+		for (x=xGetDatabaseCount(dSkin); > 0) {
+			xDatabaseNext(dSkin);
+			if(xGetPointer(dSkin) == xGetInt(dPlayerData, xSkin)){
+				xUnitSelect(dSkin, xUnitID);
+				trUnitChangeProtoUnit("Titan Atlantean");
+				xUnitSelect(dSkin, xUnitID);
+				trUnitChangeProtoUnit(""+xGetString(dSkin, xSkinName));
+				xUnitSelect(dSkin, xUnitID);
+				trUnitHighlight(10000, true);
+				characterDialog("Current skin - " + xGetString(dSkin, xSkinName), " ", "");
+				continue;
+			}
+		}
 	}
 	trDelayedRuleActivation("SkinConvertGaia");
 	xsEnableRule("SelectSkinsSP");
@@ -234,6 +313,7 @@ highFrequency
 		xUnitSelect(dSkin, xUnitID);
 		trUnitConvert(0);
 	}
+	unitTransform("Titan Gate Dead", "Gaia Forest effect");
 	xsDisableSelf();
 	trUnblockAllSounds();
 	trUnBlockAllAmbientSounds();
@@ -256,12 +336,12 @@ void ChooseASkin(int p = 0){
 	xSetPointer(dPlayerData, 1);
 	xSetInt(dPlayerData, xSkin, p);
 	saveAllData();
-	trSoundPlayPaused("arkantosleave.wav", "", -1, "", "");
-	trSoundPlayPaused("meteorapproach.wav", "", -1, "", "");
+	if(xGetInt(dPlayerData, xWins) < 3){
+		uiMessageBox("Skin choice saved!");
+	}
 	playSound("arkantosleave.wav");
 	trEndGame();
 	trModeEnter("Pregame");
-	uiMessageBox("Skin choice saved!");
 }
 
 rule SelectSkinsSP
@@ -286,23 +366,19 @@ highFrequency
 				cur = xGetInt(dPlayerData, xMaxBank);
 				uiMessageBox("This skin is locked! You need to bank " + req + " points in one go to unlock. (Current = " + cur + ")");
 			}
-			//Trouble at 39 - doesnt seem to go
 			else if((xGetPointer(dSkin) >= trQuestVarGet("PBSkin")) && (xGetPointer(dSkin) < trQuestVarGet("ExtraSkin"))){
 				req = xGetInt(dSkin, xSkinRequirement);
 				cur = xGetInt(dPlayerData, xPersonalBest);
 				uiMessageBox("This skin is locked! You need a personal best of " + req + " points to unlock. (Current = " + cur + ")");
 			}
 			//SPECIALS
-			else if(xGetPointer(dSkin) == trQuestVarGet("ExtraSkin")){
-				uiMessageBox("This skin is locked! You need to place in the top 3 when playing with 10+ players to unlock.");
-			}
-			else if(xGetPointer(dSkin) > trQuestVarGet("ExtraSkin")){
+			else if(xGetPointer(dSkin) >= trQuestVarGet("ExtraSkin")){
 				startNPCDialog(xGetPointer(dSkin)-40);
 			}
 		}
 		else{
 			trShowChoiceDialog("Select this skin?", "Yes", (20+(xGetPointer(dSkin))), "No", -1);
 		}
-		debugLog(""+(xGetPointer(dSkin)-1));
+		//	debugLog(""+(xGetPointer(dSkin)));
 	}
 }

@@ -1,22 +1,22 @@
 /*
 IDEAS
-Search //Release
+music ending
+!!Wall convert not working
+Emergency farm break
 
-
-Change spy in SP for unlock, too noisy!
-Athena condition in data
+Showcase
 */
 
 
 
 //---Controls
 //\Yeebaagooon\Agricultural Madness\Test sound.mp3
-int QuickStart = 0;
-int MapVersion = 0;
+int QuickStart = 1;
+int MapVersion = 1;
 string MapName = "Agricultural Madness";
 string displayz = "";
 string farmicon = "";
-int MultiplayerOverride = 0;
+int MultiplayerOverride = 1;
 
 int ThirdPlacePlayer = 0;
 int SecondPlacePlayer = 0;
@@ -67,6 +67,7 @@ int xWins = 0;
 int xSDWins = 0;
 int xMaxBank = 0;
 int xSeenSP = 0;
+int xAthena = 0;
 
 int dArrows = 0;
 int xDirection = 0;
@@ -118,6 +119,7 @@ highFrequency
 	xSDWins = xInitAddInt(dPlayerData, "SD wins", 0);
 	xMaxBank = xInitAddInt(dPlayerData, "Max points in one go", 0);
 	xSeenSP = xInitAddInt(dPlayerData, "Seen SP", 0);
+	xAthena = xInitAddInt(dPlayerData, "athena", 0);
 	xsDisableSelf();
 	for(p=1; <= cNumberNonGaiaPlayers) {
 		xAddDatabaseBlock(dPlayerData, true);

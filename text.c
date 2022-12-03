@@ -78,8 +78,7 @@ int npcDiag(int npc = 0, int dialog = 0) {
 				}
 				case 4:
 				{
-					//RELEASE
-					uiMessageBox("And can equip any skin with UNLOCK.");
+					uiMessageBox("And you can equip any skin with a green pip under it.");
 					trCameraCut(vector(6.937281,13.763847,-1.495604), vector(0.004524,-0.707107,0.707092), vector(0.004524,0.707107,0.707093), vector(0.999980,0.000000,-0.006398));
 				}
 				case 5:
@@ -117,6 +116,15 @@ int npcDiag(int npc = 0, int dialog = 0) {
 			}
 		}
 		case 4:
+		switch(dialog)
+		{
+			case 1:
+			{
+				uiMessageBox("This skin is locked! You need to place in the top 3 when playing with 10+ players to unlock.");
+				dialog = 0;
+			}
+		}
+		case 5:
 		{
 			switch(dialog)
 			{
@@ -127,11 +135,15 @@ int npcDiag(int npc = 0, int dialog = 0) {
 				case 2:
 				{
 					uiMessageBox("Subscribe to Motherload on the steam workshop.");
+				}
+				case 3:
+				{
+					uiMessageBox("It's a space mining adventure!");
 					dialog = 0;
 				}
 			}
 		}
-		case 5:
+		case 6:
 		{
 			switch(dialog)
 			{
@@ -146,7 +158,7 @@ int npcDiag(int npc = 0, int dialog = 0) {
 				}
 			}
 		}
-		case 6:
+		case 7:
 		{
 			switch(dialog)
 			{
@@ -161,7 +173,7 @@ int npcDiag(int npc = 0, int dialog = 0) {
 				}
 			}
 		}
-		case 7:
+		case 8:
 		{
 			switch(dialog)
 			{
@@ -172,21 +184,6 @@ int npcDiag(int npc = 0, int dialog = 0) {
 				case 2:
 				{
 					uiMessageBox("Subscribe to Motherload on the steam workshop.");
-					dialog = 0;
-				}
-			}
-		}
-		case 8:
-		{
-			switch(dialog)
-			{
-				case 1:
-				{
-					uiMessageBox("This skin is locked! You need to win Ascension MMORPG to unlock.");
-				}
-				case 2:
-				{
-					uiMessageBox("Subscribe to Ascension on the steam workshop.");
 					dialog = 0;
 				}
 			}
@@ -202,11 +199,14 @@ int npcDiag(int npc = 0, int dialog = 0) {
 				case 2:
 				{
 					uiMessageBox("Subscribe to Ascension on the steam workshop.");
+				}
+				case 3:
+				{
+					uiMessageBox("lolololol good luck");
 					dialog = 0;
 				}
 			}
 		}
-		
 	}
 	return(dialog);
 }

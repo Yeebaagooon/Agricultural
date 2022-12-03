@@ -8,6 +8,7 @@ highFrequency
 		trUIFadeToColor(0,0,0,1000,200,false);
 		xsEnableRule("ProfitChat");
 		playSound("cinematics\22_out\music (wussy mix).mp3");
+		trSetCivAndCulture(0,1,3);
 		//	trPaintTerrain(0,0,MapSize,MapSize,5,4,false);
 	}
 }
@@ -30,7 +31,7 @@ highFrequency
 			characterDialog("Tie for third place - " +1*trQuestVarGet("P"+ThirdPlacePlayer+"Points") + " points", ""+trStringQuestVarGet("p"+ThirdPlacePlayer+"name") + " and " +trStringQuestVarGet("p"+TiePlayer+"name"), "");
 			trUnitSelectByQV("ThirdPlace");
 			trMutateSelected(kbGetProtoUnitID("Cinematic Block"));
-			FloatingUnit("Hoplite", 7,12,8 ,180, 1,1,1);
+			FloatingUnit("Villager Atlantean", 7,12,8 ,180, 1,1,1);
 			xAddDatabaseBlock(dDestroy, true);
 			xSetInt(dDestroy, xUnitID, 1*trQuestVarGet("QVRelic"));
 			xAddDatabaseBlock(dDestroy, true);
@@ -40,7 +41,7 @@ highFrequency
 			trUnitSelectByQV("QVRelic");
 			xSetPointer(dPlayerData, TiePlayer);
 			trMutateSelected(kbGetProtoUnitID(""+SkinProto(xGetInt(dPlayerData, xSkin))));
-			FloatingUnit("Hoplite", 9,12,8 ,180, 1,1,1);
+			FloatingUnit("Villager Atlantean", 9,12,8 ,180, 1,1,1);
 			xAddDatabaseBlock(dDestroy, true);
 			xSetInt(dDestroy, xUnitID, 1*trQuestVarGet("QVRelic"));
 			xAddDatabaseBlock(dDestroy, true);
@@ -100,13 +101,13 @@ highFrequency
 			characterDialog("Tie for second place - " +1*trQuestVarGet("P"+SecondPlacePlayer+"Points") + " points", ""+trStringQuestVarGet("p"+SecondPlacePlayer+"name") + " and " +trStringQuestVarGet("p"+TiePlayer+"name"), "");
 			trUnitSelectByQV("SecondPlace");
 			trMutateSelected(kbGetProtoUnitID("Cinematic Block"));
-			FloatingUnit("Hoplite", 7,12,8 ,180, 1,1,1);
+			FloatingUnit("Villager Atlantean", 7,12,8 ,180, 1,1,1);
 			trUnitSelectByQV("QVRelic");
 			trUnitConvert(TiePlayer);
 			trUnitSelectByQV("QVRelic");
 			xSetPointer(dPlayerData, TiePlayer);
 			trMutateSelected(kbGetProtoUnitID(""+SkinProto(xGetInt(dPlayerData, xSkin))));
-			FloatingUnit("Hoplite", 9,12,8 ,180, 1,1,1);
+			FloatingUnit("Villager Atlantean", 9,12,8 ,180, 1,1,1);
 			trUnitSelectByQV("QVRelic");
 			trUnitConvert(SecondPlacePlayer);
 			trUnitSelectByQV("QVRelic");
@@ -216,6 +217,11 @@ highFrequency
 					else{
 						trChatSend(0, "<color={PlayerColor("+p+")}>{Playername("+p+")} - "+1*trQuestVarGet("P"+p+"Points")+"");
 					}
+					if((x < 4) && (cNumberNonGaiaPlayers > 9)){
+						//unlock athena
+						xSetPointer(dPlayerData, p);
+						xSetInt(dPlayerData, xAthena, xGetInt(dPlayerData, xAthena)+1);
+					}
 				}
 			}
 		}
@@ -244,6 +250,7 @@ highFrequency
 			}
 		}
 		xsDisableSelf();
+		characterDialog("Load this map in singleplayer", "This allows you to unlock various skins!", "");
 		trEndGame();
 	}
 }
@@ -375,7 +382,7 @@ highFrequency
 	trUnitSelectByQV("QVRelic");
 	trUnitSetAnimationPath("1,0,0,0,0,0");
 	//Main unit
-	FloatingUnitAnimIdle("Hoplite", 8,12,8 ,180, 1,1,1);
+	FloatingUnitAnimIdle("Villager Atlantean", 8,12,8 ,180, 1,1,1);
 	xAddDatabaseBlock(dDestroy, true);
 	xSetInt(dDestroy, xUnitID, 1*trQuestVarGet("QVRelic"));
 	xAddDatabaseBlock(dDestroy, true);
@@ -443,7 +450,7 @@ highFrequency
 	trUnitSelectByQV("QVRelic");
 	trUnitSetAnimationPath("2,0,0,0,0,0");
 	//Main unit
-	FloatingUnitAnimIdle("Hoplite", 42,14.5,8 ,180, 1,1,1);
+	FloatingUnitAnimIdle("Villager Atlantean", 42,14.5,8 ,180, 1,1,1);
 	xAddDatabaseBlock(dDestroy, true);
 	xSetInt(dDestroy, xUnitID, 1*trQuestVarGet("QVRelic"));
 	xAddDatabaseBlock(dDestroy, true);
@@ -547,7 +554,7 @@ highFrequency
 	trUnitSelectByQV("QVRelic");
 	trUnitSetAnimationPath("0,0,0,0,0,0");
 	//Main unit
-	FloatingUnitAnimIdle("Hoplite", 24,18.5,8 ,180, 1,1,1);
+	FloatingUnitAnimIdle("Villager Atlantean", 24,18.5,8 ,180, 1,1,1);
 	xAddDatabaseBlock(dDestroy, true);
 	xSetInt(dDestroy, xUnitID, 1*trQuestVarGet("QVRelic"));
 	xAddDatabaseBlock(dDestroy, true);

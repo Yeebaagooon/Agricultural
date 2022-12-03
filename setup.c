@@ -31,8 +31,6 @@ runImmediately
 	trFadeOutMusic(0.1);
 	xsDisableRule("BasicVC1");
 	xsDisableRule("BasicVC2");
-	if(QuickStart == 0){
-	}
 	trBlockAllSounds(true);
 	trSetFogAndBlackmap(false, false);
 	xsDisableSelf();
@@ -87,6 +85,7 @@ highFrequency
 		MapSize = 202;
 	}
 	MapCentre = xsVectorSet(MapSize/2-1,0,MapSize/2-1);
+	trSetCivAndCulture(0,3,10);
 }
 
 rule setup_data
@@ -170,8 +169,9 @@ highFrequency
 	
 	//Slot 2
 	addSavedDataDB(dPlayerData, xWins , 2, 51);
-	addSavedDataDB(dPlayerData, xSDWins , 2, 11);
+	addSavedDataDB(dPlayerData, xSDWins , 2, 2);
 	addSavedDataDB(dPlayerData, xMaxBank , 2, 101);
+	addSavedDataDB(dPlayerData, xAthena , 2, 2);
 	
 	
 	
@@ -336,8 +336,8 @@ highFrequency
 		//VERSION UPDATES
 		int a = trCurrentPlayer();
 		if(1*trQuestVarGet("VersionMessage") == 0){
-			uiMessageBox("TEST VERSION DO NOT HOST");
-			trQuestVarSet("VersionMessage", 0);
+			//uiMessageBox("TEST VERSION DO NOT HOST");
+			trQuestVarSet("VersionMessage", 1);
 			xSetPointer(dPlayerData, a);
 			xSetInt(dPlayerData, xVersionControl, MapVersion);
 		}

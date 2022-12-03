@@ -15,7 +15,17 @@ highFrequency
 			CineVotes = cNumberNonGaiaPlayers;
 		}
 		if(CineVotes == cNumberNonGaiaPlayers){
+			while(cNumberNonGaiaPlayers>=trQuestVarGet("PlayerID")) {
+				trQuestVarSet("PlayerID2", 0);
+				while(cNumberNonGaiaPlayers>=trQuestVarGet("PlayerID2")) {
+					trPlayerSetDiplomacy(trQuestVarGet("PlayerID"), trQuestVarGet("PlayerID2"), "Enemy");
+					trPlayerSetDiplomacy(trQuestVarGet("PlayerID2"), trQuestVarGet("PlayerID"), "Enemy");
+					UnitCreate(1*trQuestVarGet("PlayerID2"), "Victory Marker",0,0,0);
+				trQuestVarSet("PlayerID2", trQuestVarGet("PlayerID2")+1);}
+			trQuestVarSet("PlayerID", trQuestVarGet("PlayerID")+1);}
 			xsEnableRule("PaintTerrain");
+			xsDisableRule("BasicVC1");
+			xsDisableRule("BasicVC2");
 		}
 		else{
 			trLetterBox(true);
@@ -28,7 +38,12 @@ highFrequency
 			else{
 				characterDialog("Yeebaagooon", "We've got some new players today so I need to go through the cinematic with them.", "icons/special e son of osiris icon 64");
 			}
-			playSound();
+			if(1*trQuestVarGet("CustomContent") == 1){
+				playSound("\Yeebaagooon\Agricultural Madness\IntroMusic.mp3");
+			}
+			else{
+				playSound("\cinematics\21_in\music.mp3");
+			}
 			trQuestVarSet("Yeeb", trGetNextUnitScenarioNameNumber());
 			UnitCreate(0, "Cinematic Block", MapSize/2+1, MapSize/2+1, 180);
 			trQuestVarSet("YeebEgg", trGetNextUnitScenarioNameNumber());
@@ -281,10 +296,19 @@ highFrequency
 		ColouredChat("1,0.5,0", "The cinematic will not play if all players have seen it.");
 		trPlayerSetDiplomacy(0,1,"Enemy");
 		//data
+		trFadeOutMusic(5);
+		trFadeOutAllSounds(5);
 		for(p=1; <= cNumberNonGaiaPlayers) {
 			xSetPointer(dPlayerData, p);
 			xSetInt(dPlayerData, xCineSeen, 1);
 		}
+		while(cNumberNonGaiaPlayers>=trQuestVarGet("PlayerID")) {
+			trQuestVarSet("PlayerID2", 0);
+			while(cNumberNonGaiaPlayers>=trQuestVarGet("PlayerID2")) {
+				trPlayerSetDiplomacy(trQuestVarGet("PlayerID"), trQuestVarGet("PlayerID2"), "Enemy");
+				trPlayerSetDiplomacy(trQuestVarGet("PlayerID2"), trQuestVarGet("PlayerID"), "Enemy");
+			trQuestVarSet("PlayerID2", trQuestVarGet("PlayerID2")+1);}
+		trQuestVarSet("PlayerID", trQuestVarGet("PlayerID")+1);}
 	}
 }
 

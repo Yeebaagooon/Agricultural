@@ -288,6 +288,7 @@ void ProcessArrows(int count = 1) {
 					}
 					xUnitSelect(dArrows, xUnitID);
 					trUnitChangeInArea(p,0,"Wall Connector", "Wall Connector", MapSize*8);
+					//trUnitSetAnimationPath("3,2,0,0,0,0");
 					xSetInt(dArrows, xUnitID, -1);
 					trQuestVarSetFromRand("Random", 5000, 12000);
 					xSetInt(dArrows, xTimeIn, trTimeMS()+1*trQuestVarGet("Random"));
@@ -366,6 +367,7 @@ void ProcessRelics(int count = 1) {
 			for(p=1; <= cNumberNonGaiaPlayers) {
 				if(trCountUnitsInArea(""+xGetInt(dRelics, xUnitID),p,"Unit",4) == 1){
 					//Player Bank
+					xSetPointer(dPlayerData, p);
 					xUnitSelect(dRelics, xUnitID);
 					trUnitChangeProtoUnit("Farm");
 					xUnitSelect(dRelics, xRelicSFX);
@@ -409,7 +411,6 @@ void ProcessRelics(int count = 1) {
 							trUnitChangeInArea(0, 0, "Titan Atlantean", "Farm", MapSize*6);
 							trUnitChangeInArea(0, 0, "Titan Gate Dead", "Dwarf", MapSize*6);
 							trUnitChangeInArea(0, 0, "Dwarf", "Poison SFX", MapSize*6);
-							xSetPointer(dPlayerData, p);
 							if(xGetInt(dPlayerData, xMaxBank) < extra){
 								xSetInt(dPlayerData, xMaxBank, extra);
 							}
@@ -423,7 +424,6 @@ void ProcessRelics(int count = 1) {
 							trSetCivilizationNameOverride(p, "Points: " + points);
 							gadgetRefresh("unitStatPanel");
 							relictext = "+ " + extra + " points!";
-							xSetPointer(dPlayerData, p);
 							if(xGetInt(dPlayerData, xMaxBank) < extra){
 								xSetInt(dPlayerData, xMaxBank, extra);
 							}
@@ -437,7 +437,6 @@ void ProcessRelics(int count = 1) {
 							trSetCivilizationNameOverride(p, "Points: " + points);
 							gadgetRefresh("unitStatPanel");
 							relictext = "+ " + extra + " points!";
-							xSetPointer(dPlayerData, p);
 							if(xGetInt(dPlayerData, xMaxBank) < extra){
 								xSetInt(dPlayerData, xMaxBank, extra);
 							}
@@ -477,7 +476,6 @@ void ProcessRelics(int count = 1) {
 						uiMessageBox(relictext);
 						if(trGetGPData(p,1,0) != 0){
 							trClearCounterDisplay();
-							trSetCounterDisplay("Use 'Q' to fire a missile to your cursor");
 							trSetCounterDisplay("Missile count: " + trGetGPData(p,1,0));
 						}
 					}
@@ -554,10 +552,9 @@ void ProcessMissiles(int count = 1) {
 					if(trCurrentPlayer() == p){
 						playSound("lightningstrike3.wav");
 						trClearCounterDisplay();
-						trSetCounterDisplay("Use 'Q' to fire a missile to your cursor");
 						trSetCounterDisplay("Missile count: " + trGetGPData(p,1,0));
-						if(1*trQuestVarGet("P"+p+"MissileMsg") == 1){
-							trMessageSetText("To use a missile press 'Q' and it will fire to your cursor.", 6000);
+						if((1*trQuestVarGet("P"+p+"MissileMsg") == 1) && (xGetInt(dPlayerData, xWins) == 0)){
+							trMessageSetText("To use a missile press 'Q' and it will fire to your cursor.", 8000);
 						}
 					}
 				}
@@ -593,6 +590,7 @@ inactive
 		trPlayerGrantResources(p, "Favor", -1000);
 		trPlayerGrantResources(p, "Food", 1*trPlayerUnitCountSpecific(p, "Farm"));
 		if(trPlayerGetPopulation(p) > 99){
+			playSound("skypassageout.wav");
 			yFindLatest("Temp", "Vision Revealer", p);
 			vector pos = kbGetBlockPosition(""+1*trQuestVarGet("P"+p+"Farmer"), true);
 			xAddDatabaseBlock(dMissiles, true);
@@ -613,9 +611,12 @@ inactive
 			trUnitDestroy();
 			if(trCurrentPlayer() == p){
 				trClearCounterDisplay();
-				trSetCounterDisplay("Use 'Q' to fire a missile to your cursor");
 				trSetCounterDisplay("Missile count: " + trGetGPData(p,1,0));
 			}
+		}
+		if(trPlayerGetPopulation(p) > 150){
+			debugLog("Missile error");
+			unitTransform("Vision Revealer", "Rocket");
 		}
 	}
 }

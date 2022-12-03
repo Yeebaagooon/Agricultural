@@ -46,23 +46,20 @@ inactive
 	NewSkin("Azure Dragon", 26, 1, vector(1,1,1));
 	NewSkin("Amanra", 28);
 	NewSkin("Bella", 30, 3);
-	NewSkin("Titan Gaia", 35,1, vector(0.5,0.5,0.5));
-	//huge float
-	NewSkin("Titan Kronos", 40,1, vector(0.5,0.5,0.5));
-	//huge float
-	NewSkin("Titan Prometheus", 45,1, vector(0.5,0.5,0.5));
-	//huge float
+	NewSkin("Walking Berry Bush", 35,1, vector(2,2,2));
+	NewSkin("Snowman", 40,1, vector(2,2,2));
+	NewSkin("Harpy Scout", 45,1, vector(2,2,2));
 	NewSkin("Flying Purple Hippo", 50,1,vector(1.5,1.5,1.5));
 	//POINT SKINS
 	NewSkin("Chicken", 25, 2, vector(4,4,4));
 	trQuestVarSet("PointSkin", 1*xGetPointer(dSkin));
 	NewSkin("Mountain Giant", 30, 39);
-	NewSkin("Hero Ragnorok", 35);
-	NewSkin("Argus", 40);
+	NewSkin("Hero Ragnorok", 35, 4);
+	NewSkin("Argus", 40, 40, vector(1,1,1));
 	NewSkin("Servant", 45, 50);
 	NewSkin("Setna", 50, 50);
 	NewSkin("Oracle Hero", 55, 52);
-	NewSkin("Titan Atlantean", 60, 3, vector(1,1,1));
+	NewSkin("Giant Duck-billed Platypus", 60, 1, vector(1.1,1.1,1.1));
 	NewSkin("Nidhogg", 65, 1, vector(1,1,1));
 	NewSkin("Earth Dragon", 80, 1, vector(1,1,1));
 	//no walk anim
@@ -93,14 +90,14 @@ inactive
 	for(p=1 ; <= cNumberNonGaiaPlayers){
 		xSetPointer(dPlayerData, p);
 		if(xGetInt(dPlayerData, xSkin) <= 4){
-			break;
+			continue;
 		}
 		if(xGetInt(dPlayerData, xSkin) > 4){
 			anim = 0;
 			anim = kbUnitGetAnimationActionType(kbGetBlockID(""+1*trQuestVarGet("P"+p+"Farmer")+""));
 			xSetPointer(dPlayerData, p);
 			if((xGetInt(dPlayerData, xOldAnim) == anim) || (xGetInt(dPlayerData, xOldAnim) == -10)){
-				break;
+				continue;
 				//Stop if no anim change
 			}
 			//NO NEED FOR THIS, USE DATAbase
@@ -411,6 +408,54 @@ highFrequency
 			ColouredChatToPlayer(b, "1,0.5,0", "Your skin choice has been loaded.");
 		}
 	}
+	trQuestVarSetFromRand("Music", 1, 11);
+	switch(1*trQuestVarGet("Music"))
+	{
+		case 1:
+		{
+			playSound("music\quiet\(fine layers of) slaysenflite (mellow mix).mp3");
+		}
+		case 2:
+		{
+			playSound("music\quiet\adult swim (mellow mix).mp3");
+		}
+		case 3:
+		{
+			playSound("music\quiet\behold the great science fi (mellow mix).mp3");
+		}
+		case 4:
+		{
+			playSound("music\quiet\chocolate outline (mellow mix).mp3");
+		}
+		case 5:
+		{
+			playSound("music\quiet\eat your potatoes (mellow mix).mp3");
+		}
+		case 6:
+		{
+			playSound("music\quiet\flavor cats (in the comfort zone) (mellow mix).mp3");
+		}
+		case 7:
+		{
+			playSound("music\quiet\hoping for real betterness (mellow mix).mp3");
+		}
+		case 8:
+		{
+			playSound("music\quiet\in a pile of its own good (mellow mix).mp3");
+		}
+		case 9:
+		{
+			playSound("music\quiet\never mind the slacks and bashers (mellow mix).mp3");
+		}
+		case 10:
+		{
+			playSound("music\quiet\suture self (mellow mix).mp3");
+		}
+		case 11:
+		{
+			playSound("music\quiet\the ballad of ace lebaron (mellow mix).mp3");
+		}
+	}
 }
 
 rule SkinKillCPU
@@ -518,6 +563,8 @@ highFrequency
 		trUnitSelectByQV("Skin"+n+"");
 		trUnitChangeProtoUnit("Heavenlight");
 	}
+	trFadeOutAllSounds(0.1);
+	trFadeOutMusic(0.1);
 	playSound("ageadvance.wav");
 	trUIFadeToColor(0,0,0,800,199,true);
 	xsEnableRule("CineChoice");
