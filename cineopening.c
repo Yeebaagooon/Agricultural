@@ -15,17 +15,7 @@ highFrequency
 			CineVotes = cNumberNonGaiaPlayers;
 		}
 		if(CineVotes == cNumberNonGaiaPlayers){
-			while(cNumberNonGaiaPlayers>=trQuestVarGet("PlayerID")) {
-				trQuestVarSet("PlayerID2", 0);
-				while(cNumberNonGaiaPlayers>=trQuestVarGet("PlayerID2")) {
-					trPlayerSetDiplomacy(trQuestVarGet("PlayerID"), trQuestVarGet("PlayerID2"), "Enemy");
-					trPlayerSetDiplomacy(trQuestVarGet("PlayerID2"), trQuestVarGet("PlayerID"), "Enemy");
-					UnitCreate(1*trQuestVarGet("PlayerID2"), "Victory Marker",0,0,0);
-				trQuestVarSet("PlayerID2", trQuestVarGet("PlayerID2")+1);}
-			trQuestVarSet("PlayerID", trQuestVarGet("PlayerID")+1);}
 			xsEnableRule("PaintTerrain");
-			xsDisableRule("BasicVC1");
-			xsDisableRule("BasicVC2");
 		}
 		else{
 			trLetterBox(true);
@@ -302,13 +292,6 @@ highFrequency
 			xSetPointer(dPlayerData, p);
 			xSetInt(dPlayerData, xCineSeen, 1);
 		}
-		while(cNumberNonGaiaPlayers>=trQuestVarGet("PlayerID")) {
-			trQuestVarSet("PlayerID2", 0);
-			while(cNumberNonGaiaPlayers>=trQuestVarGet("PlayerID2")) {
-				trPlayerSetDiplomacy(trQuestVarGet("PlayerID"), trQuestVarGet("PlayerID2"), "Enemy");
-				trPlayerSetDiplomacy(trQuestVarGet("PlayerID2"), trQuestVarGet("PlayerID"), "Enemy");
-			trQuestVarSet("PlayerID2", trQuestVarGet("PlayerID2")+1);}
-		trQuestVarSet("PlayerID", trQuestVarGet("PlayerID")+1);}
 	}
 }
 

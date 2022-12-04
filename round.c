@@ -117,7 +117,7 @@ inactive
 			case 2:
 			//Sign powerup
 			{
-				RoundTime = 150-(QuickStart*1);
+				RoundTime = 150-(QuickStart*140);
 				BankCrates = cNumberNonGaiaPlayers/2+1;
 				RelicsAllowed = xsMax(1,cNumberNonGaiaPlayers/3);
 				MissilesAllowed = 2;
@@ -127,7 +127,7 @@ inactive
 			case 3:
 			//Missiles hit things
 			{
-				RoundTime = 180-(QuickStart*1);
+				RoundTime = 180-(QuickStart*160);
 				BankCrates = xsMax(1,cNumberNonGaiaPlayers/2);
 				RelicsAllowed = xsMax(1,cNumberNonGaiaPlayers/3);
 				MissilesAllowed = xsMax(1,cNumberNonGaiaPlayers/4);
@@ -178,6 +178,7 @@ inactive
 		xsEnableRule("CrateProcessing");
 		xsEnableRule("StopDeletes");
 		xsEnableRule("ConvertSpies");
+		xsEnableRule("BankReminder");
 		if(QuickStart == 0){
 			trDelayedRuleActivation("KillCPU");
 		}
@@ -281,6 +282,24 @@ inactive
 	}
 }
 
+rule BankReminder
+inactive
+highFrequency
+{
+	if (trTime() > cActivationTime + 30) {
+		for(p=1; <= cNumberNonGaiaPlayers) {
+			if(1*trQuestVarGet("P"+p+"Points") == 0){
+				ColouredChatToPlayer(p, "1,0.5,0", "Remember to bank your points by moving to a wall connector!");
+				if(trCurrentPlayer() == p){
+					playSound("attackwarning.wav");
+					trMessageSetText("Remember to bank your points by moving to a wall connector!", 10000);
+				}
+			}
+		}
+		xsDisableSelf();
+	}
+}
+
 
 void RoundEnd (int p = 0){
 	xsSetContextPlayer(0);
@@ -302,6 +321,9 @@ void RoundEnd (int p = 0){
 	xResetDatabase(dRelics);
 	trFadeOutMusic(0.1);
 	trFadeOutAllSounds(0.1);
+	for(p=1 ; <= cNumberNonGaiaPlayers){
+		UnitCreate(p, "Victory Marker",p*2,p*2,0);
+	}
 	//xResetDatabase(dMissileBox);
 	for(x=1 ; <= MapSize/6){
 		for(z=1 ; <= MapSize/6){

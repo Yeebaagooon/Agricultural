@@ -11,12 +11,12 @@ Showcase
 
 //---Controls
 //\Yeebaagooon\Agricultural Madness\Test sound.mp3
-int QuickStart = 1;
-int MapVersion = 1;
+int QuickStart = 0;
+int MapVersion = 3;
 string MapName = "Agricultural Madness";
 string displayz = "";
 string farmicon = "";
-int MultiplayerOverride = 1;
+int MultiplayerOverride = 0;
 
 int ThirdPlacePlayer = 0;
 int SecondPlacePlayer = 0;

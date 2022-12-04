@@ -435,6 +435,7 @@ highFrequency
 			zSetInt(playerDataArray, p, zNewArray(mInt, 16, "p"+p+"data"));
 			
 			trModifyProtounit("Swordsman", p, 55, 4);
+			trModifyProtounit("Swordsman", p, 1, -10);
 			trModifyProtounit("Swordsman", p, 2, 9999999999999999999.0);
 			trModifyProtounit("Swordsman", p, 2, -9999999999999999999.0);
 			trModifyProtounit("Swordsman", p, 2, 0);

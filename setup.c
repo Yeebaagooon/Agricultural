@@ -14,9 +14,6 @@ highFrequency
 	trEventSetHandler(17, "MusicGo");
 	trEventSetHandler(18, "GoToMainMenu");
 	trEventSetHandler(19, "SPHelp");
-	for(x = 0; <= 48){
-		trEventSetHandler(20+x, "ChooseASkin");
-	}
 	xsDisableSelf();
 }
 
@@ -49,8 +46,8 @@ highFrequency
 		trPlayerGrantResources(p, "Favor", -10000.0);
 		trPlayerKillAllGodPowers(p);
 	}
-	xsDisableRule("BasicVC1");
-	xsDisableRule("BasicVC2");
+	//xsDisableRule("BasicVC1");
+	//xsDisableRule("BasicVC2");
 	//start fade to black
 	//trUIFadeToColor(1,0,0,0,0,true);
 	/*
@@ -257,8 +254,8 @@ highFrequency
 	while(cNumberNonGaiaPlayers>=trQuestVarGet("PlayerID")) {
 		trQuestVarSet("PlayerID2", 0);
 		while(cNumberNonGaiaPlayers>=trQuestVarGet("PlayerID2")) {
-			trPlayerSetDiplomacy(trQuestVarGet("PlayerID"), trQuestVarGet("PlayerID2"), "Ally");
-			trPlayerSetDiplomacy(trQuestVarGet("PlayerID2"), trQuestVarGet("PlayerID"), "Ally");
+			trPlayerSetDiplomacy(trQuestVarGet("PlayerID"), trQuestVarGet("PlayerID2"), "Enemy");
+			trPlayerSetDiplomacy(trQuestVarGet("PlayerID2"), trQuestVarGet("PlayerID"), "Enemy");
 		trQuestVarSet("PlayerID2", trQuestVarGet("PlayerID2")+1);}
 	trQuestVarSet("PlayerID", trQuestVarGet("PlayerID")+1);}
 	
@@ -278,6 +275,13 @@ highFrequency
 	xsEnableRule("load3");
 	xsEnableRule("Stats");
 	xsEnableRule("Technologies");
+	for(p=1 ; <= cNumberNonGaiaPlayers){
+		UnitCreate(p, "Victory Marker",p*2,p*2,0);
+	}
+	if(cNumberNonGaiaPlayers > 1){
+		xsEnableRule("BasicVC1");
+		xsEnableRule("BasicVC2");
+	}
 	xsDisableSelf();
 }
 

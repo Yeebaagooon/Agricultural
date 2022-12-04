@@ -53,6 +53,7 @@ highFrequency
 			trMutateSelected(kbGetProtoUnitID(""+SkinProto(xGetInt(dPlayerData, xSkin))));
 		}
 		characterDialog("Multiple tie for third place - " +1*trQuestVarGet("P"+ThirdPlacePlayer+"Points") + " points", " ", "");
+		xsEnableRule("FireSecond");
 	}
 	else{
 		//run
@@ -115,6 +116,7 @@ highFrequency
 			trMutateSelected(kbGetProtoUnitID(""+SkinProto(xGetInt(dPlayerData, xSkin))));
 		}
 		characterDialog("Multiple tie for second place - " +1*trQuestVarGet("P"+SecondPlacePlayer+"Points") + " points", " ", "");
+		xsEnableRule("FireFirst");
 	}
 	else{
 		//run

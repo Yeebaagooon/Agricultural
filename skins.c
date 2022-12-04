@@ -8,6 +8,7 @@ void NewSkin(string protounitname = "", int required = 0, int anim = 1, vector s
 	xSetInt(dSkin, xSkinRequirement, required);
 	trModifyProtounit(protounitname, 0, 55, 4);
 	trModifyProtounit(protounitname, 0, 1, -40);
+	trEventSetHandler(xGetPointer(dSkin) + 20, "ChooseASkin");
 }
 //Extra variable, anim for farm (attack as default)
 
