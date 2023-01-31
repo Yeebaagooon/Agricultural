@@ -1,16 +1,6 @@
 rmSetStatusText("",0.01);
-if((cNumberNonGaiaPlayers <= 5) && (cNumberNonGaiaPlayers != 1)){
-	rmSetMapSize(48,48);
-}
-else if((cNumberNonGaiaPlayers <= 10) && (cNumberNonGaiaPlayers != 1)){
-	rmSetMapSize(60,60);
-}
-else if((cNumberNonGaiaPlayers > 10) && (cNumberNonGaiaPlayers != 1)){
-	rmSetMapSize(72,72);
-}
-else if(cNumberNonGaiaPlayers == 1){
-	rmSetMapSize(204,66);
-}
+int MapSize = 252;
+rmSetMapSize(252, 252);
 rmSetSeaLevel(0);
 rmSetSeaType("greek river");
 rmTerrainInitialize("GrassB",5);

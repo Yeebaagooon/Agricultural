@@ -2,14 +2,6 @@ rule Technologies
 inactive
 highFrequency
 {
-	trTechSetStatus(0, 14, 4);
-	trTechSetStatus(0, 7, 4);
-	trTechSetStatus(0, 20, 4);
-	trTechSetStatus(0, 59, 4);
-	trTechSetStatus(0, 102, 4);
-	trTechSetStatus(0, 127, 4);
-	trTechSetStatus(0, 411, 4);
-	trTechSetStatus(0, 347, 4);
 	for(p = 1; <= cNumberNonGaiaPlayers){
 		trTechSetStatus(p, 1, 4);
 		trTechSetStatus(p, 2, 4);
@@ -26,11 +18,6 @@ highFrequency
 		trTechSetStatus(p, 30, 4);
 		trTechSetStatus(p, 350, 4);
 		trTechSetStatus(p, 27, 4);
-		trTechSetStatus(p, 14, 4);
-		trTechSetStatus(p, 7, 4);
-		trTechSetStatus(p, 20, 4);
-		trTechSetStatus(p, 59, 4);
-		trTechSetStatus(p, 102, 4);
 		for(n=930; >0) {
 			trForbidProtounit(p,kbGetProtoUnitName(n));
 		}
@@ -38,6 +25,18 @@ highFrequency
 	//      trUnforbidProtounit(p, "Outpost");
 	//  trUnforbidProtounit(1*p, "Oracle Hero");
 	xsDisableSelf();
+}
+
+void modifyBuildableProto(string proto = "", int p = 0) {
+	trModifyProtounit(proto, p, 55, 4);
+	trModifyProtounit(proto, p, 2, 9999999999999999999.0);
+	trModifyProtounit(proto, p, 2, -9999999999999999999.0);
+	trModifyProtounit(proto, p, 2, 0.0);
+	for(i=16; <= 19) {
+		trModifyProtounit(proto, p, i, 9999999999999999999.0);
+		trModifyProtounit(proto, p, i, -9999999999999999999.0);
+		trModifyProtounit(proto, p, i, 0.0);
+	}
 }
 
 rule Stats
@@ -52,45 +51,47 @@ highFrequency
 		//trQuestVarSet("P"+p+"FlagBaseWarnF", 15);
 		//modifyProtounitAbsolute("Gate", p, 0, 1000);
 		modifyProtounitAbsolute("Vision Revealer", p, 6, 100);
-		modifyProtounitAbsolute("Villager Greek", p, 1, 10);
-		modifyProtounitAbsolute("Villager Egyptian", p, 1, 10);
-		modifyProtounitAbsolute("Villager Norse", p, 1, 10);
-		modifyProtounitAbsolute("Villager Chinese", p, 1, 10);
-		modifyProtounitAbsolute("Villager Atlantean Hero", p, 1, 10);
-		modifyProtounitAbsolute("Villager Atlantean", p, 1, 10);
-		trModifyProtounit("Vision Revealer", p, 6, 100);
-		trModifyProtounit("Villager Greek", p, 22, 1000);
-		trModifyProtounit("Villager Egyptian", p, 22, 1000);
-		trModifyProtounit("Villager Norse", p, 22, 1000);
-		trModifyProtounit("Villager Chinese", p, 22, 1000);
-		trModifyProtounit("Villager Atlantean Hero", p, 22, 1000);
-		trModifyProtounit("Villager Atlantean", p, 22, 1000);
-		modifyProtounitAbsolute("Villager Greek", p, 0, 1000);
-		modifyProtounitAbsolute("Villager Egyptian", p, 0, 1000);
-		modifyProtounitAbsolute("Villager Norse", p, 0, 1000);
-		modifyProtounitAbsolute("Villager Chinese", p, 0, 1000);
-		modifyProtounitAbsolute("Villager Atlantean Hero", p, 0, 1000);
-		modifyProtounitAbsolute("Villager Atlantean", p, 0, 1000);
-		modifyProtounitAbsolute("Villager Greek", p, 27, 0);
-		modifyProtounitAbsolute("Villager Egyptian", p, 27, 0);
-		modifyProtounitAbsolute("Villager Norse", p, 27, 0);
-		modifyProtounitAbsolute("Villager Chinese", p, 27, 0);
-		modifyProtounitAbsolute("Villager Atlantean Hero", p, 27, 0);
-		modifyProtounitAbsolute("Villager Atlantean", p, 27, 0);
-		
-		modifyProtounitAbsolute("Villager Greek", p, 28, 0);
-		modifyProtounitAbsolute("Villager Egyptian", p, 28, 0);
-		modifyProtounitAbsolute("Villager Norse", p, 28, 0);
-		modifyProtounitAbsolute("Villager Chinese", p, 28, 0);
-		modifyProtounitAbsolute("Villager Atlantean Hero", p, 28, 0);
-		modifyProtounitAbsolute("Villager Atlantean", p, 28, 0);
-		
-		modifyProtounitAbsolute("Villager Greek", p, 29, 0);
-		modifyProtounitAbsolute("Villager Egyptian", p, 29, 0);
-		modifyProtounitAbsolute("Villager Norse", p, 29, 0);
-		modifyProtounitAbsolute("Villager Chinese", p, 29, 0);
-		modifyProtounitAbsolute("Villager Atlantean Hero", p, 29, 0);
-		modifyProtounitAbsolute("Villager Atlantean", p, 29, 0);
+		modifyProtounitAbsolute("Vision Revealer", p, 2, 0);
+		modifyBuildableProto("House", p);
+		modifyBuildableProto("Granary", p);
+		modifyBuildableProto("Storehouse", p);
+		modifyProtounitAbsolute("House", p, 16, -1);
+		modifyProtounitAbsolute("Granary", p, 17, -1);
+		modifyProtounitAbsolute("Storehouse", p, 18, -1);
+		trModifyProtounit(""+YesChoiceUnitName, p, 55, 4);
+		trModifyProtounit(""+YesChoiceUnitName, p, 1, -10);
+		trModifyProtounit(""+YesChoiceUnitName, p, 2, 9999999999999999999.0);
+		trModifyProtounit(""+YesChoiceUnitName, p, 2, -9999999999999999999.0);
+		trModifyProtounit(""+YesChoiceUnitName, p, 2, 0);
+		trModifyProtounit(""+YesChoiceUnitName + " Hero", p, 2, 9999999999999999999.0);
+		trModifyProtounit(""+YesChoiceUnitName + " Hero", p, 2, -9999999999999999999.0);
+		trModifyProtounit(""+YesChoiceUnitName + " Hero", p, 2, 0);
+		trModifyProtounit(""+YesChoiceUnitName + " Hero", p, 6, -100);
+		trModifyProtounit(""+YesChoiceUnitName + " Hero", p, 16, 9999999999999999999.0);
+		trModifyProtounit(""+YesChoiceUnitName + " Hero", p, 17, 9999999999999999999.0);
+		trModifyProtounit(""+YesChoiceUnitName + " Hero", p, 18, 9999999999999999999.0);
+		trModifyProtounit(""+YesChoiceUnitName + " Hero", p, 19, 9999999999999999999.0);
+		trModifyProtounit(""+YesChoiceUnitName + " Hero", p, 16, -9999999999999999999.0);
+		trModifyProtounit(""+YesChoiceUnitName + " Hero", p, 17, -9999999999999999999.0);
+		trModifyProtounit(""+YesChoiceUnitName + " Hero", p, 18, -9999999999999999999.0);
+		trModifyProtounit(""+YesChoiceUnitName + " Hero", p, 19, -9999999999999999999.0);
+		trModifyProtounit(""+NoChoiceUnitName, p, 55, 4);
+		trModifyProtounit(""+NoChoiceUnitName, p, 1, -10);
+		trModifyProtounit(""+NoChoiceUnitName, p, 2, 9999999999999999999.0);
+		trModifyProtounit(""+NoChoiceUnitName, p, 2, -9999999999999999999.0);
+		trModifyProtounit(""+NoChoiceUnitName, p, 2, 0);
+		trModifyProtounit(""+NoChoiceUnitName + " Hero", p, 2, 9999999999999999999.0);
+		trModifyProtounit(""+NoChoiceUnitName + " Hero", p, 2, -9999999999999999999.0);
+		trModifyProtounit(""+NoChoiceUnitName + " Hero", p, 2, 0);
+		trModifyProtounit(""+NoChoiceUnitName + " Hero", p, 6, -100);
+		trModifyProtounit(""+NoChoiceUnitName + " Hero", p, 16, 9999999999999999999.0);
+		trModifyProtounit(""+NoChoiceUnitName + " Hero", p, 17, 9999999999999999999.0);
+		trModifyProtounit(""+NoChoiceUnitName + " Hero", p, 18, 9999999999999999999.0);
+		trModifyProtounit(""+NoChoiceUnitName + " Hero", p, 19, 9999999999999999999.0);
+		trModifyProtounit(""+NoChoiceUnitName + " Hero", p, 16, -9999999999999999999.0);
+		trModifyProtounit(""+NoChoiceUnitName + " Hero", p, 17, -9999999999999999999.0);
+		trModifyProtounit(""+NoChoiceUnitName + " Hero", p, 18, -9999999999999999999.0);
+		trModifyProtounit(""+NoChoiceUnitName + " Hero", p, 19, -9999999999999999999.0);
 	}
 	xsDisableSelf();
 }

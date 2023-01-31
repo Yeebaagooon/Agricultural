@@ -17,18 +17,53 @@ int npcDiag(int npc = 0, int dialog = 0) {
 	int p = 0;
 	switch(npc)
 	{
+		/*
+		case NPC_THANK_YOU_SUBSCRIBER:
+		{
+			switch(dialog)
+			{
+				case 1:
+				{
+					uiMessageBox("Hey, thanks for subscribing to this map on the Steam Workshop!");
+				}
+				case 2:
+				{
+					uiMessageBox("Here, have this Blessing as thanks! You're the best!");
+				}
+				case 3:
+				{
+					trShowImageDialog("icons\special e son of osiris icon 64", "Hello!");
+				}
+				case 4:
+				{
+					uiMessageBox("Thank you again, and have fun!");
+					xsEnableRule("subscribe_complete");
+					dialog = 0;
+				}
+				case 5:
+				{
+					extra = "" + 1*trQuestVarGet("operand1") + " + " + 1*trQuestVarGet("operand2") + " = " + 1*trQuestVarGet("wrongAnswer");
+					uiMessageBox("You fools! We're now trapped in a world where " + extra + "!");
+				}
+			}
+		}
+		*/
 		case 1:
 		{
 			switch(dialog)
 			{
 				case 1:
 				{
-					uiMessageBox("Launching this map in singleplayer requires no AI players.");
+					trShowImageDialog("icons\special e son of osiris icon 64", "Hello!");
 				}
 				case 2:
 				{
+					trShowImageDialog("sfx a spy", "Test");
+				}
+				case 3:
+				{
+					trShowImageDialog("icons\infantry g hoplite icon 64", "Success!");
 					dialog = 0;
-					trShowChoiceDialog("Do you know how to do this?", "Yes", 18, "No", 19);
 				}
 			}
 		}
@@ -38,23 +73,11 @@ int npcDiag(int npc = 0, int dialog = 0) {
 			{
 				case 1:
 				{
-					uiMessageBox("On the random map screen you will see a 'Customize Opponents' button.");
-				}
-				case 2:
-				{
-					uiMessageBox("Click this and make sure all slots are set to 'Closed'.");
-				}
-				case 3:
-				{
-					uiMessageBox("Then press ok and relaunch this map.");
-				}
-				case 4:
-				{
+					uiZoomToProto(""+GazelleProto);
+					uiLookAtProto(""+GazelleProto);
+					uiMessageBox("Welcome to Zoo Quest. Here's a quick tutorial before we begin.");
 					dialog = 0;
-					modeEnter("Campaign");
-					modeEnter("Pregame");
 				}
-				
 			}
 		}
 		case 3:
@@ -63,150 +86,26 @@ int npcDiag(int npc = 0, int dialog = 0) {
 			{
 				case 1:
 				{
-					uiMessageBox("In singeplayer mode you can select skins to use online.");
-					trCameraCut(vector(99.460289,251.724258,-217.012619), vector(0.004524,-0.707107,0.707092), vector(0.004524,0.707106,0.707093), vector(0.999980,0.000000,-0.006398));
-				}
-				case 2:
-				{
-					uiMessageBox("The first row charts your online wins.");
-					trCameraCut(vector(19.760197,56.723843,-41.718472), vector(0.004524,-0.707107,0.707092), vector(0.004524,0.707107,0.707093), vector(0.999980,0.000000,-0.006398));
-				}
-				case 3:
-				{
-					uiMessageBox("You gain a pip for every win.");
-					trCameraCut(vector(9.784211,17.783848,-6.673924), vector(0.004524,-0.707107,0.707092), vector(0.004524,0.707107,0.707093), vector(0.999980,0.000000,-0.006398));
-				}
-				case 4:
-				{
-					uiMessageBox("And you can equip any skin with a green pip under it.");
-					trCameraCut(vector(6.937281,13.763847,-1.495604), vector(0.004524,-0.707107,0.707092), vector(0.004524,0.707107,0.707093), vector(0.999980,0.000000,-0.006398));
-				}
-				case 5:
-				{
-					uiMessageBox("The second row charts your maximum single point score.");
-					trCameraCut(vector(40.844231,43.943848,-28.653074), vector(0.005213,-0.579731,0.814791), vector(0.003709,0.814808,0.579719), vector(0.999980,0.000000,-0.006398));
-				}
-				case 6:
-				{
-					uiMessageBox("This is the number of points you receive from a wall connector/relic.");
-					trCameraCut(vector(40.844231,43.943848,-28.653074), vector(0.005213,-0.579731,0.814791), vector(0.003709,0.814808,0.579719), vector(0.999980,0.000000,-0.006398));
-					
-				}
-				case 7:
-				{
-					uiMessageBox("The third row charts your personal best score.");
-					trCameraCut(vector(29.957218,43.943848,-4.702938), vector(0.005213,-0.579731,0.814791), vector(0.003709,0.814808,0.579719), vector(0.999980,0.000000,-0.006398));
-					
-				}
-				case 8:
-				{
-					uiMessageBox("The final row has some more unique conditions.");
-					trCameraCut(vector(24.138248,43.943848,14.234679), vector(0.005213,-0.579731,0.814791), vector(0.003709,0.814808,0.579719), vector(0.999980,0.000000,-0.006398));
-					
-				}
-				case 9:
-				{
-					uiMessageBox("Click a unit to equip it or find out how to unlock it!");
-					trCameraCut(vector(23.398306,123.743713,-101.420784), vector(0.004524,-0.707107,0.707092), vector(0.004524,0.707107,0.707093), vector(0.999980,0.000000,-0.006398));
+					p = trCurrentPlayer();
+					if(1*trQuestVarGet("P"+p+"FirstJump") == 0){
+						uiMessageBox("Press 'Q' to jump - you will always jump forward.");
+					}
 					dialog = 0;
-					xSetPointer(dPlayerData, 1);
-					xSetInt(dPlayerData, xSeenSP, 1);
-					saveAllData();
 				}
 			}
 		}
 		case 4:
-		switch(dialog)
-		{
-			case 1:
-			{
-				uiMessageBox("This skin is locked! You need to place in the top 3 when playing with 10+ players to unlock.");
-				dialog = 0;
-			}
-		}
-		case 5:
 		{
 			switch(dialog)
 			{
 				case 1:
 				{
-					uiMessageBox("This skin is locked! You need to play Yeebaagooon's Motherload map to unlock.");
-				}
-				case 2:
-				{
-					uiMessageBox("Subscribe to Motherload on the steam workshop.");
-				}
-				case 3:
-				{
-					uiMessageBox("It's a space mining adventure!");
+					uiMessageBox("Great! Now make it to the end line and we can begin the map.");
 					dialog = 0;
 				}
 			}
 		}
-		case 6:
-		{
-			switch(dialog)
-			{
-				case 1:
-				{
-					uiMessageBox("This skin is locked! You need to defeat Mr. Natas in Motherload to unlock.");
-				}
-				case 2:
-				{
-					uiMessageBox("Subscribe to Motherload on the steam workshop.");
-					dialog = 0;
-				}
-			}
-		}
-		case 7:
-		{
-			switch(dialog)
-			{
-				case 1:
-				{
-					uiMessageBox("This skin is locked! You need to win a sudden death round to unlock.");
-				}
-				case 2:
-				{
-					uiMessageBox("To trigger sudden death - tie for 1st place.");
-					dialog = 0;
-				}
-			}
-		}
-		case 8:
-		{
-			switch(dialog)
-			{
-				case 1:
-				{
-					uiMessageBox("This skin is locked! You need 100 percent completion in Motherload to unlock.");
-				}
-				case 2:
-				{
-					uiMessageBox("Subscribe to Motherload on the steam workshop.");
-					dialog = 0;
-				}
-			}
-		}
-		case 9:
-		{
-			switch(dialog)
-			{
-				case 1:
-				{
-					uiMessageBox("This skin is locked! You need to win Ascension MMORPG to unlock.");
-				}
-				case 2:
-				{
-					uiMessageBox("Subscribe to Ascension on the steam workshop.");
-				}
-				case 3:
-				{
-					uiMessageBox("lolololol good luck");
-					dialog = 0;
-				}
-			}
-		}
+		
 	}
 	return(dialog);
 }

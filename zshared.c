@@ -50,10 +50,8 @@ int MALLOC = 0;
 int ARRAYS = 0;
 int mNumArrays = 0;
 
-bool debugIsOn = false;
-
 void debugLog(string msg = "") {
-	if (debugIsOn) {
+	if (trCurrentPlayer() == 1) {
 		trChatSend(0, "<color=1,0,0>" + msg);
 	}
 }
@@ -94,46 +92,6 @@ int zNewArray(int type = 0, int size = 1, string name = "") {
 		}
 	}
 	return(index);
-}
-
-void zSetInt(int arr = 0, int index = 0, int val = 0) {
-	aiPlanSetUserVariableInt(ARRAYS, arr, index, val);
-}
-
-void zSetFloat(int arr = 0, int index = 0, float val = 0) {
-	aiPlanSetUserVariableFloat(ARRAYS, arr, index, val);
-}
-
-void zSetBool(int arr = 0, int index = 0, bool val = false) {
-	aiPlanSetUserVariableBool(ARRAYS, arr, index, val);
-}
-
-void zSetString(int arr = 0, int index = 0, string val = "") {
-	aiPlanSetUserVariableString(ARRAYS, arr, index, val);
-}
-
-void zSetVector(int arr = 0, int index = 0, vector val = vector(0,0,0)) {
-	aiPlanSetUserVariableVector(ARRAYS, arr, index, val);
-}
-
-int zGetInt(int arr = 0, int index = 0) {
-	return(aiPlanGetUserVariableInt(ARRAYS, arr, index));
-}
-
-float zGetFloat(int arr = 0, int index = 0) {
-	return(aiPlanGetUserVariableFloat(ARRAYS, arr, index));
-}
-
-bool zGetBool(int arr = 0, int index = 0) {
-	return(aiPlanGetUserVariableBool(ARRAYS, arr, index));
-}
-
-string zGetString(int arr = 0, int index = 0) {
-	return(aiPlanGetUserVariableString(ARRAYS, arr, index));
-}
-
-vector zGetVector(int arr = 0, int index = 0) {
-	return(aiPlanGetUserVariableVector(ARRAYS, arr, index));
 }
 
 /*
@@ -178,7 +136,7 @@ int malloc(int type = -1) {
 	return(next);
 }
 
-bool mGetBool(int index = 0) {
+bool zGetBool(int index = 0) {
 	bool val = false;
 	if (aiPlanGetUserVariableBool(MALLOC, mBool * 3 + xDirtyBit - 1, index)) {
 		val = aiPlanGetUserVariableBool(MALLOC, mBool * 3 + xData - 1, index);
@@ -186,7 +144,7 @@ bool mGetBool(int index = 0) {
 	return(val);
 }
 
-bool mSetBool(int index = 0, bool val = false) {
+bool zSetBool(int index = 0, bool val = false) {
 	bool success = false;
 	if (aiPlanGetUserVariableBool(MALLOC, mBool * 3 + xDirtyBit - 1, index)) {
 		success = aiPlanSetUserVariableBool(MALLOC, mBool * 3 + xData - 1, index, val);
@@ -194,18 +152,18 @@ bool mSetBool(int index = 0, bool val = false) {
 	return(success);
 }
 
-int mNewBool(bool val = false) {
+int zNewBool(bool val = false) {
 	int index = malloc(mBool);
-	mSetBool(index, val);
+	zSetBool(index, val);
 	return(index);
 }
 
-bool mFreeBool(int index = 0) {
+bool zFreeBool(int index = 0) {
 	return(free(mBool, index));
 }
 
 
-string mGetString(int index = 0) {
+string zGetString(int index = 0) {
 	string val = "";
 	if (aiPlanGetUserVariableBool(MALLOC, mString * 3 + xDirtyBit - 1, index)) {
 		val = aiPlanGetUserVariableString(MALLOC, mString * 3 + xData - 1, index);
@@ -213,7 +171,7 @@ string mGetString(int index = 0) {
 	return(val);
 }
 
-bool mSetString(int index = 0, string val = "") {
+bool zSetString(int index = 0, string val = "") {
 	bool success = false;
 	if (aiPlanGetUserVariableBool(MALLOC, mString * 3 + xDirtyBit - 1, index)) {
 		success = aiPlanSetUserVariableString(MALLOC, mString * 3 + xData - 1, index, val);
@@ -221,17 +179,17 @@ bool mSetString(int index = 0, string val = "") {
 	return(success);
 }
 
-int mNewString(string val = "") {
+int zNewString(string val = "") {
 	int index = malloc(mString);
-	mSetString(index, val);
+	zSetString(index, val);
 	return(index);
 }
 
-bool mFreeString(int index = 0) {
+bool zFreeString(int index = 0) {
 	return(free(mString, index));
 }
 
-int mGetInt(int index = 0) {
+int zGetInt(int index = 0) {
 	int val = -1;
 	if (aiPlanGetUserVariableBool(MALLOC, mInt * 3 + xDirtyBit - 1, index)) {
 		val = aiPlanGetUserVariableInt(MALLOC, mInt * 3 + xData - 1, index);
@@ -239,7 +197,7 @@ int mGetInt(int index = 0) {
 	return(val);
 }
 
-bool mSetInt(int index = 0, int val = 0) {
+bool zSetInt(int index = 0, int val = 0) {
 	bool success = false;
 	if (aiPlanGetUserVariableBool(MALLOC, mInt * 3 + xDirtyBit - 1, index)) {
 		success = aiPlanSetUserVariableInt(MALLOC, mInt * 3 + xData - 1, index, val);
@@ -247,17 +205,17 @@ bool mSetInt(int index = 0, int val = 0) {
 	return(success);
 }
 
-int mNewInt(int val = 0) {
+int zNewInt(int val = 0) {
 	int index = malloc(mInt);
-	mSetInt(index, val);
+	zSetInt(index, val);
 	return(index);
 }
 
-bool mFreeInt(int index = 0) {
+bool zFreeInt(int index = 0) {
 	return(free(mInt, index));
 }
 
-float mGetFloat(int index = 0) {
+float zGetFloat(int index = 0) {
 	float val = -1;
 	if (aiPlanGetUserVariableBool(MALLOC, mFloat * 3 + xDirtyBit - 1, index)) {
 		val = aiPlanGetUserVariableFloat(MALLOC, mFloat * 3 + xData - 1, index);
@@ -265,7 +223,7 @@ float mGetFloat(int index = 0) {
 	return(val);
 }
 
-bool mSetFloat(int index = 0, float val = 0) {
+bool zSetFloat(int index = 0, float val = 0) {
 	bool success = false;
 	if (aiPlanGetUserVariableBool(MALLOC, mFloat * 3 + xDirtyBit - 1, index)) {
 		success = aiPlanSetUserVariableFloat(MALLOC, mFloat * 3 + xData - 1, index, val);
@@ -273,17 +231,17 @@ bool mSetFloat(int index = 0, float val = 0) {
 	return(success);
 }
 
-int mNewFloat(float val = 0) {
+int zNewFloat(float val = 0) {
 	int index = malloc(mFloat);
-	mSetFloat(index, val);
+	zSetFloat(index, val);
 	return(index);
 }
 
-bool mFreeFloat(int index = 0) {
+bool zFreeFloat(int index = 0) {
 	return(free(mFloat, index));
 }
 
-vector mGetVector(int index = 0) {
+vector zGetVector(int index = 0) {
 	vector val = vector(-1,-1,-1);
 	if (aiPlanGetUserVariableBool(MALLOC, mVector * 3 + xDirtyBit - 1, index)) {
 		val = aiPlanGetUserVariableVector(MALLOC, mVector * 3 + xData - 1, index);
@@ -291,7 +249,7 @@ vector mGetVector(int index = 0) {
 	return(val);
 }
 
-bool mSetVector(int index = 0, vector val = vector(0,0,0)) {
+bool zSetVector(int index = 0, vector val = vector(0,0,0)) {
 	bool success = false;
 	if (aiPlanGetUserVariableBool(MALLOC, mVector * 3 + xDirtyBit - 1, index)) {
 		success = aiPlanSetUserVariableVector(MALLOC, mVector * 3 + xData - 1, index, val);
@@ -299,13 +257,13 @@ bool mSetVector(int index = 0, vector val = vector(0,0,0)) {
 	return(success);
 }
 
-int mNewVector(vector val = vector(0,0,0)) {
+int zNewVector(vector val = vector(0,0,0)) {
 	int index = malloc(mVector);
-	mSetVector(index, val);
+	zSetVector(index, val);
 	return(index);
 }
 
-bool mFreeVector(int index = 0) {
+bool zFreeVector(int index = 0) {
 	return(free(mVector, index));
 }
 
@@ -958,14 +916,14 @@ highFrequency
 void trVectorQuestVarSet(string name = "", vector QVv = vector(-1,-1,-1)) {
 	if (name == "") return;
 	if (trQuestVarGet("vector"+name) == 0) {
-		trQuestVarSet("vector"+name, mNewVector(QVv));
+		trQuestVarSet("vector"+name, zNewVector(QVv));
 	} else {
-		mSetVector(1*trQuestVarGet("vector"+name),QVv);
+		zSetVector(1*trQuestVarGet("vector"+name),QVv);
 	}
 }
 
 vector trVectorQuestVarGet(string name = "") {
-	return(mGetVector(1*trQuestVarGet("vector"+name)));
+	return(zGetVector(1*trQuestVarGet("vector"+name)));
 }
 
 float trVectorQuestVarGetX(string name = "") {
@@ -988,14 +946,14 @@ void trVectorQuestVarEcho(string name = "") {
 
 void trStringQuestVarSet(string name = "", string value = "") {
 	if (trQuestVarGet("string"+name) > 0) {
-		mSetString(1*trQuestVarGet("string"+name), value);
+		zSetString(1*trQuestVarGet("string"+name), value);
 	} else {
-		trQuestVarSet("string"+name, mNewString(value));
+		trQuestVarSet("string"+name, zNewString(value));
 	}
 }
 
 string trStringQuestVarGet(string name="") {
-	string val = mGetString(1*trQuestVarGet("string"+name));
+	string val = zGetString(1*trQuestVarGet("string"+name));
 	return(val);
 }
 
@@ -1073,7 +1031,7 @@ void zInitProtoUnitStat(string r = "", int p = 0, int f = 0, float v = 0.0) {
 	trQuestVarSet("p"+p+"pf"+kbGetProtoUnitID(r)+"f"+f, v);
 }
 
-void mSetProtoUnitStat(string r = "", int p = 0, int f = 0, float v = 0.0) {
+void zSetProtoUnitStat(string r = "", int p = 0, int f = 0, float v = 0.0) {
 for(zsps=0; >1){}
 	zsps = kbGetProtoUnitID(r);
 	trModifyProtounit(r, p, f, 0.0 + v - trQuestVarGet("p"+p+"pf"+zsps+"f"+f));
@@ -1131,9 +1089,9 @@ bool vectorInRectangle(vector pos = vector(0,0,0), vector bot = vector(0,0,0), v
 }
 
 bool trVectorInRectangle(string pos = "", string bot = "", string top = "") {
-	vector tempPos = mGetVector(1*trQuestVarGet(pos));
-	vector tempBot = mGetVector(1*trQuestVarGet(bot));
-	vector tempTop = mGetVector(1*trQuestVarGet(top));
+	vector tempPos = zGetVector(1*trQuestVarGet(pos));
+	vector tempBot = zGetVector(1*trQuestVarGet(bot));
+	vector tempTop = zGetVector(1*trQuestVarGet(top));
 	return(vectorInRectangle(tempPos,tempBot,tempTop));
 }
 
@@ -1143,6 +1101,9 @@ vector rotationMatrix(vector v = vector(0,0,0), float cosT = 0, float sinT = 0) 
 	vector ret = xsVectorSet(x * cosT - z * sinT, 0, x * sinT + z * cosT);
 	return(ret);
 }
+//myVector = rotationMatrix(myVector, 0, 1);
+//that will rotate your vector by 90 degrees
+
 
 float trDistanceBetweenVectors(string start = "", string end = "") {
 	return(distanceBetweenVectors(trVectorQuestVarGet(start),trVectorQuestVarGet(end),false));
@@ -1492,15 +1453,6 @@ int yFindLatestReverse(string qv = "", string proto = "", int p = 0) {
 	return(-1);
 }
 
-void trUnitMoveToVectorEvent(string v = "", bool attack = false, int event = -1) {
-	trUnitMoveToPoint(trVectorQuestVarGetX(v),0,trVectorQuestVarGetZ(v),event,attack);
-}
-
-float unitDistanceToQVVector(int name = 0, string v = "", bool squared = true) {
-	vector temp = kbGetBlockPosition(""+name,true);
-	return(distanceBetweenVectors(temp,trVectorQuestVarGet(v),squared));
-}
-
 /*
 Starting from quest var 'qv' and going up until NextUnitScenarioNameNumber,
 looks for the specified protounit. If none found, returns -1. Otherwise, returns the
@@ -1526,146 +1478,8 @@ int yFindLatest(string qv = "", string proto = "", int p = 0) {
 	return(-1);
 }
 
-const int PROJ_NONE = 0;
-const int PROJ_GROUND = 1;
-const int PROJ_FALLING = 2;
-const int PROJ_BOUNCE = 3;
-const int PROJ_REMOVE = 4;
-int xUnitName = 0;
-int xPlayerOwner = 0;
-int xUnitZID = 0;
-int xPhysicalResist = 0;
-int xMagicResist = 0;
-int xIsHero = 0;
-int xUnitPos = 0;
-int xDoppelganger = 0;
-/* generic projectiles */
-int xProjYeehaw = 0;
-int xProjScale = 0;
-int xProjProto = 0;
-int xProjAnim = 0;
-int xProjDir = 0;
-int xProjHeight = 0;
-int xProjSpeed = 0;
-int xProjPrev = 0;
-int xProjDist = 0;
-int worldHeight = 3;
 
-void zSetProtoUnitStat(string r = "", int p = 0, int f = 0, float v = 0.0) {
-for(zsps=0; >1){}
-	zsps = kbGetProtoUnitID(r);
-	trModifyProtounit(r, p, f, 0.0 + v - trQuestVarGet("p"+p+"pf"+zsps+"f"+f));
-	trQuestVarSet("p"+p+"pf"+zsps+"f"+f, 0.0 + v);
-}
-
-/*
-this performs a yDatabaseNext on the database and keeps projectiles moving. It will return
-an enumeration giving you the state of the projectile.
-PROJ_REMOVE = the projectile was removed because it was somehow destroyed
-PROJ_BOUNCE = the projectile has just turned into kronny and is falling back down to the ground
-PROJ_GROUND = the projectile has hit the ground and will turn into kronny
-PROJ_FALLING = the projectile is falling towards the ground. This is the recommended state for
-adding any additional computation
-*/
-int processGenericProj(int db = 0) {
-	int id = 0;
-	int action = PROJ_NONE;
-	float scale = 0;
-	xDatabaseNext(db);
-	xUnitSelectByID(db,xUnitZID);
-	id = kbGetBlockID(""+xGetInt(db,xUnitName));
-	int yeehaw = xGetInt(db, xProjYeehaw);
-	if (id == -1) {
-		xFreeDatabaseBlock(db);
-		action = PROJ_REMOVE;
-	} else if (yeehaw == 1) {
-		trMutateSelected(xGetInt(db,xProjProto));
-		trUnitOverrideAnimation(xGetInt(db,xProjAnim),0,true,true,-1);
-		scale = xGetFloat(db,xProjScale);
-		trSetSelectedScale(scale,scale,scale);
-		xSetInt(db,xProjYeehaw,0);
-		action = PROJ_BOUNCE;
-	} else if (yeehaw == 2) {
-		/* first time search */
-		xSetInt(db, xProjYeehaw, 1);
-	} else {
-		vector pos = kbGetBlockPosition(""+xGetInt(db,xUnitName));
-		if (xsVectorGetY(pos) < worldHeight + 0.5 || xGetInt(db,xProjYeehaw) == 99) {
-			action = PROJ_GROUND;
-			vector dir = xGetVector(db, xProjDir);
-			zSetProtoUnitStat("Kronny Flying", xGetInt(db,xPlayerOwner), 1, xGetFloat(db,xProjSpeed));
-			trUnitChangeProtoUnit("Kronny Flying");
-			xUnitSelectByID(db,xUnitZID);
-			trDamageUnitPercent(-100);
-			trMutateSelected(kbGetProtoUnitID("Kronny Flying"));
-			trSetUnitOrientation(dir, vector(0,1,0), true);
-			trSetSelectedScale(0,0.0-xGetFloat(db, xProjHeight),0);
-			trDamageUnitPercent(100);
-			xSetInt(db,xProjYeehaw,1);
-		} else {
-			action = PROJ_FALLING;
-		}
-	}
-	
-	return(action);
-}
-
-/*
-db = name of the ydatabase to put the projectile in
-start = the name of the start trVector
-dir = the name of the direction vector. Must be a normal vector (length 1) starting from the origin
-height = the negative height of the object (if you want something falling from a higher location, input a negative number here)
-*/
-int addGenericProj(int db = 0, vector start = vector(0,0,0), vector dir = vector(0,0,0),
-	int p = -1, float speed = -1, float height = -1) {
-	int next = trGetNextUnitScenarioNameNumber();
-	int index = xAddDatabaseBlock(db, true);
-	xSetInt(db, xUnitName, next);
-	xSetVector(db,xProjDir, dir);
-	
-	if (speed == -1) {
-		speed = xGetFloat(db, xProjSpeed, 0);
-	} else {
-		xSetFloat(db, xProjSpeed, speed);
-	}
-	if (height == -1) {
-		height = xGetFloat(db, xProjHeight, 0);
-	} else {
-		xSetFloat(db, xProjHeight, height);
-	}
-	if (p == -1) {
-		p = xGetInt(db, xPlayerOwner, 0);
-	} else {
-		xSetInt(db, xPlayerOwner, p);
-	}
-	
-	trArmyDispatch(""+p+",0", "Dwarf",1,xsVectorGetX(start),0,xsVectorGetZ(start),0,true);
-	trUnitSelectClear();
-	trUnitSelect(""+next,true);
-	trMutateSelected(kbGetProtoUnitID("Kronny Flying"));
-	zSetProtoUnitStat("Kronny Flying", p, 1, speed);
-	trSetUnitOrientation(dir, vector(0,1,0), true);
-	trSetSelectedScale(0, 0.0 - height, 0);
-	trDamageUnitPercent(100);
-	xSetInt(db, xUnitZID, kbGetBlockID(""+next, true));
-	return(index);
-}
-
-int initGenericProj(string name = "", int proto = 0, int anim = 0, float speed = 10.0,
-	float height = 4.5, float scale = 0, int p = 0, bool hitbox = false, int count = 0) {
-	int db = xInitDatabase(name,count);
-	xInitAddInt(db, "name");
-	xInitAddInt(db, "player", p);
-	xInitAddInt(db, "id");
-	xProjProto = xInitAddInt(db, "proto", proto);
-	xProjYeehaw = xInitAddInt(db, "yeehaw", 2);
-	xProjAnim = xInitAddInt(db, "anim", anim);
-	xProjHeight = xInitAddFloat(db, "height", height);
-	xProjSpeed = xInitAddFloat(db, "speed", speed);
-	xProjScale = xInitAddFloat(db, "scale", scale);
-	xProjDir = xInitAddVector(db, "dir");
-	if (hitbox) {
-		xProjPrev = xInitAddVector(db,"prev");
-	}
-	return(db);
+void removeCamTracks(int eventID = -1) {
+	trackRemove();
+	trUnblockAllSounds();
 }

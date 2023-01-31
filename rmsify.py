@@ -27,11 +27,10 @@ import sys
 ###############################
 ####### CUSTOMIZE THESE #######
 ###############################
-FILENAME = 'Agricultural Madness TEST.xs'
+FILENAME = 'Zoo Quest TEST.xs'
 rmsFunc = ''
 rmsMain = 'main.c'
-files = ['zshared.c', 'voids.c', 'globals.c', 'intsstrings.c', 'data.c', 'databases.c', 'text.c', 'cineopening.c', 'setup.c', 'techstat.c', 'skins.c', 'round.c',
- 'processing.c', 'ending.c', 'singleplayer.c']
+files = ['zshared.c', 'voids.c', 'globals.c', 'intsstrings.c', 'databases.c', 'ysearch.c', 'gamefunctions.c', 'choice.c', 'nottud.c', 'text.c', 'setup.c', 'techstat.c', 'tutorial.c', 'ActDeer.c']
 
 #########################################
 ####### CODE BELOW (DO NOT TOUCH) #######

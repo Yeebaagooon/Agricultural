@@ -19,11 +19,7 @@ int deployLoc(float posX = 0.0, float PosZ = 0.0, string unit = "", int p = 0){
 }
 
 void playSound(string soundName = ""){
-	trSoundPlayFN(""+soundName+"", "1", -1, "","");
-}
-
-void playSoundFire(string soundName = "", int fire = -1){
-	trSoundPlayFN(""+soundName+"", "1", fire, "","");
+	trSoundPlayPaused(""+soundName+"", "1", -1, "", "");
 }
 
 int deployLocRandomHeading(float posX = 0.0, float PosZ = 0.0, string unit = "", int p = 0){
@@ -1310,7 +1306,6 @@ void setupPowerShop(int slot = 0, string displayname = "", string powername = ""
 }
 
 void playSoundCustom(string BasesoundName = "", string CustomsoundName = ""){
-	//Yeebaagooon Zoo Quest
 	if(1*trQuestVarGet("CustomContent") == 0){
 		trSoundPlayPaused(""+BasesoundName+"", "1", -1, "", "");
 	}
@@ -1323,17 +1318,75 @@ void ColouredIconChat(string colour = "1,1,1", string icon = "", string chats = 
 	trChatSend(0, "<color="+colour+"><icon=(20)("+icon+")> "+chats+"</color>");
 }
 
-void ColouredChat(string colour = "1,1,1", string chats = ""){
-	trChatSend(0, "<color="+colour+">"+chats+"</color>");
+void PlayerColouredChat(int p = 0, string chats = ""){
+	trChatSend(0, "<color={PlayerColor("+p+")}> "+chats+"</color>");
 }
 
-void ColouredChatToPlayer(int p = 0, string colour = "1,1,1", string chats = ""){
-	trChatSendToPlayer(0, p, "<color="+colour+">"+chats+"</color>");
+void PlayerColouredChatToSelf(int p = 0, string chats = ""){
+	trChatSendToPlayer(0, p, "<color={PlayerColor("+p+")}> "+chats+"</color>");
 }
 
 void ColouredIconChatToPlayer(int p = 1, string colour = "1,1,1", string icon = "", string chats = ""){
 	trChatSendToPlayer(0, p, "<color=" + colour + "><icon=(20)(" + icon + ")> " + chats + "</color>");
 }
+
+void PwnPlayer(int p = 0, int v = 0){
+	trSetPlayerDefeated(p);
+	OverlayTextPlayerColor(p);
+	trOverlayText(trStringQuestVarGet("p"+p+"name") + "'s flag has been captured!", 5.0, 350, 350, 800);
+	playSound("Yeebaagooon\Capture The Flag\Warp.mp3");
+	playSound("timeshift.wav");
+	trCameraShake(5, 0.1);
+	trPlayerKillAllBuildings(p);
+	trPlayerKillAllUnits(p);
+	trUnitSelectClear();
+	trUnitSelect("+p+");
+	trUnitChangeProtoUnit("Cinematic Block");
+	trPlayerGrantResources(v, "Food", 1*trPlayerResourceCount(p, "Food"));
+	trPlayerGrantResources(v, "Wood", 1*trPlayerResourceCount(p, "Wood"));
+	trPlayerGrantResources(v, "Gold", 1*trPlayerResourceCount(p, "Gold"));
+	ColouredIconChatToPlayer(v, "{PlayerColor("+p+")}", "icons\icon resource food",
+		""+1*trPlayerResourceCount(p, "Food")+"");
+	ColouredIconChatToPlayer(v, "{PlayerColor("+p+")}", "icons\icon resource wood",
+		""+1*trPlayerResourceCount(p, "Wood")+"");
+	ColouredIconChatToPlayer(v, "{PlayerColor("+p+")}", "icons\icon resource gold",
+		""+1*trPlayerResourceCount(p, "Gold")+"");
+	trPlayerGrantResources(p, "Food", -10000.0);
+	trPlayerGrantResources(p, "Wood", -10000.0);
+	trPlayerGrantResources(p, "Gold", -10000.0);
+	trPlayerGrantResources(p, "Favor", -10000.0);
+	trQuestVarModify("P"+v+"FlagsGot", "+", 1);
+	if(1*trQuestVarGet("P"+v+"FlagsGot") < 9){
+		//flag go on base
+		//0 = heading
+		//Seems to be off for 3 of them
+		/*
+		trQuestVarSet("QVGateFlag", trGetNextUnitScenarioNameNumber()-10);
+		trUnitSelectClear();
+		trUnitSelect(""+1*trQuestVarGet("P"+p+"FlagSlot"+1*trQuestVarGet("P"+v+"FlagsGot")+""));
+		trUnitChangeProtoUnit("Titan Atlantean");
+		trUnitSelectClear();
+		yFindLatestAll("QVGateFlag", "Titan Gate Dead");
+		trUnitSelectClear();
+		trUnitSelect(""+1*trQuestVarGet("QVGateFlag"));
+		trUnitChangeProtoUnit("Ajax");
+		trUnitSelectClear();
+		trUnitSelect(""+1*trQuestVarGet("P"+p+"FlagSlot"+1*trQuestVarGet("P"+v+"FlagsGot")+""));
+		trUnitChangeProtoUnit("Atlantis Wall Connector");
+		trUnitSelectClear();
+		trUnitSelect(""+1*trQuestVarGet("QVGateFlag"));
+		trUnitChangeProtoUnit("Flag");
+		trUnitSetAnimationPath("0,0,0,0,0");
+		*/
+		FloatingUnitAnim4("Flag",
+			1*trVectorQuestVarGetX("P"+v+"FlagSlot"+1*trQuestVarGet("P"+v+"FlagsGot")),
+			1*trVectorQuestVarGetY("P"+v+"FlagSlot"+1*trQuestVarGet("P"+v+"FlagsGot")),
+			1*trVectorQuestVarGetZ("P"+v+"FlagSlot"+1*trQuestVarGet("P"+v+"FlagsGot")),
+			0, 1, 1, 1, "0,0,0,0,0", p);
+	}
+}
+
+
 
 void PaintAtlantisArea (int x0 = 0, int z0 = 0, int x1 = 0, int z1 = 0, int fill1 = 0, int fill2 = 0){
 	//bottom corner
@@ -1350,31 +1403,4 @@ void PaintAtlantisArea (int x0 = 0, int z0 = 0, int x1 = 0, int z1 = 0, int fill
 	trPaintTerrain(x0, z1-1, x0, z0+1, 0, 74, false);
 	//fill
 	trPaintTerrain(x1-1, z1-1, x0+1, z0+1, fill1, fill2, false);
-}
-
-bool cameraFirstWaypoint = true;
-int cameraTrackTime = 0;
-
-void trUnitSetVariation(int name = 0, int var = 0){
-	trUnitSelectClear();
-	trUnitSelect(""+name);
-	trUnitSetAnimationPath(""+(var)+",0,0,0,0,0,0");
-}
-
-void createCameraTrack(int timeMS = 0){
-	cameraFirstWaypoint = true;
-	cameraTrackTime = timeMS;
-	trackInsert();
-	trackPlay(cameraTrackTime, -1);
-}
-void addCameraTrackWaypoint(){
-	if(cameraFirstWaypoint){
-		cameraFirstWaypoint = false;
-	} else {
-		trackAddWaypoint();
-	}
-	trackEditWaypoint();
-}
-void playCameraTrack(int eventId = -1){
-	trackPlay(cameraTrackTime, eventId);
 }
