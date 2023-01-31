@@ -179,6 +179,16 @@ inactive
 		xsEnableRule("StopDeletes");
 		xsEnableRule("ConvertSpies");
 		xsEnableRule("BankReminder");
+		uiZoomToProto("Villager Greek");
+		uiLookAtProto("Villager Greek");
+		uiZoomToProto("Villager Norse");
+		uiLookAtProto("Villager Norse");
+		uiZoomToProto("Villager Chinese");
+		uiLookAtProto("Villager Chinese");
+		uiZoomToProto("Villager Atlantean");
+		uiLookAtProto("Villager Atlantean");
+		uiZoomToProto("Villager Egyptian");
+		uiLookAtProto("Villager Egyptian");
 		if(QuickStart == 0){
 			trDelayedRuleActivation("KillCPU");
 		}

@@ -178,7 +178,7 @@ highFrequency
 		addCameraTrackWaypoint();
 		playCameraTrack();
 		xsEnableRule("EndGame_MP_01");
-		characterDialog(" ", " ", "");
+		characterDialog("Load this map in singleplayer", "This allows you to unlock various skins!", "");
 	}
 }
 

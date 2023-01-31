@@ -4,7 +4,10 @@ music ending
 !!Wall convert not working
 Emergency farm break
 
-Showcase
+AM V4 - nottud and devil owed athena*
+Whole map farm trigger
+Cut to unit at start*
+10s CD to win/lose text
 */
 
 
@@ -12,7 +15,7 @@ Showcase
 //---Controls
 //\Yeebaagooon\Agricultural Madness\Test sound.mp3
 int QuickStart = 0;
-int MapVersion = 3;
+int MapVersion = 4;
 string MapName = "Agricultural Madness";
 string displayz = "";
 string farmicon = "";

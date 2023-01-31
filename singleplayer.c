@@ -242,7 +242,7 @@ inactive
 		trUnitChangeProtoUnit(""+xGetString(dSkin, xSkinName));
 		//trMutateSelected(kbGetProtoUnitID(""+xGetString(dSkin, xSkinName)));
 		if(n == 1){
-			if(false){
+			if(xGetInt(dPlayerData, xAthena) > 0){
 				xSetInt(dSkin, xSkinUnlocked, 1);
 				trUnitSelectByQV("temp");
 				trUnitHighlight(10000, false);

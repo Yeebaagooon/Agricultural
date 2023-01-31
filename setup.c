@@ -339,9 +339,9 @@ highFrequency
 		xsEnableRule("CustomContentChat");
 		//VERSION UPDATES
 		int a = trCurrentPlayer();
-		if(1*trQuestVarGet("VersionMessage") == 0){
-			//uiMessageBox("TEST VERSION DO NOT HOST");
-			trQuestVarSet("VersionMessage", 1);
+		if(1*trQuestVarGet("VersionMessage") < 4){
+			uiMessageBox("Updated to V4.");
+			trQuestVarSet("VersionMessage", 4);
 			xSetPointer(dPlayerData, a);
 			xSetInt(dPlayerData, xVersionControl, MapVersion);
 		}

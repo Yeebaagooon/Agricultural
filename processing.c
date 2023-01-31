@@ -618,6 +618,11 @@ inactive
 			debugLog("Missile error");
 			unitTransform("Vision Revealer", "Rocket");
 		}
+		if(playerIsPlaying(p) == false){
+			//resign stuff
+			trUnitSelectByQV("P"+p+"Farmer");
+			trUnitChangeProtoUnit("Einheriar Boost SFX");
+		}
 	}
 }
 
